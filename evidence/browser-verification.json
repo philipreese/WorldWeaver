@@ -25,6 +25,18 @@
         "Reload restores day 4 paused, Lilac selected for Nera, Sky and Lantern selected for the home, and guide progress at Try another possibility",
         "Walk with them returns to the neighborhood; Nera visibly wears the chosen Lilac color"
       ]
+    },
+    {
+      "build": "fb2d83036cfe22c78d487458e7d9fcd4c0db0d5c",
+      "simulationVersion": "2.0.0 (fresh world); existing 1.0.0 archive also opened",
+      "checks": [
+        "Published settings show build fb2d8303 and clearly identify the existing original-rules archive at day 4",
+        "Invoked export before replacing the agent test world; file delivery and cross-context import remain unverified",
+        "Shape another beginning opens the default new world; advancement records the new habitat survey and paid garden recovery",
+        "At day 7, the History panel exposes household migration from Hearth to Choir",
+        "Expanded Why did this happen: observed 52 to 46 and 16 to 22 population changes, travel cost, prior reserves and available/unavailable alternatives, with causal links to shortage and surveys",
+        "Reload retains day 7 and returns paused with All changes saved"
+      ]
     }
   ],
   "screenshots": [

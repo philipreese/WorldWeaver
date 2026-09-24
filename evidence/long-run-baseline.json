@@ -1,0 +1,6817 @@
+{
+  "kind": "Deterministic engine audit; no browser or human playtesting; no quality pass claim.",
+  "source": {
+    "label": "845e54ae3d65782aa6bd1f02184781db994cf9b7",
+    "moduleSha256": "3c257c4818b20522401fbca8617aa8ab5bf585eb2f394d58daf16e36b20c7f57",
+    "localModuleHashes": {
+      "life.js": "a8fc16090436b955bef12ecbb260988951b0fd87b9e454ce6aed4da17b91bf1f",
+      "world.js": "3c257c4818b20522401fbca8617aa8ab5bf585eb2f394d58daf16e36b20c7f57"
+    },
+    "reportedWorldVersion": "1.0.0",
+    "engineVersionOption": null
+  },
+  "metricSpecification": {
+    "version": 1,
+    "frozenAgainstCommit": "845e54ae3d65782aa6bd1f02184781db994cf9b7",
+    "design": "Observation only; no player intervention or state mutation. Seeds 1–20 crossed with three climates; a separate seed 8417 run reaches day 400.",
+    "fixedOptions": {
+      "tier": 2,
+      "density": "balanced",
+      "temperament": "careful"
+    },
+    "sampledSeeds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "climates": [
+      "temperate",
+      "dry",
+      "wet"
+    ],
+    "endDay": 300,
+    "lateWindow": {
+      "firstDay": 61,
+      "lastDay": 300
+    },
+    "rawEventSequence": "Ordered event kinds including repeats and opening events; excludes tick, text, titles, numbers, names and entity IDs.",
+    "structuralSignature": "Final settlements: multiset of structure kind/form/abandoned-status, present life forms, and institution statuses; exact unlabeled undirected route graph with open/passable labels. Resource quantities, dates, coordinates, names and entity IDs are excluded. Structural counts are retained.",
+    "decisionSignature": "Ordered event kind, alternatives with availability, and chosen alternative. Free prose, dates and actor IDs excluded; embedded entity IDs/names and numeric tokens in alternatives replaced with type placeholders.",
+    "combinedSignature": "Structural signature plus decision signature; raw event repetition is deliberately not included.",
+    "lateSubstantiveProxy": "All events dated day 61–300 except the two explicitly excluded repetitive kinds; this is a broad mechanical proxy, not a judgment of narrative interest.",
+    "excludedLateKinds": [
+      "power-redistribution",
+      "settlement-growth"
+    ],
+    "topologyChanges": "New settlement and route identities absent at creation; opening hollow-departure is already in the initial state and is not counted as a new settlement.",
+    "thresholds": null,
+    "thresholdPolicy": "No post-hoc diversity threshold or quality pass claim. Report the measured distribution and inspect causal state changes separately."
+  },
+  "summary": {
+    "runs": 60,
+    "distinctRawSequences": 3,
+    "distinctStructures": 3,
+    "distinctDecisionSequences": 2,
+    "distinctCombinedSignatures": 3,
+    "totalEvents": {
+      "min": 41,
+      "max": 53,
+      "median": 50,
+      "mean": 48,
+      "histogram": {
+        "41": 20,
+        "50": 20,
+        "53": 20
+      }
+    },
+    "lateSubstantiveProxy": {
+      "min": 3,
+      "max": 4,
+      "median": 4,
+      "mean": 3.6666666666666665,
+      "histogram": {
+        "3": 20,
+        "4": 40
+      }
+    },
+    "lateSubstantiveKinds": {
+      "channel-authority-ended": 20,
+      "collective-expansion": 40,
+      "ledger-changed": 60,
+      "shared-home": 60,
+      "synthetic-replication": 40
+    },
+    "runsWithNewSettlements": 0,
+    "runsWithNewRoutes": 0,
+    "runsWithNewNamedCharacters": 0,
+    "rawSequenceFrequencies": {
+      "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f": 20,
+      "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00": 20,
+      "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701": 20
+    },
+    "combinedFrequencies": {
+      "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17": 20,
+      "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa": 20,
+      "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8": 20
+    }
+  },
+  "byClimate": {
+    "temperate": {
+      "runs": 20,
+      "distinctRawSequences": 1,
+      "distinctStructures": 1,
+      "distinctDecisionSequences": 1,
+      "distinctCombinedSignatures": 1,
+      "totalEvents": {
+        "min": 50,
+        "max": 50,
+        "median": 50,
+        "mean": 50,
+        "histogram": {
+          "50": 20
+        }
+      },
+      "lateSubstantiveProxy": {
+        "min": 4,
+        "max": 4,
+        "median": 4,
+        "mean": 4,
+        "histogram": {
+          "4": 20
+        }
+      },
+      "lateSubstantiveKinds": {
+        "ledger-changed": 20,
+        "shared-home": 20,
+        "synthetic-replication": 40
+      },
+      "runsWithNewSettlements": 0,
+      "runsWithNewRoutes": 0,
+      "runsWithNewNamedCharacters": 0,
+      "rawSequenceFrequencies": {
+        "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f": 20
+      },
+      "combinedFrequencies": {
+        "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17": 20
+      }
+    },
+    "dry": {
+      "runs": 20,
+      "distinctRawSequences": 1,
+      "distinctStructures": 1,
+      "distinctDecisionSequences": 1,
+      "distinctCombinedSignatures": 1,
+      "totalEvents": {
+        "min": 53,
+        "max": 53,
+        "median": 53,
+        "mean": 53,
+        "histogram": {
+          "53": 20
+        }
+      },
+      "lateSubstantiveProxy": {
+        "min": 4,
+        "max": 4,
+        "median": 4,
+        "mean": 4,
+        "histogram": {
+          "4": 20
+        }
+      },
+      "lateSubstantiveKinds": {
+        "collective-expansion": 40,
+        "ledger-changed": 20,
+        "shared-home": 20
+      },
+      "runsWithNewSettlements": 0,
+      "runsWithNewRoutes": 0,
+      "runsWithNewNamedCharacters": 0,
+      "rawSequenceFrequencies": {
+        "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00": 20
+      },
+      "combinedFrequencies": {
+        "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8": 20
+      }
+    },
+    "wet": {
+      "runs": 20,
+      "distinctRawSequences": 1,
+      "distinctStructures": 1,
+      "distinctDecisionSequences": 1,
+      "distinctCombinedSignatures": 1,
+      "totalEvents": {
+        "min": 41,
+        "max": 41,
+        "median": 41,
+        "mean": 41,
+        "histogram": {
+          "41": 20
+        }
+      },
+      "lateSubstantiveProxy": {
+        "min": 3,
+        "max": 3,
+        "median": 3,
+        "mean": 3,
+        "histogram": {
+          "3": 20
+        }
+      },
+      "lateSubstantiveKinds": {
+        "channel-authority-ended": 20,
+        "ledger-changed": 20,
+        "shared-home": 20
+      },
+      "runsWithNewSettlements": 0,
+      "runsWithNewRoutes": 0,
+      "runsWithNewNamedCharacters": 0,
+      "rawSequenceFrequencies": {
+        "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701": 20
+      },
+      "combinedFrequencies": {
+        "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa": 20
+      }
+    }
+  },
+  "representative8417": {
+    "seed": 8417,
+    "climate": "temperate",
+    "day": 400,
+    "eventCount": 57,
+    "eventKindCounts": {
+      "archive-fault": 1,
+      "channel-authority-ended": 1,
+      "collective-expansion": 5,
+      "common-channel-founded": 1,
+      "culture-diverged": 1,
+      "downstream-contact": 1,
+      "eastern-contact": 1,
+      "founding-survey": 1,
+      "hollow-departure": 1,
+      "inhabitants-open-route": 1,
+      "late-supper": 1,
+      "ledger-changed": 1,
+      "mender-remembered": 1,
+      "mending-lesson": 1,
+      "power-emerged": 1,
+      "power-redistribution": 25,
+      "seed-decision": 1,
+      "seed-recovery": 1,
+      "settlement-growth": 5,
+      "shared-home": 1,
+      "synthetic-replication": 4,
+      "three-forms-recorded": 1
+    },
+    "lateWindow": {
+      "eventCount": 25,
+      "eventKindCounts": {
+        "ledger-changed": 1,
+        "power-redistribution": 16,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2
+      },
+      "excludedCount": 21,
+      "substantiveProxyCount": 4,
+      "substantiveKinds": {
+        "ledger-changed": 1,
+        "shared-home": 1,
+        "synthetic-replication": 2
+      },
+      "substantiveEvents": [
+        {
+          "day": 80,
+          "kind": "ledger-changed"
+        },
+        {
+          "day": 80,
+          "kind": "shared-home"
+        },
+        {
+          "day": 224,
+          "kind": "synthetic-replication"
+        },
+        {
+          "day": 264,
+          "kind": "synthetic-replication"
+        }
+      ]
+    },
+    "finalCounts": {
+      "settlements": 4,
+      "occupiedSettlements": 3,
+      "newSettlements": 0,
+      "routes": 3,
+      "newRoutes": 0,
+      "structures": 35,
+      "newNamedCharacters": 1,
+      "organicPopulation": 96,
+      "synthetics": 20,
+      "collective": 33
+    },
+    "decisions": 8,
+    "rawSequenceHash": "6fa5cfb5fda165422d051253ad35cc76bad5713ca65eb98be863017a3615c082",
+    "structureHash": "0d85c527f5e4b749f3dba995044043e8baeb6a9fd3cf01d1b7351b59c6f9a803",
+    "decisionHash": "b62c2214515b2e69c0d3697637ce57b19191110894c5c5e70068f8ad8de33b80",
+    "combinedHash": "0c43c604ce5468e92827c67359c1efa8c39ee31a2dbde800ea85364e6ca62b78",
+    "timeline": [
+      {
+        "day": 0,
+        "kind": "founding-survey",
+        "title": "The first shared survey"
+      },
+      {
+        "day": 0,
+        "kind": "hollow-departure",
+        "title": "Six names carried out of Hollow"
+      },
+      {
+        "day": 0,
+        "kind": "archive-fault",
+        "title": "Water in the seed room"
+      },
+      {
+        "day": 0,
+        "kind": "three-forms-recorded",
+        "title": "A census with three kinds of answer"
+      },
+      {
+        "day": 1,
+        "kind": "collective-expansion",
+        "title": "A room learns the rain"
+      },
+      {
+        "day": 2,
+        "kind": "mending-lesson",
+        "title": "The nail that was apparently valuable"
+      },
+      {
+        "day": 3,
+        "kind": "synthetic-replication",
+        "title": "Two more answers in the glass"
+      },
+      {
+        "day": 4,
+        "kind": "seed-decision",
+        "title": "The vessels above the water"
+      },
+      {
+        "day": 4,
+        "kind": "late-supper",
+        "title": "A heading for ordinary things"
+      },
+      {
+        "day": 4,
+        "kind": "collective-expansion",
+        "title": "A room learns the rain"
+      },
+      {
+        "day": 8,
+        "kind": "collective-expansion",
+        "title": "A room learns the rain"
+      },
+      {
+        "day": 12,
+        "kind": "collective-expansion",
+        "title": "A room learns the rain"
+      },
+      {
+        "day": 14,
+        "kind": "seed-recovery",
+        "title": "Room for the saved seeds"
+      },
+      {
+        "day": 14,
+        "kind": "downstream-contact",
+        "title": "Mira checks the other end"
+      },
+      {
+        "day": 14,
+        "kind": "synthetic-replication",
+        "title": "Two more answers in the glass"
+      },
+      {
+        "day": 14,
+        "kind": "inhabitants-open-route",
+        "title": "Oren works from his end"
+      },
+      {
+        "day": 15,
+        "kind": "eastern-contact",
+        "title": "A pattern with a meal attached"
+      },
+      {
+        "day": 15,
+        "kind": "common-channel-founded",
+        "title": "A promise with three signatures"
+      },
+      {
+        "day": 16,
+        "kind": "collective-expansion",
+        "title": "A room learns the rain"
+      },
+      {
+        "day": 19,
+        "kind": "culture-diverged",
+        "title": "A debt you can reproduce"
+      },
+      {
+        "day": 24,
+        "kind": "power-emerged",
+        "title": "The channel answers out of turn"
+      },
+      {
+        "day": 33,
+        "kind": "power-redistribution",
+        "title": "An answer without a petitioner"
+      },
+      {
+        "day": 43,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 53,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 53,
+        "kind": "channel-authority-ended",
+        "title": "The ledger gives up its throne"
+      },
+      {
+        "day": 63,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 73,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 80,
+        "kind": "settlement-growth",
+        "title": "A house that faces the garden"
+      },
+      {
+        "day": 80,
+        "kind": "ledger-changed",
+        "title": "One more place at the ledger"
+      },
+      {
+        "day": 80,
+        "kind": "shared-home",
+        "title": "A shelf for two kinds of mess"
+      },
+      {
+        "day": 83,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 93,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 103,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 113,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 123,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 132,
+        "kind": "settlement-growth",
+        "title": "A house that faces the garden"
+      },
+      {
+        "day": 133,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 151,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 171,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 185,
+        "kind": "settlement-growth",
+        "title": "A house that faces the garden"
+      },
+      {
+        "day": 191,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 210,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 224,
+        "kind": "synthetic-replication",
+        "title": "Two more answers in the glass"
+      },
+      {
+        "day": 228,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 237,
+        "kind": "settlement-growth",
+        "title": "A house that faces the garden"
+      },
+      {
+        "day": 247,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 264,
+        "kind": "synthetic-replication",
+        "title": "Two more answers in the glass"
+      },
+      {
+        "day": 265,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 283,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 289,
+        "kind": "settlement-growth",
+        "title": "A house that faces the garden"
+      },
+      {
+        "day": 301,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 318,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 335,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 352,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 365,
+        "kind": "mender-remembered",
+        "title": "Four bends, still useful"
+      },
+      {
+        "day": 369,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      },
+      {
+        "day": 386,
+        "kind": "power-redistribution",
+        "title": "The answering pattern returns"
+      }
+    ],
+    "afterDay60Kinds": {
+      "ledger-changed": 1,
+      "mender-remembered": 1,
+      "power-redistribution": 22,
+      "settlement-growth": 5,
+      "shared-home": 1,
+      "synthetic-replication": 2
+    },
+    "finalStructure": {
+      "settlements": [
+        {
+          "forms": [
+            "organic",
+            "collective"
+          ],
+          "structures": {
+            "conduit/mixed/present": 2,
+            "garden/unspecified/present": 1,
+            "home/unspecified/present": 1,
+            "nest/collective/present": 6,
+            "ruin/unspecified/present": 1
+          },
+          "institutions": {
+            "active": 1
+          }
+        },
+        {
+          "forms": [
+            "organic",
+            "synthetic"
+          ],
+          "structures": {
+            "conduit/mixed/present": 1,
+            "conduit/synthetic/present": 1,
+            "home/unspecified/present": 1,
+            "spire/synthetic/present": 3,
+            "spire/unspecified/present": 1,
+            "workshop/unspecified/present": 1
+          },
+          "institutions": {
+            "active": 1
+          }
+        },
+        {
+          "forms": [
+            "organic"
+          ],
+          "structures": {
+            "archive/unspecified/present": 2,
+            "conduit/mixed/present": 1,
+            "garden/unspecified/present": 2,
+            "home/unspecified/present": 6,
+            "memorial/unspecified/present": 1,
+            "ruin/unspecified/present": 1,
+            "workshop/unspecified/present": 1
+          },
+          "institutions": {
+            "changed": 1,
+            "collapsed": 1
+          }
+        },
+        {
+          "forms": [],
+          "structures": {
+            "ruin/unspecified/abandoned": 1,
+            "ruin/unspecified/present": 1
+          },
+          "institutions": {
+            "collapsed": 1
+          }
+        }
+      ],
+      "routes": [
+        [
+          0,
+          2,
+          true,
+          true
+        ],
+        [
+          1,
+          2,
+          true,
+          true
+        ],
+        [
+          2,
+          3,
+          true,
+          true
+        ]
+      ]
+    },
+    "normalizedDecisions": [
+      {
+        "kind": "seed-decision",
+        "alternatives": [
+          {
+            "id": "exchange",
+            "available": false
+          },
+          {
+            "id": "plant",
+            "available": true
+          },
+          {
+            "id": "raise",
+            "available": true
+          }
+        ],
+        "chosen": "raise"
+      },
+      {
+        "kind": "seed-recovery",
+        "alternatives": [
+          {
+            "id": "beds",
+            "available": true
+          },
+          {
+            "id": "channels",
+            "available": false
+          },
+          {
+            "id": "keep",
+            "available": true
+          }
+        ],
+        "chosen": "beds"
+      },
+      {
+        "kind": "inhabitants-open-route",
+        "alternatives": [
+          {
+            "id": "open",
+            "available": true
+          },
+          {
+            "id": "stay",
+            "available": true
+          }
+        ],
+        "chosen": "open"
+      },
+      {
+        "kind": "eastern-contact",
+        "alternatives": [
+          {
+            "id": "keep",
+            "available": true
+          },
+          {
+            "id": "share",
+            "available": true
+          }
+        ],
+        "chosen": "share"
+      },
+      {
+        "kind": "common-channel-founded",
+        "alternatives": [
+          {
+            "id": "separate",
+            "available": true
+          },
+          {
+            "id": "share",
+            "available": true
+          }
+        ],
+        "chosen": "share"
+      },
+      {
+        "kind": "channel-authority-ended",
+        "alternatives": [
+          {
+            "id": "claim",
+            "available": true
+          },
+          {
+            "id": "local",
+            "available": true
+          }
+        ],
+        "chosen": "local"
+      },
+      {
+        "kind": "shared-home",
+        "alternatives": [
+          {
+            "id": "share",
+            "available": true
+          },
+          {
+            "id": "stay",
+            "available": true
+          }
+        ],
+        "chosen": "share"
+      },
+      {
+        "kind": "mender-remembered",
+        "alternatives": [
+          {
+            "id": "inherit",
+            "available": true
+          },
+          {
+            "id": "preserve",
+            "available": true
+          }
+        ],
+        "chosen": "inherit"
+      }
+    ]
+  },
+  "runs": [
+    {
+      "seed": 1,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 1,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 1,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    },
+    {
+      "seed": 2,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 2,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 2,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    },
+    {
+      "seed": 3,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 3,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 3,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    },
+    {
+      "seed": 4,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 4,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 4,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    },
+    {
+      "seed": 5,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 5,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 5,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    },
+    {
+      "seed": 6,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 6,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 6,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    },
+    {
+      "seed": 7,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 7,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 7,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    },
+    {
+      "seed": 8,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 8,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 8,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    },
+    {
+      "seed": 9,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 9,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 9,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    },
+    {
+      "seed": 10,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 10,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 10,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    },
+    {
+      "seed": 11,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 11,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 11,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    },
+    {
+      "seed": 12,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 12,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 12,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    },
+    {
+      "seed": 13,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 13,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 13,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    },
+    {
+      "seed": 14,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 14,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 14,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    },
+    {
+      "seed": 15,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 15,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 15,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    },
+    {
+      "seed": 16,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 16,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 16,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    },
+    {
+      "seed": 17,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 17,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 17,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    },
+    {
+      "seed": 18,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 18,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 18,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    },
+    {
+      "seed": 19,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 19,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 19,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    },
+    {
+      "seed": 20,
+      "climate": "temperate",
+      "day": 300,
+      "eventCount": 50,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 5,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 19,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 4,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 25,
+        "eventKindCounts": {
+          "ledger-changed": 1,
+          "power-redistribution": 16,
+          "settlement-growth": 5,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "excludedCount": 21,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "ledger-changed": 1,
+          "shared-home": 1,
+          "synthetic-replication": 2
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 227,
+            "kind": "synthetic-replication"
+          },
+          {
+            "day": 280,
+            "kind": "synthetic-replication"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 20,
+        "collective": 33
+      },
+      "decisions": 7,
+      "rawSequenceHash": "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f",
+      "structureHash": "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17"
+    },
+    {
+      "seed": 20,
+      "climate": "dry",
+      "day": 300,
+      "eventCount": 53,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 27,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 33,
+        "eventKindCounts": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "power-redistribution": 24,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 29,
+        "substantiveProxyCount": 4,
+        "substantiveKinds": {
+          "collective-expansion": 2,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          },
+          {
+            "day": 177,
+            "kind": "collective-expansion"
+          },
+          {
+            "day": 197,
+            "kind": "collective-expansion"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 30,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 24
+      },
+      "decisions": 7,
+      "rawSequenceHash": "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00",
+      "structureHash": "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c",
+      "decisionHash": "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e",
+      "combinedHash": "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8"
+    },
+    {
+      "seed": 20,
+      "climate": "wet",
+      "day": 300,
+      "eventCount": 41,
+      "eventKindCounts": {
+        "archive-fault": 1,
+        "channel-authority-ended": 1,
+        "collective-expansion": 6,
+        "common-channel-founded": 1,
+        "culture-diverged": 1,
+        "downstream-contact": 1,
+        "eastern-contact": 1,
+        "founding-survey": 1,
+        "hollow-departure": 1,
+        "inhabitants-open-route": 1,
+        "late-supper": 1,
+        "ledger-changed": 1,
+        "mending-lesson": 1,
+        "power-emerged": 1,
+        "power-redistribution": 11,
+        "seed-decision": 1,
+        "seed-recovery": 1,
+        "settlement-growth": 5,
+        "shared-home": 1,
+        "synthetic-replication": 2,
+        "three-forms-recorded": 1
+      },
+      "lateWindow": {
+        "eventCount": 18,
+        "eventKindCounts": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "power-redistribution": 10,
+          "settlement-growth": 5,
+          "shared-home": 1
+        },
+        "excludedCount": 15,
+        "substantiveProxyCount": 3,
+        "substantiveKinds": {
+          "channel-authority-ended": 1,
+          "ledger-changed": 1,
+          "shared-home": 1
+        },
+        "substantiveEvents": [
+          {
+            "day": 75,
+            "kind": "channel-authority-ended"
+          },
+          {
+            "day": 80,
+            "kind": "ledger-changed"
+          },
+          {
+            "day": 80,
+            "kind": "shared-home"
+          }
+        ]
+      },
+      "finalCounts": {
+        "settlements": 4,
+        "occupiedSettlements": 3,
+        "newSettlements": 0,
+        "routes": 3,
+        "newRoutes": 0,
+        "structures": 34,
+        "newNamedCharacters": 0,
+        "organicPopulation": 97,
+        "synthetics": 16,
+        "collective": 36
+      },
+      "decisions": 7,
+      "rawSequenceHash": "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701",
+      "structureHash": "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5",
+      "decisionHash": "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde",
+      "combinedHash": "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa"
+    }
+  ],
+  "signatureCatalog": {
+    "rawSequences": {
+      "015fc4a9dbe17deef82763abcbddd31b12c4e5429fe76e560ba9bd1fa72cfd5f": [
+        "founding-survey",
+        "hollow-departure",
+        "archive-fault",
+        "three-forms-recorded",
+        "collective-expansion",
+        "mending-lesson",
+        "seed-decision",
+        "late-supper",
+        "synthetic-replication",
+        "collective-expansion",
+        "collective-expansion",
+        "collective-expansion",
+        "seed-recovery",
+        "downstream-contact",
+        "synthetic-replication",
+        "collective-expansion",
+        "inhabitants-open-route",
+        "eastern-contact",
+        "common-channel-founded",
+        "culture-diverged",
+        "power-emerged",
+        "power-redistribution",
+        "power-redistribution",
+        "power-redistribution",
+        "channel-authority-ended",
+        "power-redistribution",
+        "power-redistribution",
+        "settlement-growth",
+        "ledger-changed",
+        "shared-home",
+        "power-redistribution",
+        "power-redistribution",
+        "power-redistribution",
+        "power-redistribution",
+        "power-redistribution",
+        "settlement-growth",
+        "power-redistribution",
+        "power-redistribution",
+        "power-redistribution",
+        "settlement-growth",
+        "power-redistribution",
+        "power-redistribution",
+        "synthetic-replication",
+        "power-redistribution",
+        "settlement-growth",
+        "power-redistribution",
+        "power-redistribution",
+        "synthetic-replication",
+        "power-redistribution",
+        "settlement-growth"
+      ],
+      "cd310675b743407b51fa8fc5f7d4a286302943cc407aa1111fff359974021a00": [
+        "founding-survey",
+        "hollow-departure",
+        "archive-fault",
+        "three-forms-recorded",
+        "mending-lesson",
+        "seed-decision",
+        "late-supper",
+        "synthetic-replication",
+        "synthetic-replication",
+        "inhabitants-open-route",
+        "eastern-contact",
+        "seed-recovery",
+        "downstream-contact",
+        "common-channel-founded",
+        "culture-diverged",
+        "power-emerged",
+        "power-redistribution",
+        "power-redistribution",
+        "power-redistribution",
+        "channel-authority-ended",
+        "power-redistribution",
+        "power-redistribution",
+        "settlement-growth",
+        "ledger-changed",
+        "shared-home",
+        "power-redistribution",
+        "power-redistribution",
+        "power-redistribution",
+        "power-redistribution",
+        "power-redistribution",
+        "settlement-growth",
+        "power-redistribution",
+        "power-redistribution",
+        "power-redistribution",
+        "power-redistribution",
+        "power-redistribution",
+        "collective-expansion",
+        "settlement-growth",
+        "power-redistribution",
+        "power-redistribution",
+        "collective-expansion",
+        "power-redistribution",
+        "power-redistribution",
+        "power-redistribution",
+        "power-redistribution",
+        "settlement-growth",
+        "power-redistribution",
+        "power-redistribution",
+        "power-redistribution",
+        "power-redistribution",
+        "power-redistribution",
+        "settlement-growth",
+        "power-redistribution"
+      ],
+      "e6add2337100718904ed6f70765a2cada979e0cd114824a25489aba6b1959701": [
+        "founding-survey",
+        "hollow-departure",
+        "archive-fault",
+        "three-forms-recorded",
+        "collective-expansion",
+        "mending-lesson",
+        "seed-decision",
+        "late-supper",
+        "collective-expansion",
+        "seed-recovery",
+        "downstream-contact",
+        "collective-expansion",
+        "synthetic-replication",
+        "collective-expansion",
+        "collective-expansion",
+        "collective-expansion",
+        "synthetic-replication",
+        "inhabitants-open-route",
+        "eastern-contact",
+        "common-channel-founded",
+        "culture-diverged",
+        "power-emerged",
+        "power-redistribution",
+        "power-redistribution",
+        "power-redistribution",
+        "channel-authority-ended",
+        "settlement-growth",
+        "ledger-changed",
+        "shared-home",
+        "power-redistribution",
+        "power-redistribution",
+        "settlement-growth",
+        "power-redistribution",
+        "power-redistribution",
+        "settlement-growth",
+        "power-redistribution",
+        "power-redistribution",
+        "settlement-growth",
+        "power-redistribution",
+        "power-redistribution",
+        "settlement-growth"
+      ]
+    },
+    "structures": {
+      "3f60542d384d3a48fb011876625299b18f5dd89e1de93b9aa171b7aab841e53d": {
+        "settlements": [
+          {
+            "forms": [
+              "organic",
+              "collective"
+            ],
+            "structures": {
+              "conduit/mixed/present": 2,
+              "garden/unspecified/present": 1,
+              "home/unspecified/present": 1,
+              "nest/collective/present": 6,
+              "ruin/unspecified/present": 1
+            },
+            "institutions": {
+              "active": 1
+            }
+          },
+          {
+            "forms": [
+              "organic",
+              "synthetic"
+            ],
+            "structures": {
+              "conduit/mixed/present": 1,
+              "conduit/synthetic/present": 1,
+              "home/unspecified/present": 1,
+              "spire/synthetic/present": 3,
+              "spire/unspecified/present": 1,
+              "workshop/unspecified/present": 1
+            },
+            "institutions": {
+              "active": 1
+            }
+          },
+          {
+            "forms": [
+              "organic"
+            ],
+            "structures": {
+              "archive/unspecified/present": 2,
+              "conduit/mixed/present": 1,
+              "garden/unspecified/present": 2,
+              "home/unspecified/present": 6,
+              "ruin/unspecified/present": 1,
+              "workshop/unspecified/present": 1
+            },
+            "institutions": {
+              "changed": 1,
+              "collapsed": 1
+            }
+          },
+          {
+            "forms": [],
+            "structures": {
+              "ruin/unspecified/abandoned": 1,
+              "ruin/unspecified/present": 1
+            },
+            "institutions": {
+              "collapsed": 1
+            }
+          }
+        ],
+        "routes": [
+          [
+            0,
+            2,
+            true,
+            true
+          ],
+          [
+            1,
+            2,
+            true,
+            true
+          ],
+          [
+            2,
+            3,
+            true,
+            true
+          ]
+        ]
+      },
+      "d1e1e946f85a43b69a2cf2c96c48331eb4cb8b558ff3493d46d461e0f523b05c": {
+        "settlements": [
+          {
+            "forms": [
+              "organic",
+              "collective"
+            ],
+            "structures": {
+              "conduit/mixed/present": 2,
+              "garden/unspecified/present": 1,
+              "home/unspecified/present": 1,
+              "nest/collective/present": 3,
+              "ruin/unspecified/present": 1
+            },
+            "institutions": {
+              "active": 1
+            }
+          },
+          {
+            "forms": [
+              "organic",
+              "synthetic"
+            ],
+            "structures": {
+              "conduit/mixed/present": 1,
+              "conduit/synthetic/present": 1,
+              "home/unspecified/present": 1,
+              "spire/synthetic/present": 2,
+              "spire/unspecified/present": 1,
+              "workshop/unspecified/present": 1
+            },
+            "institutions": {
+              "active": 1
+            }
+          },
+          {
+            "forms": [
+              "organic"
+            ],
+            "structures": {
+              "archive/unspecified/present": 2,
+              "conduit/mixed/present": 1,
+              "garden/unspecified/present": 2,
+              "home/unspecified/present": 6,
+              "ruin/unspecified/present": 1,
+              "workshop/unspecified/present": 1
+            },
+            "institutions": {
+              "changed": 1,
+              "collapsed": 1
+            }
+          },
+          {
+            "forms": [],
+            "structures": {
+              "ruin/unspecified/abandoned": 1,
+              "ruin/unspecified/present": 1
+            },
+            "institutions": {
+              "collapsed": 1
+            }
+          }
+        ],
+        "routes": [
+          [
+            0,
+            2,
+            true,
+            true
+          ],
+          [
+            1,
+            2,
+            true,
+            true
+          ],
+          [
+            2,
+            3,
+            true,
+            true
+          ]
+        ]
+      },
+      "6d014921ba38d55d964e90b6f67cc28ce655c1356b9a157a93f97971f28b42a5": {
+        "settlements": [
+          {
+            "forms": [
+              "organic",
+              "collective"
+            ],
+            "structures": {
+              "conduit/mixed/present": 2,
+              "garden/unspecified/present": 1,
+              "home/unspecified/present": 1,
+              "nest/collective/present": 7,
+              "ruin/unspecified/present": 1
+            },
+            "institutions": {
+              "active": 1
+            }
+          },
+          {
+            "forms": [
+              "organic",
+              "synthetic"
+            ],
+            "structures": {
+              "conduit/mixed/present": 1,
+              "conduit/synthetic/present": 1,
+              "home/unspecified/present": 1,
+              "spire/synthetic/present": 2,
+              "spire/unspecified/present": 1,
+              "workshop/unspecified/present": 1
+            },
+            "institutions": {
+              "active": 1
+            }
+          },
+          {
+            "forms": [
+              "organic"
+            ],
+            "structures": {
+              "archive/unspecified/present": 2,
+              "conduit/mixed/present": 1,
+              "garden/unspecified/present": 2,
+              "home/unspecified/present": 6,
+              "ruin/unspecified/present": 1,
+              "workshop/unspecified/present": 1
+            },
+            "institutions": {
+              "changed": 1,
+              "collapsed": 1
+            }
+          },
+          {
+            "forms": [],
+            "structures": {
+              "ruin/unspecified/abandoned": 1,
+              "ruin/unspecified/present": 1
+            },
+            "institutions": {
+              "collapsed": 1
+            }
+          }
+        ],
+        "routes": [
+          [
+            0,
+            2,
+            true,
+            true
+          ],
+          [
+            1,
+            2,
+            true,
+            true
+          ],
+          [
+            2,
+            3,
+            true,
+            true
+          ]
+        ]
+      }
+    },
+    "decisions": {
+      "1c065701cd29577c671a17093aaf0b3043ad928a744a19a856c30d1355e3edde": [
+        {
+          "kind": "seed-decision",
+          "alternatives": [
+            {
+              "id": "exchange",
+              "available": false
+            },
+            {
+              "id": "plant",
+              "available": true
+            },
+            {
+              "id": "raise",
+              "available": true
+            }
+          ],
+          "chosen": "raise"
+        },
+        {
+          "kind": "seed-recovery",
+          "alternatives": [
+            {
+              "id": "beds",
+              "available": true
+            },
+            {
+              "id": "channels",
+              "available": false
+            },
+            {
+              "id": "keep",
+              "available": true
+            }
+          ],
+          "chosen": "beds"
+        },
+        {
+          "kind": "inhabitants-open-route",
+          "alternatives": [
+            {
+              "id": "open",
+              "available": true
+            },
+            {
+              "id": "stay",
+              "available": true
+            }
+          ],
+          "chosen": "open"
+        },
+        {
+          "kind": "eastern-contact",
+          "alternatives": [
+            {
+              "id": "keep",
+              "available": true
+            },
+            {
+              "id": "share",
+              "available": true
+            }
+          ],
+          "chosen": "share"
+        },
+        {
+          "kind": "common-channel-founded",
+          "alternatives": [
+            {
+              "id": "separate",
+              "available": true
+            },
+            {
+              "id": "share",
+              "available": true
+            }
+          ],
+          "chosen": "share"
+        },
+        {
+          "kind": "channel-authority-ended",
+          "alternatives": [
+            {
+              "id": "claim",
+              "available": true
+            },
+            {
+              "id": "local",
+              "available": true
+            }
+          ],
+          "chosen": "local"
+        },
+        {
+          "kind": "shared-home",
+          "alternatives": [
+            {
+              "id": "share",
+              "available": true
+            },
+            {
+              "id": "stay",
+              "available": true
+            }
+          ],
+          "chosen": "share"
+        }
+      ],
+      "4edb5ec065c283e31871dad5123328c5773679a0914ddeef860f64fbc4b7b56e": [
+        {
+          "kind": "seed-decision",
+          "alternatives": [
+            {
+              "id": "exchange",
+              "available": false
+            },
+            {
+              "id": "plant",
+              "available": true
+            },
+            {
+              "id": "raise",
+              "available": true
+            }
+          ],
+          "chosen": "raise"
+        },
+        {
+          "kind": "inhabitants-open-route",
+          "alternatives": [
+            {
+              "id": "open",
+              "available": true
+            },
+            {
+              "id": "stay",
+              "available": true
+            }
+          ],
+          "chosen": "open"
+        },
+        {
+          "kind": "eastern-contact",
+          "alternatives": [
+            {
+              "id": "keep",
+              "available": true
+            },
+            {
+              "id": "share",
+              "available": true
+            }
+          ],
+          "chosen": "share"
+        },
+        {
+          "kind": "seed-recovery",
+          "alternatives": [
+            {
+              "id": "beds",
+              "available": true
+            },
+            {
+              "id": "channels",
+              "available": false
+            },
+            {
+              "id": "keep",
+              "available": true
+            }
+          ],
+          "chosen": "beds"
+        },
+        {
+          "kind": "common-channel-founded",
+          "alternatives": [
+            {
+              "id": "separate",
+              "available": true
+            },
+            {
+              "id": "share",
+              "available": true
+            }
+          ],
+          "chosen": "share"
+        },
+        {
+          "kind": "channel-authority-ended",
+          "alternatives": [
+            {
+              "id": "claim",
+              "available": true
+            },
+            {
+              "id": "local",
+              "available": true
+            }
+          ],
+          "chosen": "local"
+        },
+        {
+          "kind": "shared-home",
+          "alternatives": [
+            {
+              "id": "share",
+              "available": true
+            },
+            {
+              "id": "stay",
+              "available": true
+            }
+          ],
+          "chosen": "share"
+        }
+      ]
+    },
+    "combined": {
+      "08b1be0436ca3c82b640e5d5f123ebb91e0a1e247b9a2991c52bd667380f3e17": {
+        "structure": {
+          "settlements": [
+            {
+              "forms": [
+                "organic",
+                "collective"
+              ],
+              "structures": {
+                "conduit/mixed/present": 2,
+                "garden/unspecified/present": 1,
+                "home/unspecified/present": 1,
+                "nest/collective/present": 6,
+                "ruin/unspecified/present": 1
+              },
+              "institutions": {
+                "active": 1
+              }
+            },
+            {
+              "forms": [
+                "organic",
+                "synthetic"
+              ],
+              "structures": {
+                "conduit/mixed/present": 1,
+                "conduit/synthetic/present": 1,
+                "home/unspecified/present": 1,
+                "spire/synthetic/present": 3,
+                "spire/unspecified/present": 1,
+                "workshop/unspecified/present": 1
+              },
+              "institutions": {
+                "active": 1
+              }
+            },
+            {
+              "forms": [
+                "organic"
+              ],
+              "structures": {
+                "archive/unspecified/present": 2,
+                "conduit/mixed/present": 1,
+                "garden/unspecified/present": 2,
+                "home/unspecified/present": 6,
+                "ruin/unspecified/present": 1,
+                "workshop/unspecified/present": 1
+              },
+              "institutions": {
+                "changed": 1,
+                "collapsed": 1
+              }
+            },
+            {
+              "forms": [],
+              "structures": {
+                "ruin/unspecified/abandoned": 1,
+                "ruin/unspecified/present": 1
+              },
+              "institutions": {
+                "collapsed": 1
+              }
+            }
+          ],
+          "routes": [
+            [
+              0,
+              2,
+              true,
+              true
+            ],
+            [
+              1,
+              2,
+              true,
+              true
+            ],
+            [
+              2,
+              3,
+              true,
+              true
+            ]
+          ]
+        },
+        "decisions": [
+          {
+            "kind": "seed-decision",
+            "alternatives": [
+              {
+                "id": "exchange",
+                "available": false
+              },
+              {
+                "id": "plant",
+                "available": true
+              },
+              {
+                "id": "raise",
+                "available": true
+              }
+            ],
+            "chosen": "raise"
+          },
+          {
+            "kind": "seed-recovery",
+            "alternatives": [
+              {
+                "id": "beds",
+                "available": true
+              },
+              {
+                "id": "channels",
+                "available": false
+              },
+              {
+                "id": "keep",
+                "available": true
+              }
+            ],
+            "chosen": "beds"
+          },
+          {
+            "kind": "inhabitants-open-route",
+            "alternatives": [
+              {
+                "id": "open",
+                "available": true
+              },
+              {
+                "id": "stay",
+                "available": true
+              }
+            ],
+            "chosen": "open"
+          },
+          {
+            "kind": "eastern-contact",
+            "alternatives": [
+              {
+                "id": "keep",
+                "available": true
+              },
+              {
+                "id": "share",
+                "available": true
+              }
+            ],
+            "chosen": "share"
+          },
+          {
+            "kind": "common-channel-founded",
+            "alternatives": [
+              {
+                "id": "separate",
+                "available": true
+              },
+              {
+                "id": "share",
+                "available": true
+              }
+            ],
+            "chosen": "share"
+          },
+          {
+            "kind": "channel-authority-ended",
+            "alternatives": [
+              {
+                "id": "claim",
+                "available": true
+              },
+              {
+                "id": "local",
+                "available": true
+              }
+            ],
+            "chosen": "local"
+          },
+          {
+            "kind": "shared-home",
+            "alternatives": [
+              {
+                "id": "share",
+                "available": true
+              },
+              {
+                "id": "stay",
+                "available": true
+              }
+            ],
+            "chosen": "share"
+          }
+        ]
+      },
+      "a086ebea518ea515c284df66c152456a942419a0097c890e43c98f9b376f00c8": {
+        "structure": {
+          "settlements": [
+            {
+              "forms": [
+                "organic",
+                "collective"
+              ],
+              "structures": {
+                "conduit/mixed/present": 2,
+                "garden/unspecified/present": 1,
+                "home/unspecified/present": 1,
+                "nest/collective/present": 3,
+                "ruin/unspecified/present": 1
+              },
+              "institutions": {
+                "active": 1
+              }
+            },
+            {
+              "forms": [
+                "organic",
+                "synthetic"
+              ],
+              "structures": {
+                "conduit/mixed/present": 1,
+                "conduit/synthetic/present": 1,
+                "home/unspecified/present": 1,
+                "spire/synthetic/present": 2,
+                "spire/unspecified/present": 1,
+                "workshop/unspecified/present": 1
+              },
+              "institutions": {
+                "active": 1
+              }
+            },
+            {
+              "forms": [
+                "organic"
+              ],
+              "structures": {
+                "archive/unspecified/present": 2,
+                "conduit/mixed/present": 1,
+                "garden/unspecified/present": 2,
+                "home/unspecified/present": 6,
+                "ruin/unspecified/present": 1,
+                "workshop/unspecified/present": 1
+              },
+              "institutions": {
+                "changed": 1,
+                "collapsed": 1
+              }
+            },
+            {
+              "forms": [],
+              "structures": {
+                "ruin/unspecified/abandoned": 1,
+                "ruin/unspecified/present": 1
+              },
+              "institutions": {
+                "collapsed": 1
+              }
+            }
+          ],
+          "routes": [
+            [
+              0,
+              2,
+              true,
+              true
+            ],
+            [
+              1,
+              2,
+              true,
+              true
+            ],
+            [
+              2,
+              3,
+              true,
+              true
+            ]
+          ]
+        },
+        "decisions": [
+          {
+            "kind": "seed-decision",
+            "alternatives": [
+              {
+                "id": "exchange",
+                "available": false
+              },
+              {
+                "id": "plant",
+                "available": true
+              },
+              {
+                "id": "raise",
+                "available": true
+              }
+            ],
+            "chosen": "raise"
+          },
+          {
+            "kind": "inhabitants-open-route",
+            "alternatives": [
+              {
+                "id": "open",
+                "available": true
+              },
+              {
+                "id": "stay",
+                "available": true
+              }
+            ],
+            "chosen": "open"
+          },
+          {
+            "kind": "eastern-contact",
+            "alternatives": [
+              {
+                "id": "keep",
+                "available": true
+              },
+              {
+                "id": "share",
+                "available": true
+              }
+            ],
+            "chosen": "share"
+          },
+          {
+            "kind": "seed-recovery",
+            "alternatives": [
+              {
+                "id": "beds",
+                "available": true
+              },
+              {
+                "id": "channels",
+                "available": false
+              },
+              {
+                "id": "keep",
+                "available": true
+              }
+            ],
+            "chosen": "beds"
+          },
+          {
+            "kind": "common-channel-founded",
+            "alternatives": [
+              {
+                "id": "separate",
+                "available": true
+              },
+              {
+                "id": "share",
+                "available": true
+              }
+            ],
+            "chosen": "share"
+          },
+          {
+            "kind": "channel-authority-ended",
+            "alternatives": [
+              {
+                "id": "claim",
+                "available": true
+              },
+              {
+                "id": "local",
+                "available": true
+              }
+            ],
+            "chosen": "local"
+          },
+          {
+            "kind": "shared-home",
+            "alternatives": [
+              {
+                "id": "share",
+                "available": true
+              },
+              {
+                "id": "stay",
+                "available": true
+              }
+            ],
+            "chosen": "share"
+          }
+        ]
+      },
+      "5e8e5127a4d40188fea06614f14c111499c76acbd0d067bbb3cdc1b0c676e7fa": {
+        "structure": {
+          "settlements": [
+            {
+              "forms": [
+                "organic",
+                "collective"
+              ],
+              "structures": {
+                "conduit/mixed/present": 2,
+                "garden/unspecified/present": 1,
+                "home/unspecified/present": 1,
+                "nest/collective/present": 7,
+                "ruin/unspecified/present": 1
+              },
+              "institutions": {
+                "active": 1
+              }
+            },
+            {
+              "forms": [
+                "organic",
+                "synthetic"
+              ],
+              "structures": {
+                "conduit/mixed/present": 1,
+                "conduit/synthetic/present": 1,
+                "home/unspecified/present": 1,
+                "spire/synthetic/present": 2,
+                "spire/unspecified/present": 1,
+                "workshop/unspecified/present": 1
+              },
+              "institutions": {
+                "active": 1
+              }
+            },
+            {
+              "forms": [
+                "organic"
+              ],
+              "structures": {
+                "archive/unspecified/present": 2,
+                "conduit/mixed/present": 1,
+                "garden/unspecified/present": 2,
+                "home/unspecified/present": 6,
+                "ruin/unspecified/present": 1,
+                "workshop/unspecified/present": 1
+              },
+              "institutions": {
+                "changed": 1,
+                "collapsed": 1
+              }
+            },
+            {
+              "forms": [],
+              "structures": {
+                "ruin/unspecified/abandoned": 1,
+                "ruin/unspecified/present": 1
+              },
+              "institutions": {
+                "collapsed": 1
+              }
+            }
+          ],
+          "routes": [
+            [
+              0,
+              2,
+              true,
+              true
+            ],
+            [
+              1,
+              2,
+              true,
+              true
+            ],
+            [
+              2,
+              3,
+              true,
+              true
+            ]
+          ]
+        },
+        "decisions": [
+          {
+            "kind": "seed-decision",
+            "alternatives": [
+              {
+                "id": "exchange",
+                "available": false
+              },
+              {
+                "id": "plant",
+                "available": true
+              },
+              {
+                "id": "raise",
+                "available": true
+              }
+            ],
+            "chosen": "raise"
+          },
+          {
+            "kind": "seed-recovery",
+            "alternatives": [
+              {
+                "id": "beds",
+                "available": true
+              },
+              {
+                "id": "channels",
+                "available": false
+              },
+              {
+                "id": "keep",
+                "available": true
+              }
+            ],
+            "chosen": "beds"
+          },
+          {
+            "kind": "inhabitants-open-route",
+            "alternatives": [
+              {
+                "id": "open",
+                "available": true
+              },
+              {
+                "id": "stay",
+                "available": true
+              }
+            ],
+            "chosen": "open"
+          },
+          {
+            "kind": "eastern-contact",
+            "alternatives": [
+              {
+                "id": "keep",
+                "available": true
+              },
+              {
+                "id": "share",
+                "available": true
+              }
+            ],
+            "chosen": "share"
+          },
+          {
+            "kind": "common-channel-founded",
+            "alternatives": [
+              {
+                "id": "separate",
+                "available": true
+              },
+              {
+                "id": "share",
+                "available": true
+              }
+            ],
+            "chosen": "share"
+          },
+          {
+            "kind": "channel-authority-ended",
+            "alternatives": [
+              {
+                "id": "claim",
+                "available": true
+              },
+              {
+                "id": "local",
+                "available": true
+              }
+            ],
+            "chosen": "local"
+          },
+          {
+            "kind": "shared-home",
+            "alternatives": [
+              {
+                "id": "share",
+                "available": true
+              },
+              {
+                "id": "stay",
+                "available": true
+              }
+            ],
+            "chosen": "share"
+          }
+        ]
+      }
+    }
+  },
+  "limitations": [
+    "Twenty consecutive small integer seeds are a fixed sample, not independent ecological starting conditions; an engine can map several seeds to the same effective initial state.",
+    "Sequence differences may only reflect ordering or repetition. Distinct hashes alone do not establish emergence or replay value.",
+    "State-based rules still use an authored event vocabulary. A generic event kind is not itself evidence that actors, targets and outcomes were selected from state.",
+    "The late substantive proxy excludes settlement-growth even when that event builds housing and represents aggregate births; those events remain visible in the full counts.",
+    "This audit does not determine whether players find the world engaging, understandable, educational or surprising."
+  ]
+}

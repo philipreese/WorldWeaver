@@ -1,26 +1,183 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#101d26"><meta name="description" content="A world of luminous settlements, remembered lives, and histories you can change. Explore the Quiet Basin.">
-<title>Worldweaver · The Quiet Basin</title>
-<link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="manifest" href="./manifest.webmanifest"><link rel="stylesheet" href="./src/style.css">
-</head>
-<body>
-<div id="app">
-<header class="topbar"><a class="brand" href="./" aria-label="Worldweaver home"><span class="brand-mark">◈</span><span>WORLDWEAVER<small>THE QUIET BASIN</small></span></a><div class="world-clock"><span class="live-dot"></span><span id="clock">Day 0</span><span class="clock-divider">/</span><span id="run-state">Paused</span></div><div class="top-actions"><span id="save-state" role="status">Starting…</span><button id="sound-toggle" class="icon-button" aria-label="Enable sound" title="Enable sound">♪</button><button id="help" class="icon-button" aria-label="How to play">?</button><button id="settings" class="icon-button" aria-label="World settings">☷</button></div></header>
-<main id="world-shell"><canvas id="world" tabindex="0" aria-label="Explorable world. Drag to move, use plus and minus to zoom. Places and people are also available in the field journal."></canvas>
-<div class="world-heading"><div class="eyebrow">A LIVING HISTORY</div><h1>The Quiet Basin</h1><p id="world-subtitle">Nothing is forgotten. Nothing moves without you.</p></div>
-<aside class="journal" id="journal" aria-label="Field journal"><div class="journal-top"><span class="eyebrow">YOUR FIELD JOURNAL</span><button class="icon-button mobile-only" data-action="close-journal" aria-label="Close journal">×</button></div><div class="follow-strip" id="follow-strip"></div><nav class="journal-tabs" aria-label="Journal view"><button data-tab="threads" class="active">Threads <span id="thread-count"></span></button><button data-tab="followed">Following</button><button data-tab="chronicle">History</button></nav><div id="journal-content" class="journal-content"></div><div class="journal-footer"><span class="tiny-dot"></span><span>History waits while you are away.</span></div></aside>
-<aside id="inspector" class="inspector" aria-label="Inspection" hidden></aside>
-<div class="map-footer"><div class="legend"><span><i class="amber"></i>Emberkin</span><span class="tier2"><i class="cyan"></i>Vessels</span><span class="tier2"><i class="jade"></i>Chorus</span></div><div class="location-note" id="location-note">Drag to explore · select a place to visit</div></div>
-<div class="camera-controls" aria-label="Camera controls"><button id="overview" aria-label="Return to overview" title="Overview">⌖</button><div class="scale-buttons"><button data-scale="region" class="active">Basin</button><button data-scale="settlement">Settlement</button><button data-scale="neighborhood">Streets</button></div><button id="zoom-out" aria-label="Zoom out">−</button><button id="zoom-in" aria-label="Zoom in">+</button></div>
-<div id="historic-banner" class="historic-banner" hidden><span id="historic-label"></span><button id="return-present">Return to present</button><button id="branch-here" class="primary">Branch here</button></div>
-<div id="toast" class="toast" role="status" hidden></div>
-</main>
-<footer class="timebar"><div class="time-actions"><button id="play" class="play-button" aria-label="Play time">▶</button><button id="step" title="Advance one day">+1 day</button><select id="speed" aria-label="Simulation speed"><option value="1">1×</option><option value="4">4×</option><option value="12">12×</option></select><button id="fast-forward" title="Advance up to 14 days, stopping for followed events">Next moment <span>↠</span></button></div><div class="timeline"><div class="timeline-label"><span>CHRONICLE</span><span id="timeline-range">Day 0 — 0</span></div><input type="range" id="timeline-slider" min="0" max="0" value="0" aria-label="Explore a day in history"><div id="timeline-markers" class="timeline-markers"></div></div><button id="branches" class="branch-button">⑂ <span id="branch-name">First telling</span></button><button id="mobile-journal" class="mobile-only" aria-label="Open field journal">☰ Journal</button></footer>
-</div>
-<dialog id="modal"><form method="dialog"><button class="modal-close icon-button" aria-label="Close dialog">×</button></form><div id="modal-content"></div></dialog>
-<input type="file" id="import-file" accept="application/json,.json" hidden>
-<script type="module" src="./src/app.js"></script>
-</body></html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#101d26" />
+    <meta
+      name="description"
+      content="A world of luminous settlements, remembered lives, and histories you can change. Explore the Quiet Basin."
+    />
+    <title>Worldweaver · The Quiet Basin</title>
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="Worldweaver home"
+          ><span class="brand-mark">◈</span
+          ><span>WORLDWEAVER<small>THE QUIET BASIN</small></span></a
+        >
+        <div class="world-clock">
+          <span class="live-dot"></span><span id="clock">Day 0</span
+          ><span class="clock-divider">/</span
+          ><span id="run-state">Paused</span>
+        </div>
+        <div class="top-actions">
+          <span id="save-state" role="status">Starting…</span
+          ><button
+            id="sound-toggle"
+            class="icon-button"
+            aria-label="Enable sound"
+            title="Enable sound"
+          >
+            ♪</button
+          ><button id="help" class="icon-button" aria-label="How to play">
+            ?</button
+          ><button
+            id="settings"
+            class="icon-button"
+            aria-label="World settings"
+          >
+            ☷
+          </button>
+        </div>
+      </header>
+      <main id="world-shell">
+        <canvas
+          id="world"
+          tabindex="0"
+          aria-label="Explorable world. Drag to move, use plus and minus to zoom. Places and people are also available in the field journal."
+        ></canvas>
+        <div class="world-heading">
+          <div class="eyebrow">A LIVING HISTORY</div>
+          <h1>The Quiet Basin</h1>
+          <p id="world-subtitle">
+            Nothing is forgotten. Nothing moves without you.
+          </p>
+        </div>
+        <aside class="journal" id="journal" aria-label="Field journal">
+          <div class="journal-top">
+            <span class="eyebrow">YOUR FIELD JOURNAL</span
+            ><button
+              class="icon-button mobile-only"
+              data-action="close-journal"
+              aria-label="Close journal"
+            >
+              ×
+            </button>
+          </div>
+          <div class="follow-strip" id="follow-strip"></div>
+          <nav class="journal-tabs" aria-label="Journal view">
+            <button data-tab="threads" class="active">
+              Threads <span id="thread-count"></span></button
+            ><button data-tab="followed">Following</button
+            ><button data-tab="chronicle">History</button>
+          </nav>
+          <div id="journal-content" class="journal-content"></div>
+          <div class="journal-footer">
+            <span class="tiny-dot"></span
+            ><span>History waits while you are away.</span>
+          </div>
+        </aside>
+        <aside
+          id="inspector"
+          class="inspector"
+          aria-label="Inspection"
+          hidden
+        ></aside>
+        <div class="map-footer">
+          <div class="legend">
+            <span><i class="amber"></i>Emberkin</span
+            ><span class="tier2"><i class="cyan"></i>Vessels</span
+            ><span class="tier2"><i class="jade"></i>Chorus</span>
+          </div>
+          <div class="location-note" id="location-note">
+            Drag to explore · select a place to visit
+          </div>
+        </div>
+        <div class="camera-controls" aria-label="Camera controls">
+          <button
+            id="overview"
+            aria-label="Return to overview"
+            title="Overview"
+          >
+            ⌖
+          </button>
+          <div class="scale-buttons">
+            <button data-scale="region" class="active">Basin</button
+            ><button data-scale="settlement">Settlement</button
+            ><button data-scale="neighborhood">Streets</button>
+          </div>
+          <button id="zoom-out" aria-label="Zoom out">−</button
+          ><button id="zoom-in" aria-label="Zoom in">+</button>
+        </div>
+        <div id="historic-banner" class="historic-banner" hidden>
+          <span id="historic-label"></span
+          ><button id="return-present">Return to present</button
+          ><button id="branch-here" class="primary">Branch here</button>
+        </div>
+        <div id="toast" class="toast" role="status" hidden></div>
+      </main>
+      <footer class="timebar">
+        <div class="time-actions">
+          <button id="play" class="play-button" aria-label="Play time">▶</button
+          ><button id="step" title="Advance one day">+1 day</button
+          ><select id="speed" aria-label="Simulation speed">
+            <option value="1">1×</option>
+            <option value="4">4×</option>
+            <option value="12">12×</option></select
+          ><button
+            id="fast-forward"
+            title="Advance up to 14 days, stopping for followed events"
+          >
+            Next moment <span>↠</span>
+          </button>
+        </div>
+        <div class="timeline">
+          <div class="timeline-label">
+            <span>CHRONICLE</span><span id="timeline-range">Day 0 — 0</span>
+          </div>
+          <input
+            type="range"
+            id="timeline-slider"
+            min="0"
+            max="0"
+            value="0"
+            aria-label="Explore a day in history"
+          />
+          <div id="timeline-markers" class="timeline-markers"></div>
+        </div>
+        <button id="branches" class="branch-button">
+          ⑂ <span id="branch-name">First telling</span></button
+        ><button
+          id="mobile-journal"
+          class="mobile-only"
+          aria-label="Open field journal"
+        >
+          ☰ Journal
+        </button>
+      </footer>
+    </div>
+    <dialog id="modal">
+      <form method="dialog">
+        <button class="modal-close icon-button" aria-label="Close dialog">
+          ×
+        </button>
+      </form>
+      <div id="modal-content"></div>
+    </dialog>
+    <input
+      type="file"
+      id="import-file"
+      accept="application/json,.json"
+      hidden
+    />
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>

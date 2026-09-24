@@ -1,4 +1,5 @@
 import { ellipse, polygon, random } from './landscape.js';
+import { resolveStyleColor } from '../customization.js';
 
 const TAU = Math.PI * 2;
 const palettes = {
@@ -38,7 +39,7 @@ function steps(ctx,x,y,w) {
   for(let i=3;i>=0;i--)polygon(ctx,[[x-w/2-i*2,y-i*1.5],[x,y+9+i],[x+w/2+i*2,y-i*1.5],[x,y-7-i]],i%2?'#526260':'#354e50','#8ba09336',.55);
 }
 
-function home(ctx,p,abandoned) {
+function home(ctx,p,abandoned,seed,style) {
   box(ctx,0,0,31,20,22,p);
   polygon(ctx,[[-18,-23],[0,-35],[18,-23],[0,-14]],p.top,p.edge,.8);
   polygon(ctx,[[-18,-23],[0,-35],[0,-14]],abandoned?'#566566':'#a69876',p.edge,.6);
@@ -55,6 +56,42 @@ function home(ctx,p,abandoned) {
     ctx.beginPath();ctx.moveTo(-14,7);ctx.lineTo(-14,-8);ctx.strokeStyle='#b8b698';ctx.lineWidth=.6;ctx.stroke();
     glow(ctx,-6,8,18,p.light,.17);
   }
+  decorateHome(ctx,style,abandoned);
+}
+
+function decorateHome(ctx,style,abandoned) {
+  if(!style)return;
+  const color=resolveStyleColor(style.color),trim=color?.coat||'#d8b27b',accent=color?.accent||'#f1d6a0';
+  ctx.save();if(abandoned)ctx.globalAlpha=.38;
+  if(color){
+    // Paint stays on existing woodwork; no room, path, or doorway is relocated.
+    polygon(ctx,[[-13,-9],[-4,-4],[-4,-7],[-13,-12]],trim,accent,.5);
+    ctx.beginPath();ctx.moveTo(-8.8,5.5);ctx.lineTo(-8.8,-8);ctx.lineTo(-2.3,-4.2);ctx.lineTo(-2.3,8.5);ctx.strokeStyle=trim;ctx.lineWidth=1.4;ctx.stroke();
+    ctx.beginPath();ctx.moveTo(2,-10.3);ctx.lineTo(13.7,-16.3);ctx.strokeStyle=trim;ctx.lineWidth=1.4;ctx.stroke();
+    ctx.beginPath();ctx.moveTo(-17,-23);ctx.lineTo(0,-14);ctx.lineTo(17,-23);ctx.strokeStyle=trim;ctx.lineWidth=1.2;ctx.stroke();
+  }
+  if(style.decoration==='planter'){
+    const pot={top:accent,left:trim,right:color?.shade||'#8a785f',edge:'#e8d8b699'};
+    box(ctx,6,14,12,7,5,pot);ellipse(ctx,6,9,5,2.3,'#48644e');
+    for(const [x,y]of [[2,4],[6,1],[10,4]]){
+      ctx.beginPath();ctx.moveTo(x,9);ctx.lineTo(x,y);ctx.strokeStyle=abandoned?'#8e9376':'#a1c98b';ctx.lineWidth=.65;ctx.stroke();
+      ellipse(ctx,x-1,y+2,1.8,.7,abandoned?'#8a9174':'#b5d799');
+      for(let i=0;i<4;i++)ellipse(ctx,x+Math.cos(i*TAU/4)*1.2,y+Math.sin(i*TAU/4)*.9,1.2,1,trim);
+      ellipse(ctx,x,y,.65,.55,accent);
+    }
+  }
+  if(style.decoration==='lantern'){
+    ctx.beginPath();ctx.moveTo(-12,6);ctx.lineTo(-12,-17);ctx.quadraticCurveTo(-17,-21,-17,-15);ctx.strokeStyle=trim;ctx.lineWidth=.85;ctx.stroke();
+    if(!abandoned)glow(ctx,-17,-10,16,'#ffe3a1',.22);
+    polygon(ctx,[[-20,-13],[-17,-15],[-14,-13],[-14,-8],[-17,-6],[-20,-8]],abandoned?'#6a7a70':'#ffdda0',trim,.7);
+    ctx.beginPath();ctx.moveTo(-17,-14);ctx.lineTo(-17,-7);ctx.moveTo(-20,-12.5);ctx.lineTo(-14,-12.5);ctx.moveTo(-20,-8.5);ctx.lineTo(-14,-8.5);ctx.strokeStyle=trim;ctx.lineWidth=.55;ctx.stroke();
+  }
+  if(style.decoration==='bunting'){
+    ctx.beginPath();ctx.moveTo(-17,-21);ctx.quadraticCurveTo(-7,-11,0,-14);ctx.quadraticCurveTo(8,-12,17,-21);ctx.strokeStyle='#ddd3b5';ctx.lineWidth=.65;ctx.stroke();
+    for(const [i,x,y]of [[0,-14,-18.6],[1,-8,-15.2],[2,-2,-14],[3,5,-14.5],[4,11,-16.6]])
+      polygon(ctx,[[x-1.9,y],[x+1.9,y-.1],[x+.2,y+4.4]],i%2?accent:trim,'#f2e1b755',.3);
+  }
+  ctx.restore();
 }
 
 function archive(ctx,p,abandoned) {
@@ -181,7 +218,7 @@ export function structureSize(kind,form) {
   return {home:[32,40],archive:[48,55],garden:[68,44],workshop:[47,49],ruin:[63,88],spire:[38,80],conduit:[78,44],nest:[77,66],bridge:[80,32],memorial:[32,44]}[kind] || [32,40];
 }
 
-export function drawStructure(ctx,structure,x,y,selected=false,conditions={}) {
+export function drawStructure(ctx,structure,x,y,selected=false,conditions={},style) {
   const { kind='home' }=structure;
   const abandoned=structure.abandonedAt!==undefined&&structure.abandonedAt!==null;
   let p=abandoned?palettes.old:(kind==='spire'||kind==='conduit'?palettes.cyan:kind==='nest'||kind==='garden'?palettes.jade:kind==='ruin'||kind==='memorial'?palettes.old:palettes.amber);
@@ -193,7 +230,7 @@ export function drawStructure(ctx,structure,x,y,selected=false,conditions={}) {
   if(!abandoned&&kind!=='ruin'&&kind!=='memorial')glow(ctx,0,5,kind==='nest'?51:41,p.light,.085);
   if(selected)ellipse(ctx,0,6,structureSize(kind,structure.form)[0]*.63,15,'#d6c28b14','#efdb9caa',.9);
   const seed=[...structure.id].reduce((sum,c)=>sum+c.charCodeAt(0),0);
-  ({home,archive,workshop,garden,ruin,spire,conduit,nest,bridge,memorial,shell}[visualKind]||home)(ctx,p,abandoned,seed);
+  ({home,archive,workshop,garden,ruin,spire,conduit,nest,bridge,memorial,shell}[visualKind]||home)(ctx,p,abandoned,seed,kind==='home'?style:undefined);
   if(structure.form==='mixed'){
     for(let i=0;i<3;i++){
       const x=-17+i*15,y=11-i*4;
@@ -229,8 +266,10 @@ const peopleStyles={
   'c-lio':{coat:'#dcc278',shade:'#927f4e',skin:'#cda27c',hair:'#594433',accent:'#94b7c4',shape:'swept',width:2.8},
 };
 
-export function drawCharacter(ctx,character,x,y,selected=false,clock=0,moving=false,reduced=false) {
-  const p=peopleStyles[character.id]||{coat:'#d7c7a0',shade:'#8a8064',skin:'#d5ad85',hair:'#494439',accent:'#e7dbb6',shape:'swept',width:3.3};
+export function drawCharacter(ctx,character,x,y,selected=false,clock=0,moving=false,reduced=false,style) {
+  const original=peopleStyles[character.id]||{coat:'#d7c7a0',shade:'#8a8064',skin:'#d5ad85',hair:'#494439',accent:'#e7dbb6',shape:'swept',width:3.3};
+  const color=resolveStyleColor(style?.color);
+  const p=color?{...original,coat:color.coat,shade:color.shade,accent:color.accent}:original;
   const step=moving&&!reduced?Math.sin(clock*.014)*.85:0;
   const body=p.width;
   ctx.save();ctx.translate(x,y);ctx.lineCap='round';ctx.lineJoin='round';

@@ -3,14 +3,17 @@ import assert from 'node:assert/strict';
 import { WorldView } from '../src/view/world-view.js';
 import { createWorld, advance, intervene } from '../src/sim/world.js';
 import { structureSize } from '../src/view/architecture.js';
+import { characterPortrait, homeStylePreview } from '../src/presentation.js';
+import { resolveStyleColor } from '../src/customization.js';
 
 // A DOM/Canvas contract harness, not a browser, raster, or device test.
 // It exercises user input and verifies that rendering cannot change history.
 function fakeCanvas(width=1280,height=760) {
   const listeners=new Map();
+  const paintStyles=[];
   const gradient={addColorStop(){}};
-  const ctx=new Proxy({createRadialGradient:()=>gradient,createLinearGradient:()=>gradient}, {get:(target,key)=>target[key]??(()=>{})});
-  return {width,height,style:{},dataset:{},listeners,getContext:()=>ctx,getBoundingClientRect:()=>({left:0,top:0,width,height}),
+  const ctx=new Proxy({createRadialGradient:()=>gradient,createLinearGradient:()=>gradient}, {get:(target,key)=>target[key]??(()=>{}),set:(target,key,value)=>{target[key]=value;if(key==='fillStyle'||key==='strokeStyle')paintStyles.push(value);return true;}});
+  return {width,height,style:{},dataset:{},listeners,paintStyles,getContext:()=>ctx,getBoundingClientRect:()=>({left:0,top:0,width,height}),
     addEventListener:(key,fn)=>listeners.set(key,fn),removeEventListener:key=>listeners.delete(key),hasAttribute:()=>false,setAttribute(){},setPointerCapture(){},releasePointerCapture(){}};
 }
 globalThis.document={hidden:false,createElement:()=>fakeCanvas(),addEventListener(){},removeEventListener(){}};
@@ -74,4 +77,35 @@ test('Tier 2 projection preserves history and anchors the power to its recorded 
   assert.notDeepEqual(structureSize('ruin','synthetic'),structureSize('ruin'));
   assert.deepEqual(structureSize('ruin','collective'),structureSize('nest'));
   view.destroy();
+});
+
+test('personal styles change only the projection and reset without touching history or target geometry',()=>{
+  const {canvas,view}=setup(),world=freeze(advance(createWorld(),2));
+  const personalization=freeze({version:1,people:{'c-nera':{color:'lilac'}},homes:{'k-hearth-table':{color:'sky',decoration:'planter'}}});
+  const worldBefore=JSON.stringify(world),stylesBefore=JSON.stringify(personalization);
+  view.setWorld(world);view.focus('s-hearth','neighborhood');view.drawFrame();
+  const targets=structuredClone(view.hits),camera=view.getViewState().camera;
+  canvas.paintStyles.length=0;view.setPersonalization(personalization);view.drawFrame();
+  assert.ok(canvas.paintStyles.includes(resolveStyleColor('lilac').coat),'selected coat reaches the canvas');
+  assert.ok(canvas.paintStyles.includes(resolveStyleColor('sky').coat),'selected woodwork color reaches the canvas');
+  assert.deepEqual(view.hits,targets);assert.deepEqual(view.getViewState().camera,camera);
+  assert.equal(JSON.stringify(world),worldBefore);assert.equal(JSON.stringify(personalization),stylesBefore);
+  canvas.paintStyles.length=0;view.setPersonalization();view.drawFrame();
+  assert.ok(!canvas.paintStyles.includes(resolveStyleColor('lilac').coat));
+  assert.deepEqual(view.hits,targets);assert.equal(JSON.stringify(world),worldBefore);view.destroy();
+});
+
+test('style previews share safe colors, preserve identity, and accept only house decorations',()=>{
+  const world=createWorld(),nera=world.characters.find(c=>c.id==='c-nera');
+  const home=world.settlements[0].structures.find(s=>s.kind==='home');
+  const original=characterPortrait(nera),styled=characterPortrait(nera,{color:'lilac'});
+  assert.notEqual(styled,original);assert.ok(styled.includes(resolveStyleColor('lilac').coat));
+  assert.ok(styled.includes('#d8a276'),'Nera keeps her skin color');assert.ok(styled.includes('#403c35'),'Nera keeps her hair');
+  assert.equal(characterPortrait(nera,{color:'original'}),original);
+  assert.equal(characterPortrait(nera,{color:'\"><script>alert(1)</script>'}),original);
+  const preview=homeStylePreview(home,{color:'sky',decoration:'bunting'});
+  assert.ok(preview.includes(resolveStyleColor('sky').coat));
+  assert.notEqual(preview,homeStylePreview(home,{color:'sky',decoration:'none'}));
+  assert.equal(homeStylePreview({...home,kind:'archive'},{color:'sky',decoration:'planter'}),'');
+  assert.equal(homeStylePreview(home,{color:'not-a-color',decoration:'<script>'}),homeStylePreview(home));
 });

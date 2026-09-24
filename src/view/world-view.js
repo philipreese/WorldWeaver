@@ -13,7 +13,7 @@ export class WorldView {
   constructor(canvas,{onSelect=()=>{},onScaleChange=()=>{},onPerformance=()=>{}}={}) {
     this.canvas=canvas;this.ctx=canvas.getContext('2d',{alpha:false});
     this.onSelect=onSelect;this.onScaleChange=onScaleChange;this.onPerformance=onPerformance;
-    this.world=null;this.selectedId=null;this.hoverId=null;this.followId=null;
+    this.world=null;this.personalization=null;this.selectedId=null;this.hoverId=null;this.followId=null;
     this.quality='auto';this.effectiveQuality='high';this.reducedMotion=globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches||false;
     this.width=1;this.height=1;this.dpr=1;this.scale='region';
     this.camera={x:600,y:390,zoom:1};this.target={...this.camera};
@@ -89,6 +89,13 @@ export class WorldView {
     }
     if(this.followId&&!this.index.has(this.followId))this.followId=null;
     if(this.selectedId&&!this.index.has(this.selectedId))this.selectedId=null;
+    this.invalidate();
+  }
+
+  // Archive-level cosmetics are a separate projection. They never enter a world
+  // snapshot, its events, entity positions, simulation clock, or decisions.
+  setPersonalization(personalization) {
+    this.personalization=personalization?.version===1?personalization:null;
     this.invalidate();
   }
 
@@ -253,10 +260,10 @@ export class WorldView {
     for(const object of objects){
       const p=this.worldToScreen(object.x,object.y);if(p.x<-170||p.x>width+170||p.y<-60||p.y>height+330)continue;
       if(object.type==='structure'){
-        drawStructure(ctx,object.entity,object.x,object.y,object.entity.id===this.selectedId,object.settlement);
+        drawStructure(ctx,object.entity,object.x,object.y,object.entity.id===this.selectedId,object.settlement,this.personalization?.homes?.[object.entity.id]);
         const [w,h]=structureSize(object.entity.kind,object.entity.form);if(this.scale!=='region')this._hit(object.entity.id,object.x,object.y-h*.34,w*.55,h*.6,.4);
       }else{
-        if(zoom>.65){const moving=distance(object.position,{x:object.position.tx,y:object.position.ty})>1;drawCharacter(ctx,object.entity,object.x,object.y,this.selectedId===object.entity.id,time,moving,this.reducedMotion);}
+        if(zoom>.65){const moving=distance(object.position,{x:object.position.tx,y:object.position.ty})>1;drawCharacter(ctx,object.entity,object.x,object.y,this.selectedId===object.entity.id,time,moving,this.reducedMotion,this.personalization?.people?.[object.entity.id]);}
         if(this.scale==='neighborhood')this._hit(object.entity.id,object.x,object.y-8,9,12,-.5);
       }
     }
@@ -264,7 +271,7 @@ export class WorldView {
     if(tracked?.type==='character'&&tracked.entity.alive!==false&&position&&this.scale!=='region'){
       // Keep the tracked inhabitant readable behind a foreground roof or canopy.
       // This translucent selection silhouette stays at their modeled position.
-      ctx.save();ctx.globalAlpha=.8;drawCharacter(ctx,tracked.entity,position.x,position.y-1,true,time,false,true);ctx.restore();
+      ctx.save();ctx.globalAlpha=.8;drawCharacter(ctx,tracked.entity,position.x,position.y-1,true,time,false,true,this.personalization?.people?.[tracked.entity.id]);ctx.restore();
     }
     this._drawAtmosphere(ctx,time);
     ctx.restore();

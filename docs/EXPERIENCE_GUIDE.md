@@ -20,9 +20,17 @@ Current cast hooks and renderer identities:
 | Mira | Keeps water moving; calls the mud “research” | Mint `#97c8b5`, tied hair, staff |
 | Lio | Writes repair notes on cuffs, then washes them | Sand `#dcc278`, swept hair, smaller frame |
 
-Keep colors and head shapes consistent between portraits and streets, even when jobs change. Favor readable faces, sturdy coats, and clear silhouettes. Amber homes, cyan arrays, jade root rooms, and weathered ruins need distinct shapes too. Huge ancient forms surround intimate inhabited spaces. Keep people and paths legible on phones; decorative motion must never imply an unrecorded action.
+These are the default colors. Keep a player's appearance choices consistent between portraits and streets; head shapes retain identity when jobs change. Favor readable faces, sturdy coats, and clear silhouettes. Amber homes, cyan arrays, jade root rooms, and weathered ruins need distinct shapes too. Huge ancient forms surround intimate inhabited spaces. Keep people and paths legible on phones; decorative motion must never imply an unrecorded action.
 
 Cover six families: **relationships** (Ivo and Ves's nail), **discovery** (Old Hollow), **competing obligations** (Nera's seeds), **institutional change** (the shared channel), **contact** (Oren's repair leaf), and **recovery** (gardens or neighbors). Check participants, location, knowledge, and available choices. Every claimed action or outcome must reach its real event. Keep observed changes, recorded choices, and cultural beliefs separate. Quiet and closure are valid outcomes.
+
+## Learning through noticing
+
+Invite observation, cause-and-effect reasoning, perspective-taking, and comparisons through play. These are design intentions, not claims of educational benefit. A path can carry more than travelers; neighbors can need different resources; the same measured change can inspire different beliefs. Offer a small question only when its subject exists in the world. Keep it optional, without quizzes, grades, rewards, or a school voice.
+
+Introduce one action at a time in three short chapters: **Meet the neighbors** (meet Nera; optionally try a color or decoration), **Notice what changes** (allow one day; ask why a real choice happened), and **Try another possibility** (consider an available intervention; visit an earlier day). Deeper evidence stays behind **Why did this happen?** The whole guide can be dismissed and reopened. Existing history offers real moments to revisit without pretending the player already watched them; historical views remain read-only, and a full branch archive still permits comparison.
+
+Appearance choices change presentation. They do not choose a character's actions, build their architecture, or change resources and history. Guide progress records the player's interactions separately from the simulated world; displaying a card does not complete its step.
 
 ## A five-minute first visit
 

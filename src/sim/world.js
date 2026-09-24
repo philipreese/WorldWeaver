@@ -1,3 +1,4 @@
+import { initializeLife, evolveLife, offerRefuge } from './life.js';
 
 /**
  * The Quiet Basin's only source of historical truth.
@@ -173,6 +174,7 @@ export function createWorld(options = {}) {
     { id: 't-hollow', title: 'The hall that stayed behind', summary: 'Visit Old Hollow’s height-marked lintel. An exposed ceramic chamber may hold useful knowledge.', entityIds: ['s-hollow', 'c-ivo', 'k-hollow-hall', 'k-hollow-relic'], status: 'open', eventId: departing.id },
     { id: 't-east', title: 'A letter beyond the silt', summary: 'The eastern stone sill could support a route. Oren has repair patterns; Hearth has people who need them.', entityIds: ['r-hearth-lattice', 'c-oren', 's-lattice', 's-hearth'], status: 'open', eventId: fault.id },
   ];
+  if (tier === 2) initializeLife(w, lifeAPI);
   setActivities(w);
   return w;
 }
@@ -196,6 +198,7 @@ export function getInterventions(w) {
     { id: 'reveal-memory', kind: 'reveal-relic', targetId: 'k-hollow-relic', title: 'Reveal the rain memory', description: 'Expose the surviving ceramic chamber at Old Hollow so someone can inspect it.', available: !w.flags.relicRevealed && hollow.population === 0, reason: w.flags.relicRevealed ? 'The chamber has already been exposed.' : 'The recorded abandoned bank contains a surviving chamber.' },
     { id: 'restore-reed', kind: 'restore-habitat', targetId: hearth.id, title: 'Reconnect the buried spring', description: 'Let groundwater return to Hearth’s dry channels. The habitat improves; inhabitants decide how to use it.', available: !w.flags.habitatRestored && hearth.habitat < 85, reason: w.flags.habitatRestored ? 'The spring is already connected.' : hearth.habitat >= 85 ? 'These channels already hold as much water as they can use.' : 'The survey records a buried spring and intact downstream channels.' },
   ];
+  if (w.tier >= 2) choices.push({ id: 'offer-refuge', kind: 'offer-refuge', targetId: 's-hearth', title: 'Shelter the river terrace', description: 'Make a sheltered, watered bank available to other forms of life. They decide whether to establish a shared home.', available: !w.flags.refugeOffered && hearth.habitat >= 55 && hearth.food >= 45 && hearth.energy >= 35 && hearth.materials >= 6 && !!w.flags.sharedNetwork, reason: w.flags.refugeOffered ? 'The sheltered bank already exists.' : !w.flags.sharedNetwork ? 'Shared channels must first make the terrace habitable to all three forms.' : hearth.habitat < 55 || hearth.food < 45 || hearth.energy < 35 || hearth.materials < 6 ? 'Refuge needs habitat ≥55, food ≥45, energy ≥35, and 6 materials for residents to establish their shelters.' : 'The shared channels and Hearth’s reserves can support a new mixed neighborhood.' });
   return choices;
 }
 
@@ -215,6 +218,8 @@ export function intervene(world, command) {
   } else if (command.kind === 'restore-habitat') {
     const before = target.habitat; target.habitat = clamp(target.habitat + 24); w.flags.habitatRestored = true;
     addEvent(w, { kind: 'spring-restored', category: 'infrastructural', severity: 2, title: 'Water finds the old channels', text: 'Groundwater reaches Hearth’s existing garden channels. Senn puts a palm in the flow and leaves it there longer than necessary.', entities: ['s-hearth', 'c-senn', 'k-hearth-garden'], causes: ['e-00001'], observed: [`Hearth habitat: ${before} → ${target.habitat}.`, 'The garden’s existing channels now receive spring water.'] });
+  } else if (command.kind === 'offer-refuge') {
+    offerRefuge(w, lifeAPI);
   }
   return w;
 }
@@ -231,11 +236,13 @@ export function advance(world, days = 1) {
     recover(w);
     grow(w);
     scenes(w);
+    if (w.tier >= 2) evolveLife(w, lifeAPI);
     setActivities(w);
   }
   return w;
 }
 
+const lifeAPI = { addEvent, addStructure, resolveThread, openThread, settlement, character, structure, route, lastEvent, decision, clamp, relationship, random };
 
 function updateResources(w) {
   for (const s of w.settlements) {
@@ -290,6 +297,7 @@ function resolveSeeds(w) {
   if (chosen === 'exchange') {
     h.materials = clamp(h.materials - 10); l.materials = clamp(l.materials - 12); h.knowledge += 13;
     h.population++; l.population--; oren.settlementId = h.id; oren.homeId = 'k-hearth-table';
+    if (w.tier >= 2) oren.residenceId = h.id;
     w.flags.seedIntegrity = 94; structure(w, 'k-hearth-archive').damaged = false;
     relationship(nera, oren, 14, 'trusted collaborator'); relationship(oren, nera, 14, 'trusted collaborator');
     title = 'Nera makes room for a stranger';
@@ -329,22 +337,28 @@ function resolveSeeds(w) {
 function discover(w) {
   if (!w.flags.relicRevealed || w.flags.relicStudied) return;
   const tavi = character(w, 'c-tavi'), ivo = character(w, 'c-ivo');
+  const guide = ivo.alive ? ivo : character(w, 'c-ves');
   const h = settlement(w, 's-hearth');
-  if (!tavi.alive || !ivo.alive || !route(w, 'r-hollow-hearth').open) return;
-  const known = ['The exposed chamber is reachable by the Leaving Steps.', 'Ivo knows the old drying hall and has offered to accompany the visit.', `Hearth’s repair knowledge is ${h.knowledge}.`];
-  tavi.settlementId = 's-hollow'; ivo.settlementId = 's-hollow';
+  if (!tavi.alive || !guide.alive || !route(w, 'r-hollow-hearth').open || tavi.settlementId !== h.id || guide.settlementId !== h.id) return;
+  const known = ['The exposed chamber is reachable by the Leaving Steps.', ivo.alive ? 'Ivo knows the old drying hall and has offered to accompany the visit.' : 'Ves inherited Ivo’s records of the drying hall and has offered to guide the visit.', `Hearth’s repair knowledge is ${h.knowledge}.`];
+  tavi.settlementId = 's-hollow'; guide.settlementId = 's-hollow';
+  if (w.tier >= 2) w.flags.discoveryParticipants = [tavi.id, guide.id];
   w.flags.discoveryReturnAt = w.tick + 1; w.flags.relicStudied = true;
   w.flags.pendingKnowledge = 16;
-  const e = addEvent(w, { kind: 'rain-memory-read', family: 'discovery', category: 'cultural', severity: 2, title: 'The marks are also instructions', text: 'Tavi and Ivo reach the chamber. Some ceramic marks describe a working capillary channel; what else they meant remains unknown. Ivo traces one with his thumb. “My mother cut these into bowls.” Tavi leaves a blank line under that.', settlementId: 's-hollow', entities: ['c-tavi', 'c-ivo', 's-hollow', 'k-hollow-relic'], causes: [lastEvent(w, 'relic-exposed').id, lastEvent(w, 'hollow-departure').id], observed: ['Tavi and Ivo are visiting Old Hollow.', 'They carry a copied channel pattern; it has not reached Hearth yet.', 'The chamber remains in place.'], decision: decision(tavi, known, [{ id: 'visit', label: 'Read the chamber with Ivo', available: true, reason: 'The chamber is exposed and Ivo can guide the visit.' }, { id: 'wait', label: 'Leave it undisturbed', available: true, reason: 'The chamber is stable.' }], 'visit', ['Curiosity 91: turn a promising trace into usable knowledge.', 'Care 68: ask the person who knows this place.']) });
+  const e = addEvent(w, { kind: 'rain-memory-read', family: 'discovery', category: 'cultural', severity: 2, title: 'The marks are also instructions', text: ivo.alive ? 'Tavi and Ivo reach the chamber. Some ceramic marks describe a working capillary channel; what else they meant remains unknown. Ivo traces one with his thumb. “My mother cut these into bowls.” Tavi leaves a blank line under that.' : 'Tavi and Ves reach the chamber using Ivo’s old records. Some marks describe a working capillary channel. Ves sets a copied sketch beside the ceramic. “He kept the useful part,” Ves says. What else the marks meant remains unknown.', settlementId: 's-hollow', entities: [tavi.id, guide.id, 's-hollow', 'k-hollow-relic'], causes: [lastEvent(w, 'relic-exposed').id, lastEvent(w, 'hollow-departure').id, ...(!ivo.alive ? [lastEvent(w, 'mender-remembered')?.id] : [])], observed: [`Tavi and ${guide.name} are visiting Old Hollow.`, 'They carry a copied channel pattern; it has not reached Hearth yet.', 'The chamber remains in place.'], decision: decision(tavi, known, [{ id: 'visit', label: `Read the chamber with ${guide.name}`, available: true, reason: `The chamber is exposed and ${guide.name} can guide the visit.` }, { id: 'wait', label: 'Leave it undisturbed', available: true, reason: 'The chamber is stable.' }], 'visit', ['Curiosity 91: turn a promising trace into usable knowledge.', 'Care 68: ask the person who knows this place.']) });
   resolveThread(w, 't-hollow', e, 'The chamber’s channel pattern is copied; its meaning to earlier inhabitants remains uncertain.');
 }
 
 function recover(w) {
   if (w.flags.discoveryReturnAt && w.tick >= w.flags.discoveryReturnAt) {
-    character(w, 'c-tavi').settlementId = 's-hearth'; character(w, 'c-ivo').settlementId = 's-hearth';
+    const readers = (w.flags.discoveryParticipants || ['c-tavi', 'c-ivo']).map(id => character(w, id));
+    const returning = readers.filter(c => c.alive);
+    for (const c of returning) c.settlementId = 's-hearth';
     const h = settlement(w, 's-hearth'), before = h.knowledge;
-    h.knowledge += w.flags.pendingKnowledge || 0;
-    addEvent(w, { kind: 'readers-returned', family: 'recovery', title: 'The old place comes home on paper', text: 'Tavi and Ivo return to Hearth with the copied channel marks. Ivo puts his copy beside the mending tools.', entities: ['c-tavi', 'c-ivo', 's-hearth', 's-hollow'], causes: [lastEvent(w, 'rain-memory-read').id], observed: ['Tavi and Ivo are back at Hearth.', `The copied pattern reached Hearth; knowledge: ${before} → ${h.knowledge}.`, 'The copied pattern is retained in their memories.'] });
+    if (returning.length) {
+      h.knowledge += w.flags.pendingKnowledge || 0;
+      addEvent(w, { kind: 'readers-returned', family: 'recovery', title: 'The old place comes home on paper', text: returning.length === 2 ? returning[1].id === 'c-ivo' ? 'Tavi and Ivo return to Hearth with the copied channel marks. Ivo puts his copy beside the mending tools.' : 'Tavi and Ves return to Hearth with the copied channel marks. Ves puts a new copy beside Ivo’s old records.' : `${returning[0].name} returns to Hearth with the copied channel marks. The record keeps the names of both people who made the visit.`, entities: [...returning.map(c => c.id), 's-hearth', 's-hollow'], causes: [lastEvent(w, 'rain-memory-read').id, ...(returning.length < 2 ? [lastEvent(w, 'mender-remembered')?.id] : [])], observed: [returning.length === 2 ? `Tavi and ${returning[1].name} are back at Hearth.` : `${returning[0].name} is back at Hearth; the other visitor did not return alive.`, `The copied pattern reached Hearth; knowledge: ${before} → ${h.knowledge}.`, 'The copied pattern is retained in their memories.'] });
+    }
     w.flags.discoveryReturnAt = null;
     w.flags.pendingKnowledge = 0;
   }
@@ -374,7 +388,8 @@ function grow(w) {
   const before = { population: h.population, food: h.food, materials: h.materials };
   h.population += 3; h.food = clamp(h.food - 9); h.materials = clamp(h.materials - 22); h.housingCapacity += 4; w.flags.growthCount++;
   const number = w.flags.growthCount;
-  const e = addEvent(w, { kind: 'settlement-growth', category: 'infrastructural', severity: 2, title: 'A house that faces the garden', text: 'Hearth’s households make room for three new children and build beside the food channels. Daro gives the new doorway a reed mat; one corner stubbornly refuses to lie flat.', entities: ['s-hearth', 'c-daro', 'i-ledger'], causes: [lastEvent(w, 'seed-recovery')?.id || lastEvent(w, 'seed-decision').id], observed: [`Hearth population: ${before.population} → ${h.population} (three births in aggregated households).`, `Materials: ${before.materials} → ${h.materials}; food: ${before.food} → ${h.food}.`, 'Four places of housing were built.'] });
+  const daroPresent = character(w, 'c-daro').alive && character(w, 'c-daro').settlementId === h.id;
+  const e = addEvent(w, { kind: 'settlement-growth', category: 'infrastructural', severity: 2, title: 'A house that faces the garden', text: `Hearth’s households make room for three new children and build beside the food channels. ${daroPresent ? 'Daro gives the new doorway a reed mat; one corner stubbornly refuses to lie flat.' : 'A new reed mat marks the doorway.'}`, entities: ['s-hearth', ...(daroPresent ? ['c-daro'] : []), 'i-ledger'], causes: [lastEvent(w, 'seed-recovery')?.id || lastEvent(w, 'seed-decision').id], observed: [`Hearth population: ${before.population} → ${h.population} (three births in aggregated households).`, `Materials: ${before.materials} → ${h.materials}; food: ${before.food} → ${h.food}.`, 'Four places of housing were built.'] });
   addStructure(w, h, { id: `k-hearth-home-${number}`, name: ['The Uneven Mat', 'House of Two Kettles', 'The South Windows', 'The Open Cupboard', 'Last House Before Rain'][number - 1], kind: 'home', x: -150 + number * 52, y: 145, description: `Built for growing households on day ${w.tick}. Its doorway faces the gardens that made it viable.` }, e);
   if (number === 1) changeInstitution(w, e);
 }
@@ -414,7 +429,8 @@ function setActivities(w) {
     if (!c.alive) continue;
     const s = settlement(w, c.settlementId);
     const step = (w.tick + w.characters.indexOf(c)) % 6;
-    let place = step === 0 ? s.structures.find(b => b.kind === 'home') : s.structures.find(b => b.kind === roleKind[c.role] && b.abandonedAt == null);
+    const ownHome = w.tier >= 2 ? s.structures.find(b => b.id === c.homeId && b.abandonedAt == null) : null;
+    let place = step === 0 ? ownHome || s.structures.find(b => b.kind === 'home') : s.structures.find(b => b.kind === roleKind[c.role] && b.abandonedAt == null);
     if (!place) place = s.structures.find(b => b.kind !== 'ruin') || s.structures[0];
     c.x = place.x + Math.round(Math.sin((w.tick + w.characters.indexOf(c)) * 1.7) * 15);
     c.y = place.y + 18 + Math.round(Math.cos((w.tick + w.characters.indexOf(c)) * 1.2) * 9);

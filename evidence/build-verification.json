@@ -1,0 +1,12 @@
+{
+  "kind": "Node HTTP and service-worker contract checks; not a browser offline/install test.",
+  "subpath": "/WorldWeaver/",
+  "assets": 19,
+  "cache": "worldweaver-64918ecf214e",
+  "checks": [
+    "Subpath serves HTML and all precached relative assets",
+    "Generated worker installs complete asset set",
+    "Activation deletes only old Worldweaver caches",
+    "Every precached response works with network made unavailable"
+  ]
+}

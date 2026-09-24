@@ -31,6 +31,15 @@ export function shouldStop(event, followed, attention = 'balanced') {
     && isFollowed(event, followSet(followed));
 }
 
+/** Surface the strongest eligible moment; equal severities keep recorded order. */
+export function selectAttentionEvent(events, followed, attention = 'balanced') {
+  let selected = null;
+  for (const event of Array.isArray(events) ? events : []) {
+    if (shouldStop(event, followed, attention) && (!selected || event.severity > selected.severity)) selected = event;
+  }
+  return selected;
+}
+
 /**
  * Protected invariant: a digest selects recorded events and existing open threads.
  * It never creates scenes, predicts an outcome, or infers a motive from later state.

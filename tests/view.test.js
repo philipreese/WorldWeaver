@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { WorldView } from '../src/view/world-view.js';
-import { createWorld, advance } from '../src/sim/world.js';
+import { createWorld, advance, intervene } from '../src/sim/world.js';
+import { structureSize } from '../src/view/architecture.js';
 
 // A DOM/Canvas contract harness, not a browser, raster, or device test.
 // It exercises user input and verifies that rendering cannot change history.
@@ -62,4 +63,15 @@ test('historical snapshot replacement removes future selectable structures',()=>
   view.setWorld(future);view.select('future-structure');assert.equal(view.selectedId,'future-structure');
   view.setWorld(createWorld());view.focus('s-hearth','neighborhood');view.drawFrame();
   assert.ok(!view.index.has('future-structure'));assert.ok(view.hits.every(h=>h.id!=='future-structure'));view.destroy();
+});
+
+test('Tier 2 projection preserves history and anchors the power to its recorded structure',()=>{
+  const {view}=setup();let world=createWorld({tier:2});
+  world=intervene(world,{kind:'open-route',targetId:'r-hearth-lattice'});world=advance(world,42);freeze(world);
+  assert.ok(world.power);const before=JSON.stringify(world);view.setWorld(world);view.focus(world.power.id,'neighborhood');view.drawFrame();
+  const arch=view.index.get('k-choir-answer'),power=view.index.get(world.power.id);
+  assert.equal(power.x,arch.x);assert.equal(power.y,arch.y);assert.equal(JSON.stringify(world),before);
+  assert.notDeepEqual(structureSize('ruin','synthetic'),structureSize('ruin'));
+  assert.deepEqual(structureSize('ruin','collective'),structureSize('nest'));
+  view.destroy();
 });

@@ -166,20 +166,46 @@ function memorial(ctx,p,abandoned) {
   ellipse(ctx,-12,7,4,2,abandoned?'#526b59':'#abbf8c');
 }
 
-export function structureSize(kind) {
+function shell(ctx,p) {
+  // Dormancy preserves a ceramic body; it cannot turn into an ancient gate.
+  polygon(ctx,[[-16,3],[-7,-3],[14,1],[17,6],[6,11],[-14,7]],p.dark,p.edge,.7);
+  polygon(ctx,[[-10,-2],[-2,-7],[11,-2],[14,2],[6,7],[-9,3]],p.left,p.edge,.6);
+  polygon(ctx,[[-2,-7],[11,-2],[6,2],[-8,-2]],p.top,p.edge,.6);
+  ctx.beginPath();ctx.moveTo(-7,0);ctx.lineTo(8,3);ctx.strokeStyle='#829d9c';ctx.lineWidth=.6;ctx.stroke();
+  ellipse(ctx,-12,3,3,2,'#3d636a','#9bb4a955',.6);
+}
+
+export function structureSize(kind,form) {
+  if(kind==='ruin'&&form==='synthetic')return [36,24];
+  if(kind==='ruin'&&form==='collective')return [77,66];
   return {home:[32,40],archive:[48,55],garden:[68,44],workshop:[47,49],ruin:[63,88],spire:[38,80],conduit:[78,44],nest:[77,66],bridge:[80,32],memorial:[32,44]}[kind] || [32,40];
 }
 
-export function drawStructure(ctx,structure,x,y,selected=false) {
+export function drawStructure(ctx,structure,x,y,selected=false,conditions={}) {
   const { kind='home' }=structure;
   const abandoned=structure.abandonedAt!==undefined&&structure.abandonedAt!==null;
-  const p=abandoned?palettes.old:(kind==='spire'||kind==='conduit'?palettes.cyan:kind==='nest'||kind==='garden'?palettes.jade:kind==='ruin'||kind==='memorial'?palettes.old:palettes.amber);
+  let p=abandoned?palettes.old:(kind==='spire'||kind==='conduit'?palettes.cyan:kind==='nest'||kind==='garden'?palettes.jade:kind==='ruin'||kind==='memorial'?palettes.old:palettes.amber);
+  if(structure.form==='collective'&&(abandoned||conditions.collectiveHydration<50))p={...palettes.old,top:'#777c62',left:'#525d50',right:'#364c46',light:'#a8ab80'};
+  if(structure.form==='synthetic'&&(abandoned||conditions.syntheticIntegrity<50))p={...palettes.old,light:'#779eaa'};
+  const visualKind=kind==='ruin'&&structure.form==='synthetic'?'shell':kind==='ruin'&&structure.form==='collective'?'nest':kind;
   ctx.save();ctx.translate(x,y);
   ellipse(ctx,8,8,kind==='garden'?35:25,10,'#06182066');
   if(!abandoned&&kind!=='ruin'&&kind!=='memorial')glow(ctx,0,5,kind==='nest'?51:41,p.light,.085);
-  if(selected)ellipse(ctx,0,6,structureSize(kind)[0]*.63,15,'#d6c28b14','#efdb9caa',.9);
+  if(selected)ellipse(ctx,0,6,structureSize(kind,structure.form)[0]*.63,15,'#d6c28b14','#efdb9caa',.9);
   const seed=[...structure.id].reduce((sum,c)=>sum+c.charCodeAt(0),0);
-  ({home,archive,workshop,garden,ruin,spire,conduit,nest,bridge,memorial}[kind]||home)(ctx,p,abandoned,seed);
+  ({home,archive,workshop,garden,ruin,spire,conduit,nest,bridge,memorial,shell}[visualKind]||home)(ctx,p,abandoned,seed);
+  if(structure.form==='mixed'){
+    for(let i=0;i<3;i++){
+      const x=-17+i*15,y=11-i*4;
+      ctx.beginPath();ctx.moveTo(x-8,y+6);ctx.quadraticCurveTo(x-10,y-3,x,y);ctx.quadraticCurveTo(x+4,y+4,x+12,y-2);ctx.strokeStyle='#c0dc9fbb';ctx.lineWidth=1.1;ctx.stroke();
+      ellipse(ctx,x+4,y+2,3.3,1.5,'#a3c98f');
+      ellipse(ctx,x,y-1,2,1,'#f0d298');
+    }
+  }
+  if(conditions.cultureId==='culture-carriers'&&(kind==='home'||kind==='workshop')){
+    polygon(ctx,[[4,-12],[11,-15],[11,-4],[4,-1]],'#3b6871','#b5e0d777',.5);
+    for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(5.5,-10+i*2.5);ctx.lineTo(9.5,-12+i*2.5);ctx.strokeStyle='#c3e3d2';ctx.lineWidth=.5;ctx.stroke();}
+  }
   if(structure.damaged){
     ctx.beginPath();ctx.moveTo(-17,-23);ctx.lineTo(-12,-17);ctx.lineTo(-15,-11);ctx.lineTo(-10,-4);ctx.strokeStyle='#152f39';ctx.lineWidth=1.6;ctx.stroke();
     ctx.beginPath();ctx.moveTo(-16,-22);ctx.lineTo(-12,-17);ctx.lineTo(-14,-11);ctx.lineTo(-10,-4);ctx.strokeStyle='#a3e4da77';ctx.lineWidth=.5;ctx.stroke();

@@ -5,6 +5,10 @@ export const SAVE_KEYS = Object.freeze({ current: 'worldweaver.save.current', pr
 const FORMAT = 'worldweaver';
 const SAVE_VERSION = 1;
 const SIMULATION_VERSION = '1.0.0';
+// Pre-release compatibility is deliberately exact, not best-effort migration:
+// the version must match AND every stored head fingerprint must match replay.
+// Tier 2 additions preserve Tier 1 inputs; any changed pre-release transcript
+// is rejected with its original bytes intact rather than silently rewritten.
 const CHECKPOINT_EVERY = 20;
 const trustedBranches = new WeakMap();
 const slotCache = new WeakMap();

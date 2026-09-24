@@ -50,7 +50,7 @@ Use the branch button beside the timeline, or **World settings → View branches
 
 For the default configuration, the simulation produces these different outcomes:
 
-| What you inspect | Passage left closed | Passage opened before day 4 |
+| What you inspect | No opening intervention | Passage opened before day 4 |
 | --- | --- | --- |
 | Nera's decision | **The vessels above the water**; raise the vessels | **Nera makes room for a stranger**; accept Oren's repair |
 | Oren | Remains at Lattice | Moves to Hearth |
@@ -62,7 +62,7 @@ These outcomes have been checked directly against the deterministic engine. They
 To reproduce the two opening outcomes from the repository without a browser:
 
 ```sh
-node --input-type=module -e "import {createWorld,advance,intervene} from './src/sim/world.js'; const past=advance(createWorld({seed:8417,tier:1}),3); for(const open of [false,true]){const w=advance(open?intervene(past,{kind:'open-route',targetId:'r-hearth-lattice'}):past,1); const e=w.events.find(e=>e.kind==='seed-decision'); console.log(open?'Open passage':'Closed passage',e.title,e.decision.chosen,w.characters.find(c=>c.id==='c-oren').settlementId);}"
+node --input-type=module -e "import {createWorld,advance,intervene} from './src/sim/world.js'; const past=advance(createWorld({seed:8417,tier:2}),3); for(const open of [false,true]){const w=advance(open?intervene(past,{kind:'open-route',targetId:'r-hearth-lattice'}):past,1); const e=w.events.find(e=>e.kind==='seed-decision'); console.log(open?'Open passage':'Closed passage',e.title,e.decision.chosen,w.characters.find(c=>c.id==='c-oren').settlementId);}"
 ```
 
 ## Follow an explanation to its roots
@@ -72,6 +72,38 @@ In the open-passage telling, inspect **Oren's Open Workshop → Why this place e
 Under **Underlying records**, open **A pattern with a meal attached**, then **A usable line through the silt**, then **The first shared survey**. The other root, **Water in the seed room**, records the original damage and the contents of Oren's earlier letter. The explanation chain reaches actual events rather than a retrospective guess about Nera's motives.
 
 For another discovery, visit **Old Hollow**, inspect **The Empty Drying Hall**, and find **Reveal the rain memory** among the available interventions. Tavi and Ivo can inspect the exposed chamber; their discovery remains connected to the abandoned place and its earlier residents.
+
+## Three forms, one shared channel
+
+In a Tier 2 world, visit Lattice's cyan synthetic arrays and Choir's jade root rooms. Their populations behave differently:
+
+| Form | What sustains it | How its space grows |
+| --- | --- | --- |
+| Emberkin, organic inhabitants | Food and viable habitat | Households build homes and gardens |
+| Vessels, synthetic bodies | Energy, ceramic material, and maintained shells | Maintained patterns are copied into bodies and arrays |
+| Chorus, collective nodes | Wet connected habitat and nutrients | New root rooms occupy additional ground |
+
+For a reproducible route through the shared history, use the default Tier 2 settings and open the Silt Saddle on **day 2**. Continue advancing after each director stop; use **History** to inspect other events that happened on the same day.
+
+| Day in this example | What to find |
+| --- | --- |
+| 4 | **A promise with three signatures** creates **The Common Channel**, an institution across all three forms. Inspect **The Common Sluice** at Hearth. |
+| 8 | **A debt you can reproduce** records **The Open Pattern**, a new organic practice at Lattice. Hearth retains the Warm Table custom. |
+| 13 | **The channel answers out of turn** records **The Undersong**. Visit **The Answering Arch** at Choir and follow the power. |
+| 22, 32, 42 | The Undersong redistributes real reserves. Read the measured changes separately from the communities' interpretations. |
+| 42 | **The ledger gives up its throne** ends the Common Channel's central authority. Its conduits, populations, and local maintenance survive; the Undersong continues acting. |
+
+These dates describe one checked run, not scheduled milestones. The power needs a functioning shared network, transmitted knowledge, accumulated charge, and participating forms. Watching without intervening also works: in the default passive run, inhabitants open the passage on day 14, the shared institution forms on day 15, and the Undersong appears on day 24. No intervention is required to unlock this history.
+
+To follow the material chain, inspect the Undersong's emergence record, then its **Underlying records** for the shared channel, cultural divergence, and recovered gardens. Different communities offer different accounts of the same pulse. Those accounts are interpretations; the observed energy and habitat changes do not prove consciousness.
+
+After the shared channel exists, a further possibility may become available at Hearth: **Shelter the river terrace**. In the day-2 passage example, offer it on **day 4**, then advance one day. **Neighbors with different mornings** records two synthetic bodies and three collective nodes relocating to Hearth, with their original communities' counts reduced accordingly. Inspect **The Neighbor Array** and **The Borrowed Room**. The intervention first makes a suitable place; inhabitants decide whether its conditions support the move.
+
+Reproduce the main sequence directly:
+
+```sh
+node --input-type=module -e "import {createWorld,advance,intervene} from './src/sim/world.js'; let w=advance(createWorld({seed:8417,tier:2}),2); w=intervene(w,{kind:'open-route',targetId:'r-hearth-lattice'}); w=advance(w,58); for(const e of w.events.filter(e=>['common-channel-founded','culture-diverged','power-emerged','power-redistribution','channel-authority-ended'].includes(e.kind))) console.log(e.tick,e.kind,e.title); console.log('Institution:',w.institutions.find(i=>i.id==='i-confluence').status,'Power active:',w.power.active);"
+```
 
 ## Reading a place
 

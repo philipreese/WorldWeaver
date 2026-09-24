@@ -24,6 +24,37 @@ function altered(history, edit) {
   return JSON.stringify(data);
 }
 
+// Captured from the executable Tier 1 milestone (67d6731), before Tier 2 life
+// behavior, by running its source archive independently of the working tree.
+// Keep this independent of createHistory so replay drift cannot bless itself.
+const TIER1_MILESTONE_SAVE = {
+  format: 'worldweaver', saveVersion: 1, simulationVersion: '1.0.0',
+  initialConfig: { seed: 8417, tier: 1, climate: 'temperate', temperament: 'careful', density: 'balanced' },
+  activeBranchId: 'b2', nextBranchId: 3,
+  branches: [
+    { id: 'b1', name: 'First history', parentId: null, forkTick: 0, forkCommandIndex: 0,
+      commands: [
+        { atTick: 0, command: { type: 'advance', days: 2 } },
+        { atTick: 2, command: { type: 'intervene', intervention: { kind: 'open-route', targetId: 'r-hearth-lattice' } } },
+        { atTick: 2, command: { type: 'advance', days: 50 } },
+      ], headDigest: '3ec54af046f7187c0a2e6c1697166450' },
+    { id: 'b2', name: 'Before the opening', parentId: 'b1', forkTick: 1, forkCommandIndex: 1,
+      commands: [
+        { atTick: 0, command: { type: 'advance', days: 1 } },
+        { atTick: 1, command: { type: 'advance', days: 51 } },
+      ], headDigest: '48d3ac526ef68af6753184b8591b3f9a' },
+  ],
+  followed: ['s-hearth', 'c-nera'], attention: 'balanced', session: { lastSeenTick: 0 },
+};
+
+test('the committed Tier 1 milestone save remains exactly replayable after Tier 2 additions', () => {
+  const text = JSON.stringify(TIER1_MILESTONE_SAVE);
+  const restored = parseHistory(text);
+  assert.equal(restored.branches[0].head.flags.archiveResolved, 'exchange');
+  assert.equal(restored.branches[1].head.flags.archiveResolved, 'raise');
+  assert.equal(serializeHistory(restored), text);
+});
+
 test('commands and snapshots are immutable; unchanged input replays exactly', () => {
   const initial = createHistory();
   const before = serializeHistory(initial);
@@ -105,6 +136,95 @@ test('portable export reconstructs heads and checkpoints instead of accepting se
 test('Tier and alternate creation settings persist through deterministic replay', () => {
   const history = step(createHistory({ tier: 2, seed: 3721, climate: 'wet', temperament: 'communal', density: 'dense' }), 120);
   assert.deepEqual(currentWorld(parseHistory(serializeHistory(history))), currentWorld(history));
+});
+
+function developedTier2History() {
+  let history = createHistory({ tier: 2 });
+  history = applyCommand(history, { type: 'intervene', intervention: availableIntervention(currentWorld(history)) });
+  history = step(history, 4);
+  history = applyCommand(history, { type: 'intervene', intervention: availableIntervention(currentWorld(history), 'offer-refuge') });
+  return step(history, 56);
+}
+
+test('Tier 2 round-trip retains distinct forms, a mixed community, divergent cultures, power effects and institution collapse', () => {
+  const history = developedTier2History();
+  const world = currentWorld(history);
+  const hearth = world.settlements.find(item => item.id === 's-hearth');
+  const lattice = world.settlements.find(item => item.id === 's-lattice');
+  const choir = world.settlements.find(item => item.id === 's-choir');
+  const institution = world.institutions.find(item => item.id === 'i-confluence');
+  assert.ok(hearth.population > 0 && hearth.synthetics > 0 && hearth.collective > 0, 'Refuge must create an actual mixed settlement.');
+  assert.ok(lattice.synthetics > 0 && choir.collective > 0);
+  assert.ok(world.events.some(item => item.kind === 'synthetic-replication'));
+  assert.ok(world.events.some(item => item.kind === 'collective-expansion'));
+  assert.ok(hearth.structures.some(item => item.form === 'synthetic'));
+  assert.ok(hearth.structures.some(item => item.form === 'collective'));
+  assert.notEqual(hearth.cultureId, lattice.cultureId, 'Organic communities retain different living practices.');
+  assert.ok(world.cultures.find(item => item.id === lattice.cultureId)?.form === 'organic');
+  assert.equal(institution.status, 'collapsed');
+  assert.ok(institution.history.length >= 2);
+  assert.ok(hearth.structures.some(item => item.id === 'k-hearth-conduit' && item.abandonedAt == null));
+  assert.equal(world.power.id, 'p-undersong');
+  assert.equal(world.power.active, true);
+  assert.ok(world.power.lastActAt > world.power.emergedAt);
+  assert.ok(world.flags.powerActs >= 3);
+  const emergence = world.events.find(item => item.id === world.power.eventId);
+  assert.equal(emergence.kind, 'power-emerged');
+  const effects = world.events.filter(item => item.kind === 'power-redistribution');
+  assert.ok(effects.length >= 3);
+  assert.ok(effects.every(item => item.causes.includes(emergence.id) && item.observed.length > 1 && item.interpretations.length >= 3));
+  for (const interpretation of world.power.interpretations) assert.ok(world.cultures.some(culture => culture.id === interpretation.cultureId));
+
+  const restored = parseHistory(serializeHistory(history));
+  assert.deepEqual(currentWorld(restored), world);
+  const before = worldAt(restored, world.power.emergedAt - 1);
+  const after = worldAt(restored, world.power.emergedAt);
+  assert.equal(before.power, null);
+  assert.equal(after.power.eventId, emergence.id);
+  assert.ok(after.settlements.find(item => item.id === 's-hearth').energy > before.settlements.find(item => item.id === 's-hearth').energy, 'The restored emergence has a real material effect.');
+  assert.equal(worldAt(restored, 4).settlements.find(item => item.id === 's-hearth').synthetics, 0, 'Offering refuge alone does not dictate a move.');
+  assert.equal(worldAt(restored, 5).settlements.find(item => item.id === 's-hearth').synthetics, 2);
+});
+
+test('forks immediately before power emergence preserve the source and replay unchanged or altered futures exactly', () => {
+  const source = developedTier2History();
+  const sourceWorld = currentWorld(source);
+  const originalBytes = serializeHistory(source);
+  const forkDay = sourceWorld.power.emergedAt - 1;
+  let repeated = forkHistory(source, forkDay, 'Before the answering current');
+  assert.equal(currentWorld(repeated).power, null);
+  repeated = step(repeated, sourceWorld.tick - forkDay);
+  assert.deepEqual(currentWorld(repeated), sourceWorld, 'Identical inputs across a split advance reproduce the whole Tier 2 future.');
+
+  let changed = forkHistory(repeated, forkDay, 'Water before the answer');
+  changed = applyCommand(changed, { type: 'intervene', intervention: availableIntervention(currentWorld(changed), 'restore-habitat') });
+  changed = step(changed, sourceWorld.tick - forkDay);
+  assert.notDeepEqual(currentWorld(changed), sourceWorld);
+  assert.equal(serializeHistory(source), originalBytes);
+  assert.deepEqual(currentWorld(selectBranch(changed, 'b1')), sourceWorld);
+  const restored = parseHistory(serializeHistory(changed));
+  for (const branch of changed.branches) {
+    assert.deepEqual(currentWorld(selectBranch(restored, branch.id)), branch.head);
+    for (const day of [0, 4, 5, forkDay, forkDay + 1, 22, 42, 60]) {
+      assert.deepEqual(worldAt(restored, day, branch.id), worldAt(changed, day, branch.id), `${branch.id}, day ${day}`);
+    }
+  }
+});
+
+test('cold storage reload preserves Tier 2 follows, pre-emergence branches and preferences without cache or elapsed time', () => {
+  let history = developedTier2History();
+  history = { ...history, followed: ['p-undersong', 'i-confluence', 'culture-carriers', 'k-hearth-refuge-root'], attention: 'attentive', session: { lastSeenTick: 59 } };
+  history = forkHistory(history, 2, 'Before the shared channel');
+  assert.equal(currentWorld(history).power, null);
+  const storage = new MemoryStorage();
+  assert.equal(saveHistory(storage, history).ok, true);
+  const coldStorage = new MemoryStorage();
+  coldStorage.data = new Map(storage.data);
+  const restored = loadHistory(coldStorage);
+  assert.equal(restored.error, null);
+  assert.deepEqual(restored.history, history);
+  assert.equal(currentWorld(restored.history).tick, 2);
+  assert.equal(currentWorld(selectBranch(restored.history, 'b1')).tick, 60);
 });
 
 test('invalid imports fail closed across versions, state, commands, references and bounds', () => {

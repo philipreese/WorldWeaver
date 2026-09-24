@@ -2,7 +2,7 @@
 
 A finite, explorable science-fiction world whose people make their own choices and leave a history you can inspect. Browser-first, statically served, no accounts, services, runtime AI, or paid dependencies.
 
-**Implementation in progress. The required Tier 2 release is not complete.** See [implementation status](docs/IMPLEMENTATION_STATUS.md) for the current gate and honest verification limits. The [v0.4 brief](docs/worldweaver-build-prompt-v0.4.md) is the source of truth.
+**Tier 2 mechanics are implemented; the required release remains incomplete pending browser, device, and playtesting evidence.** See [implementation status](docs/IMPLEMENTATION_STATUS.md) and [verification](docs/VERIFICATION.md). The [v0.4 brief](docs/worldweaver-build-prompt-v0.4.md) is the source of truth.
 
 ## Run locally
 
@@ -19,8 +19,9 @@ Open `http://localhost:4173`. `PORT=8080 npm run dev` selects another port on Un
 
 ```sh
 npm test          # simulation, history, director and recovery invariants
-npm run check     # JavaScript syntax
+npm run check     # JavaScript syntax and relative imports
 npm run build     # standalone production files in dist/
+npm run verify:build # HTTP subpath and worker contract checks in Node
 npm run preview   # serve the production build on port 4173
 ```
 
@@ -33,6 +34,22 @@ Production builds generate a content-versioned service worker and relative asset
 Meet Nera in Hearth. Inspect the archive, follow a person or place, then decide whether to open the eastern passage. **Next moment** advances at most fourteen days and stops for a meaningful event affecting your follow list. Open History to ask why. Visit day 2 on the timeline and **Branch here** to explore an alternate future without deleting the original.
 
 Time advances only with your permission and pauses on backgrounding. You may explore while paused. See the [player guide](docs/PLAYER_GUIDE.md) for controls and a complete alternate-history demonstration.
+
+The starting world includes organic Emberkin, synthetic Vessels, and collective Chorus nodes. Their different needs and structures lead to contact, cultural divergence, shared infrastructure, and an independently acting phenomenon called the Undersong. Observation alone can reach this history. Traditions, inhabitants, and physical traces survive the shared institution's collapse.
+
+## Example histories and evidence
+
+Import one of the files in [public/worlds](public/worlds) through **World settings → Import history**:
+
+- `quiet-basin.json`: the default Tier 2 beginning on day 2.
+- `two-tellings.json`: closed and opened passage histories through day 52, preserving both futures.
+- `wet-beginning.json`: a wetter, sparse beginning with a curious founding disposition.
+
+`npm run examples` regenerates these files and the causal/pacing report. Production builds include them under `worlds/`. The [verification record](docs/VERIFICATION.md) explains optional Node UI checks and static rendering, and lists the remaining release work.
+
+![Hearth with all three forms of life on day 42, rendered directly from simulation state](evidence/render-tier2-day42-hearth.webp)
+
+Static Canvas frame from the actual renderer. This is not a browser screenshot or interaction recording.
 
 ## Development
 

@@ -70,7 +70,8 @@ const saved = () => parseHistory(slots.get("worldweaver.save.current"));
 const cases = [];
 assert.equal($("#clock").textContent, "Day 2");
 assert.equal($("#run-state").textContent, "Paused");
-cases.push("Opening initializes paused on day 2 with saved development");
+assert.equal(currentWorld(saved()).tier, 2);
+cases.push("Tier 2 opening initializes paused on day 2 with saved development");
 click('[data-entity="c-nera"]');
 assert.match($("#inspector").textContent, /Nera/);
 assert.match($("#inspector").textContent, /Expose the Silt Saddle/);
@@ -112,6 +113,23 @@ assert.equal(fork.branches[0].head.tick, 4);
 cases.push(
   "Historical controls are read-only; branch changes a decision and preserves source future",
 );
+click('[data-entity="s-hearth"]');
+click('[data-possibilities="s-hearth"]');
+assert.equal(dialog.open, true);
+click('#modal-content [data-intervention="offer-refuge"]');
+assert.equal(dialog.open, false);
+click("#step");
+const mixed = currentWorld(saved()).settlements.find(
+  (s) => s.id === "s-hearth",
+);
+assert.equal(mixed.synthetics, 2);
+assert.equal(mixed.collective, 3);
+click('[data-entity="s-hearth"]');
+assert.match($("#inspector").textContent, /Shell integrity/);
+assert.match($("#inspector").textContent, /Hydration/);
+cases.push(
+  "Possibilities opens conditional refuge; arrivals expose distinct needs in inspection",
+);
 click('[data-tab="followed"]');
 click('[data-entity="s-hollow"]');
 assert.ok($('[data-intervention="reveal-memory"]'));
@@ -124,12 +142,38 @@ click('[data-entity="k-hearth-door"]');
 assert.match($("#inspector").textContent, /First recorded on day 0/);
 assert.match($("#inspector").textContent, /Lore · not recorded history/);
 cases.push("Surveyed ancient trace distinguishes lore from recorded history");
+while (currentWorld(saved()).tick < 42) click("#step");
+assert.ok(
+  currentWorld(saved()).events.some((e) => e.kind === "power-redistribution"),
+);
+click('[data-tab="followed"]');
+click('[data-entity="p-undersong"]');
+assert.match($("#inspector").textContent, /Observed presence/);
+assert.match($("#inspector").textContent, /Cultural interpretation/);
+click('[data-follow="p-undersong"]');
+assert.ok(saved().followed.includes("p-undersong"));
+cases.push(
+  "Material power emerges in play, remains inspectable, and can be followed",
+);
+click('[data-entity="i-confluence"]');
+assert.equal(
+  currentWorld(saved()).institutions.find((i) => i.id === "i-confluence")
+    .status,
+  "collapsed",
+);
+assert.match($("#inspector").textContent, /Participants/);
+assert.match($("#inspector").textContent, /Nera/);
+cases.push(
+  "Institution collapse retains accessible participants and recorded history",
+);
 click("#settings");
 assert.equal(dialog.open, true);
 assert.ok($("#horizon"));
 assert.ok($("#attention"));
 dialog.close();
 const before = JSON.stringify(currentWorld(saved()));
+click("#play");
+assert.equal($("#run-state").textContent, "Unfolding");
 document.hidden = true;
 document.dispatchEvent(new window.Event("visibilitychange"));
 assert.equal($("#run-state").textContent, "Paused");

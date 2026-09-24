@@ -83,7 +83,10 @@ export class WorldView {
     }
     for(const culture of world.cultures||[]){const s=this.index.get(culture.settlementIds?.[0]);if(s)this.index.set(culture.id,{entity:culture,type:'culture',x:s.x,y:s.y});}
     for(const institution of world.institutions||[]){const s=this.index.get(institution.settlementId);if(s)this.index.set(institution.id,{entity:institution,type:'institution',x:s.x,y:s.y});}
-    if(world.power){const s=this.index.get(world.power.settlementId);if(s)this.index.set(world.power.id,{entity:world.power,type:'power',x:s.x+55,y:s.y-28});}
+    if(world.power){
+      const s=this.index.get(world.power.settlementId),arch=this.index.get('k-choir-answer');
+      if(s)this.index.set(world.power.id,{entity:world.power,type:'power',x:arch?.x??s.x+55,y:arch?.y??s.y-28});
+    }
     if(this.followId&&!this.index.has(this.followId))this.followId=null;
     if(this.selectedId&&!this.index.has(this.selectedId))this.selectedId=null;
     this.invalidate();
@@ -250,12 +253,18 @@ export class WorldView {
     for(const object of objects){
       const p=this.worldToScreen(object.x,object.y);if(p.x<-170||p.x>width+170||p.y<-60||p.y>height+330)continue;
       if(object.type==='structure'){
-        drawStructure(ctx,object.entity,object.x,object.y,object.entity.id===this.selectedId);
-        const [w,h]=structureSize(object.entity.kind);if(this.scale!=='region')this._hit(object.entity.id,object.x,object.y-h*.34,w*.55,h*.6,.4);
+        drawStructure(ctx,object.entity,object.x,object.y,object.entity.id===this.selectedId,object.settlement);
+        const [w,h]=structureSize(object.entity.kind,object.entity.form);if(this.scale!=='region')this._hit(object.entity.id,object.x,object.y-h*.34,w*.55,h*.6,.4);
       }else{
         if(zoom>.65){const moving=distance(object.position,{x:object.position.tx,y:object.position.ty})>1;drawCharacter(ctx,object.entity,object.x,object.y,this.selectedId===object.entity.id,time,moving,this.reducedMotion);}
         if(this.scale==='neighborhood')this._hit(object.entity.id,object.x,object.y-5,9,12,-.5);
       }
+    }
+    const tracked=this.index.get(this.selectedId),position=this.people.get(this.selectedId);
+    if(tracked?.type==='character'&&tracked.entity.alive!==false&&position&&this.scale!=='region'){
+      // Keep the tracked inhabitant readable behind a foreground roof or canopy.
+      // This translucent selection silhouette stays at their modeled position.
+      ctx.save();ctx.globalAlpha=.8;drawCharacter(ctx,tracked.entity,position.x,position.y-1,true,time,false,true);ctx.restore();
     }
     this._drawAtmosphere(ctx,time);
     ctx.restore();
@@ -271,6 +280,10 @@ export class WorldView {
       ctx.strokeStyle=route.open?'#102b327f':'#76909044';ctx.lineWidth=route.open?6:1;ctx.setLineDash(route.open?[]:[3,7]);ctx.stroke();
       if(route.open){ctx.strokeStyle=route.id===this.selectedId?'#ffe5ac':'#bdba8677';ctx.lineWidth=1.5;ctx.stroke();ctx.strokeStyle='#e2cb9677';ctx.lineWidth=.65;ctx.setLineDash([1,10]);ctx.stroke();}
       ctx.setLineDash([]);
+      if(route.open&&this.world.flags?.sharedNetwork&&(route.id==='r-hearth-lattice'||route.id==='r-hearth-choir')){
+        ctx.strokeStyle=route.id==='r-hearth-lattice'?'#9adcd77a':'#b7d99b79';ctx.lineWidth=2.1;ctx.stroke();
+        ctx.strokeStyle=this.world.power?.active?'#ddedbc94':'#dae1b644';ctx.lineWidth=.65;ctx.stroke();
+      }
       const x=from.x*.25+mx*.5+to.x*.25,y=(from.y+17)*.25+my*.5+(to.y+17)*.25;
       if(this.scale==='region'){
         ellipse(ctx,x,y,9,5,'#153541','#7b9e9188',.7);
@@ -293,23 +306,47 @@ export class WorldView {
     // Pinprick illumination stands in for aggregate occupancy, never named people.
     const occupied=Math.min(38,Math.ceil((s.population||0)/3));
     for(let i=0;i<occupied;i++){const a=rand()*TAU,r=20+rand()*72;const x=s.x+Math.cos(a)*r,y=s.y+Math.sin(a)*r*.5;ellipse(ctx,x,y,.6+rand()*.55,.6,'#f6d09380');}
-    if(s.synthetics>0){
-      const count=Math.min(18,Math.ceil(s.synthetics/3));
-      for(let i=0;i<count;i++){
-        const x=s.x+46+(i%5)*8,y=s.y+29+Math.floor(i/5)*7-(i%5)*2;
-        polygon(ctx,[[x,y-2],[x+3,y],[x,y+2],[x-3,y]],'#5e9ca075','#b9f4dc99',.6);
-        if(i>0){ctx.beginPath();ctx.moveTo(x-8,y+2);ctx.lineTo(x,y);ctx.strokeStyle='#8cd8d455';ctx.lineWidth=.6;ctx.stroke();}
-      }
-    }
-    if(s.collective>0){
-      const count=Math.min(24,Math.ceil(s.collective/2));
-      for(let i=0;i<count;i++){
-        const a=i*2.399,r=19+Math.sqrt(i)*8,x=s.x-32+Math.cos(a)*r,y=s.y+21+Math.sin(a)*r*.5;
-        ctx.beginPath();ctx.moveTo(s.x-30,s.y+21);ctx.quadraticCurveTo(x-10,y+8,x,y);ctx.strokeStyle='#91bd8160';ctx.lineWidth=.8;ctx.stroke();
-        ellipse(ctx,x,y,2.3,1.1,'#b9d594aa');
-      }
+    if(s.synthetics>0)this._drawSyntheticOccupation(ctx,s);
+    if(s.collective>0)this._drawCollectiveOccupation(ctx,s);
+    if(this.world.power?.active&&this.world.flags?.sharedNetwork&&s.id!=='s-hollow'){
+      const energy=clamp((s.energy||0)/100,0,1),g=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,110);
+      g.addColorStop(0,`rgba(190,217,156,${energy*.045})`);g.addColorStop(1,'rgba(190,217,156,0)');ellipse(ctx,s.x,s.y,110,65,g);
     }
     if(this.scale==='region')this._hit(s.id,s.x,s.y,84,68,1);
+  }
+
+  _drawSyntheticOccupation(ctx,s) {
+    const hubs=s.structures.filter(b=>b.form==='synthetic'&&b.abandonedAt==null&&b.kind!=='conduit');
+    if(!hubs.length)return;
+    const count=Math.min(60,s.synthetics),dim=(s.syntheticIntegrity??88)<50;
+    // Aggregate bodies have no invented names, memories, activities, or choices.
+    // Their visible count comes from state; their staging around arrays is decorative.
+    for(let i=0;i<count;i++){
+      const hub=local(s,hubs[i%hubs.length]),slot=Math.floor(i/hubs.length);
+      const x=hub.x-12+(slot%4)*8,y=hub.y+12+Math.floor(slot/4)*8-(slot%4)*2;
+      ctx.beginPath();ctx.moveTo(hub.x,hub.y+4);ctx.lineTo(x,y);ctx.strokeStyle=dim?'#699a9e55':'#a9e3df60';ctx.lineWidth=.65;ctx.stroke();
+      ellipse(ctx,x+1,y+1,3.7,1.7,'#08232e99');
+      polygon(ctx,[[x-2,y-2],[x-2.2,y-7],[x,y-9],[x+2.2,y-7],[x+2,y-2],[x,y]],dim?'#5c838c':'#80bdc3','#c8f3df88',.5);
+      ctx.beginPath();ctx.moveTo(x,y-7);ctx.lineTo(x,y-2);ctx.strokeStyle=dim?'#91aaa7':'#dcffe9';ctx.lineWidth=.65;ctx.stroke();
+      if(this.scale==='neighborhood')this._hit(s.id,x,y-3,7,9,1.1);
+    }
+  }
+
+  _drawCollectiveOccupation(ctx,s) {
+    const rooms=s.structures.filter(b=>b.form==='collective'&&b.abandonedAt==null&&b.kind==='nest');
+    if(!rooms.length)return;
+    const centers=rooms.map(b=>local(s,b)),dry=(s.collectiveHydration??s.habitat)<50;
+    const pigment=dry?'#858763':'#aed28f';
+    for(let i=0;i<centers.length;i++){
+      const p=centers[i];ellipse(ctx,p.x,p.y+8,37,23,dry?'#84806415':'#86b8781e',dry?'#9b967a33':'#b7d9993f',.6);
+      if(i){const a=centers[i-1];ctx.beginPath();ctx.moveTo(a.x,a.y+8);ctx.bezierCurveTo(a.x-12,a.y+34,p.x-10,p.y+22,p.x,p.y+8);ctx.strokeStyle=dry?'#928b6466':'#acd390a0';ctx.lineWidth=2;ctx.stroke();ctx.strokeStyle='#223f3eaa';ctx.lineWidth=.6;ctx.stroke();}
+    }
+    for(let i=0;i<Math.min(90,s.collective);i++){
+      const center=centers[i%centers.length],a=i*2.399,r=19+Math.floor(i/centers.length)*1.4;
+      const x=center.x+Math.cos(a)*r,y=center.y+Math.sin(a)*r*.52+12;
+      ctx.beginPath();ctx.moveTo(center.x,center.y+8);ctx.quadraticCurveTo(x-7,y+5,x,y);ctx.strokeStyle=dry?'#91916a77':'#acd49083';ctx.lineWidth=.8;ctx.stroke();
+      ellipse(ctx,x,y,3.4,1.7,pigment,dry?'#b7b58a55':'#d5edb7aa',.4);ellipse(ctx,x-.5,y-.3,1,.6,dry?'#c6c196':'#e5f4bd');
+    }
   }
 
   _drawPower(ctx,time) {
@@ -317,9 +354,11 @@ export class WorldView {
     const point=this.index.get(power.id);if(!point)return;
     const {x,y}=point,active=power.active!==false;
     const pulse=this.reducedMotion?1:.9+Math.sin(time*.0009)*.1;
+    const strength=clamp((power.strength||36)/100,.2,1);
     ctx.save();ctx.globalAlpha=active?.8:.25;
-    const g=ctx.createRadialGradient(x,y-22,0,x,y-22,75);g.addColorStop(0,`rgba(173,219,167,${.22*pulse})`);g.addColorStop(1,'rgba(118,219,188,0)');ellipse(ctx,x,y-22,76,85,g);
+    const g=ctx.createRadialGradient(x,y-22,0,x,y-22,75);g.addColorStop(0,`rgba(173,219,167,${(.18+strength*.15)*pulse})`);g.addColorStop(1,'rgba(118,219,188,0)');ellipse(ctx,x,y-22,76,85,g);
     ellipse(ctx,x,y+5,35,17,'#a3c7a017','#d5e8b798',.8);
+    if(active){ellipse(ctx,x,y+5,43+strength*12,21+strength*5,null,'#c4e6ba58',.7);ellipse(ctx,x,y+5,58+strength*14,29+strength*7,null,'#a9dcd334',.6);}
     for(let i=0;i<5;i++){
       const phase=i/5*TAU+.3,px=x+Math.cos(phase)*29,py=y+Math.sin(phase)*12;
       ctx.beginPath();ctx.moveTo(px,py);ctx.bezierCurveTo(px+Math.cos(phase)*12,py-32,x+Math.cos(phase)*5,y-77,x,y-72);
@@ -369,10 +408,20 @@ export class WorldView {
       }
     }
     if(this.scale==='neighborhood'){
-      for(const c of this.world.characters||[]){
+      const occupiedLabels=[];
+      const people=[...(this.world.characters||[])].sort((a,b)=>(b.id===this.selectedId?1:0)-(a.id===this.selectedId?1:0));
+      for(const c of people){
         if(c.alive===false)continue;const position=this.people.get(c.id);if(!position)continue;
-        const p=this.worldToScreen(position.x,position.y-17),selected=c.id===this.selectedId;
+        const base=this.worldToScreen(position.x,position.y-17),selected=c.id===this.selectedId;
+        let p={...base};
         if(p.x<20||p.x>this.width-20||p.y<15||p.y>this.height-20)continue;
+        const width=c.name.length*(selected?8:7)+12;
+        for(const offset of [0,-18,-36,-54,18,36,-72]){
+          const candidate={left:base.x-width/2,right:base.x+width/2,top:base.y+offset-8,bottom:base.y+offset+8};
+          if(candidate.top<10||occupiedLabels.some(r=>candidate.left<r.right&&candidate.right>r.left&&candidate.top<r.bottom&&candidate.bottom>r.top))continue;
+          p.y=base.y+offset;occupiedLabels.push(candidate);break;
+        }
+        if(Math.abs(p.y-base.y)>4){ctx.beginPath();ctx.moveTo(base.x,base.y+6);ctx.lineTo(p.x,p.y+8);ctx.strokeStyle='#cad2b77a';ctx.lineWidth=.6;ctx.stroke();}
         this._label(ctx,c.name,p.x,p.y,{size:selected?13:11,color:selected?'#ffe7b3':'#ede4ce',weight:selected?'600':'400'});
         if(selected||this.hoverId===c.id){
           const activity=c.activity||c.role||'';
@@ -383,7 +432,7 @@ export class WorldView {
     }
     const inspectId=this.hoverId||this.selectedId,object=this.index.get(inspectId);
     if(object?.type==='structure'&&this.scale!=='region'){
-      const [,h]=structureSize(object.entity.kind),p=this.worldToScreen(object.x,object.y-h-9);
+      const [,h]=structureSize(object.entity.kind,object.entity.form),p=this.worldToScreen(object.x,object.y-h-9);
       this._label(ctx,object.entity.name,p.x,p.y,{size:13,color:'#f2e5c1',font:'Georgia,serif'});
       const abandoned=object.entity.abandonedAt!=null;
       this._label(ctx,abandoned?`A surviving trace · day ${object.entity.abandonedAt}`:`Recorded since day ${object.entity.builtAt??0}`,p.x,p.y+17,{size:9,color:'#aabda9'});

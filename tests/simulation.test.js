@@ -16,6 +16,12 @@ function deepFreeze(value) {
 }
 
 function assertHistoryReferences(w) {
+  const visitValue = (value, path = 'world') => {
+    assert.notEqual(value, undefined, `${path} must survive a JSON round trip.`);
+    if (typeof value === 'number') assert.ok(Number.isFinite(value), `${path} must be finite.`);
+    if (value && typeof value === 'object') for (const [key, child] of Object.entries(value)) visitValue(child, `${path}.${key}`);
+  };
+  visitValue(w);
   const allIds = [...w.regions, ...w.settlements, ...w.characters, ...w.routes, ...w.cultures, ...w.institutions, ...w.events, ...w.threads, ...w.settlements.flatMap(s => s.structures), ...(w.power ? [w.power] : [])].map(e => e.id);
   assert.equal(new Set(allIds).size, allIds.length, 'Every entity and event has a unique stable ID.');
   const ids = new Set(allIds);
@@ -182,5 +188,163 @@ test('long quiet runs preserve bounds, identities, traces, and deterministic JSO
   assert.equal(entity(w, 'k-hearth-door').id, 'k-hearth-door');
   assert.equal(entity(w, 'i-hollow').status, 'collapsed');
   assert.deepEqual(JSON.parse(JSON.stringify(w)), w);
+  assertHistoryReferences(w);
+});
+
+test('Tier 2 forms have different environmental responses, costs, replication, and occupied space', () => {
+  const dry = advance(createWorld({ tier: 2, climate: 'dry' }), 30);
+  const wet = advance(createWorld({ tier: 2, climate: 'wet' }), 30);
+  assert.ok(event(dry, 'synthetic-replication').tick < event(wet, 'synthetic-replication').tick, 'Dry weather supplies solar copying energy sooner.');
+  assert.ok(entity(wet, 's-choir').collective > entity(dry, 's-choir').collective, 'Wet connected habitat supports more living root rooms.');
+  assert.ok(entity(wet, 's-hearth').food > entity(dry, 's-hearth').food, 'Organic food yield responds to habitat.');
+  assert.ok(event(wet, 'collective-expansion').observed.some(line => line.includes('Food nutrients')));
+  assert.ok(event(dry, 'synthetic-replication').observed.some(line => line.includes('materials')));
+  assert.ok(entity(wet, 's-choir').structures.some(b => b.form === 'collective' && b.kind === 'nest'));
+  assert.ok(entity(dry, 's-lattice').structures.some(b => b.form === 'synthetic' && b.kind === 'spire'));
+  assertHistoryReferences(dry);
+  assertHistoryReferences(wet);
+});
+
+test('Tier 2 has real seeded variation while identical seeds replay unchanged', () => {
+  const baseline = createWorld({ tier: 2, seed: 8417 });
+  const alternate = createWorld({ tier: 2, seed: 42 });
+  assert.notEqual(entity(baseline, 's-lattice').energy, entity(alternate, 's-lattice').energy);
+  assert.notEqual(entity(baseline, 's-choir').habitat, entity(alternate, 's-choir').habitat);
+  assert.notEqual(event(advance(baseline, 60), 'power-emerged').tick, event(advance(alternate, 60), 'power-emerged').tick);
+  assert.deepEqual(advance(alternate, 60), advance(createWorld({ tier: 2, seed: 42 }), 60));
+});
+
+test('observation alone develops a mixed institution, organic cultural divergence, and a material power', () => {
+  const initial = createWorld({ tier: 2 });
+  assert.equal(initial.power, null);
+  const w = advance(initial, 80);
+  assert.equal(w.flags.archiveResolved, 'raise', 'The opening closed-route choice remains intact even after residents later open the route.');
+  assert.ok(event(w, 'inhabitants-open-route'));
+  assert.ok(event(w, 'common-channel-founded'));
+  assert.equal(entity(w, 'culture-carriers').form, 'organic');
+  assert.notEqual(entity(w, 's-hearth').cultureId, entity(w, 's-lattice').cultureId);
+  assert.equal(w.power.id, 'p-undersong');
+  const emergence = event(w, 'power-emerged');
+  assert.ok(emergence.observed.some(line => line.includes('Hearth energy:')));
+  assert.ok(emergence.interpretations.length >= 3);
+  assert.equal(emergence.decision, undefined, 'No consciousness or godly intention is asserted as a recorded decision.');
+  assert.ok(w.flags.powerActs >= 3);
+  assertHistoryReferences(w);
+});
+
+test('power emergence depends on causal history rather than a universal date or belief score', () => {
+  const accelerated = advance(intervene(createWorld({ tier: 2 }), east), 60);
+  const passive = advance(createWorld({ tier: 2 }), 60);
+  assert.equal(event(accelerated, 'power-emerged').tick, 13);
+  assert.equal(event(passive, 'power-emerged').tick, 24);
+  const before = advance(intervene(createWorld({ tier: 2 }), east), 12);
+  assert.equal(before.power, null);
+  assert.ok(before.flags.networkTransfers < 12);
+  assert.ok(event(accelerated, 'power-emerged').causes.includes(event(accelerated, 'common-channel-founded').id));
+  assert.ok(event(accelerated, 'power-emerged').causes.includes(event(accelerated, 'culture-diverged').id));
+});
+
+test('institution collapse preserves people, culture, physical infrastructure and later autonomous effects', () => {
+  const before = advance(intervene(createWorld({ tier: 2 }), east), 41);
+  const after = advance(before, 1);
+  assert.equal(entity(before, 'i-confluence').status, 'active');
+  assert.equal(entity(after, 'i-confluence').status, 'collapsed');
+  assert.equal(entity(after, 'i-confluence').id, entity(before, 'i-confluence').id);
+  for (const id of ['s-hearth', 's-lattice', 's-choir']) assert.equal(entity(after, id).population, entity(before, id).population);
+  for (const id of ['k-hearth-conduit', 'k-lattice-conduit', 'k-choir-conduit', 'culture-carriers']) assert.ok(entity(after, id));
+  assert.equal(after.power.active, true);
+  const later = advance(after, 11);
+  assert.ok(later.events.some(e => e.kind === 'power-redistribution' && e.tick > event(later, 'channel-authority-ended').tick));
+  assertHistoryReferences(later);
+});
+
+test('refuge changes possibilities first; inhabitants then move existing bodies and build a mixed home', () => {
+  const available = advance(intervene(createWorld({ tier: 2 }), east), 4);
+  const offered = intervene(available, { kind: 'offer-refuge', targetId: 's-hearth' });
+  assert.equal(entity(offered, 's-hearth').synthetics, 0);
+  assert.equal(entity(offered, 's-hearth').collective, 0);
+  const settled = advance(offered, 1);
+  assert.equal(entity(settled, 's-hearth').synthetics, 2);
+  assert.equal(entity(settled, 's-hearth').collective, 3);
+  assert.equal(entity(settled, 's-lattice').synthetics, entity(offered, 's-lattice').synthetics - 2);
+  assert.ok(entity(settled, 'k-hearth-refuge-spire'));
+  assert.ok(entity(settled, 'k-hearth-refuge-root'));
+  assert.ok(event(settled, 'mixed-refuge-settled').causes.includes(event(settled, 'refuge-possible').id));
+  assert.equal(getInterventions(settled).find(i => i.kind === 'offer-refuge').available, false);
+  assertHistoryReferences(settled);
+});
+
+test('the passive mixed-channel path cannot spend nonexistent refuge materials', () => {
+  const w = advance(createWorld({ tier: 2 }), 15);
+  assert.equal(w.flags.sharedNetwork, true);
+  assert.ok(entity(w, 's-hearth').materials < 6);
+  const choice = getInterventions(w).find(i => i.kind === 'offer-refuge');
+  assert.equal(choice.available, false);
+  assert.match(choice.reason, /6 materials/);
+  assert.throws(() => intervene(w, { kind: 'offer-refuge', targetId: 's-hearth' }), /6 materials/);
+  const later = advance(w, 4);
+  assert.equal(getInterventions(later).find(i => i.kind === 'offer-refuge').available, true);
+});
+
+test('a successor inherits an actual obligation and a late historical visit remains possible', () => {
+  const before = advance(createWorld({ tier: 2 }), 364);
+  const after = advance(before, 1);
+  assert.equal(entity(before, 'c-ivo').alive, true);
+  assert.equal(entity(after, 'c-ivo').alive, false);
+  assert.equal(entity(after, 's-hearth').population, entity(before, 's-hearth').population - 1);
+  assert.equal(entity(after, 'c-ves').inheritedFromId, 'c-ivo');
+  assert.equal(entity(after, 'c-ves').role, 'mender');
+  assert.ok(entity(after, 'k-ivo-memory'));
+  assert.equal(after.characters.filter(c => c.alive).length, 8);
+  const visiting = advance(intervene(after, relic), 1);
+  assert.equal(entity(visiting, 'c-ivo').settlementId, 's-hearth', 'The deceased does not travel.');
+  assert.equal(entity(visiting, 'c-ves').settlementId, 's-hollow');
+  assert.match(event(visiting, 'rain-memory-read').text, /Ivo’s old records/);
+  const returned = advance(visiting, 1);
+  assert.equal(entity(returned, 'c-ves').settlementId, 's-hearth');
+  assert.match(event(returned, 'readers-returned').text, /Tavi and Ves/);
+  assertHistoryReferences(returned);
+});
+
+test('a new neighborhood home becomes part of two actual lives and keeps its construction history', () => {
+  const w = advance(intervene(createWorld({ tier: 2 }), east), 100);
+  const choice = event(w, 'shared-home');
+  const home = entity(w, 'k-hearth-home-1');
+  assert.ok(choice);
+  assert.ok(choice.causes.includes(home.eventId));
+  assert.ok(choice.causes.includes(event(w, 'late-supper').id));
+  assert.equal(entity(w, 'c-tavi').homeId, home.id);
+  assert.equal(entity(w, 'c-daro').homeId, home.id);
+  assert.ok(entity(w, 'c-tavi').memories.includes(choice.id));
+  const before = advance(intervene(createWorld({ tier: 2 }), east), choice.tick - 1);
+  assert.notEqual(entity(before, 'c-tavi').homeId, home.id);
+  assertHistoryReferences(w);
+});
+
+test('an elder completes a real visit before succession; no dead traveler returns or visitor population vanishes', () => {
+  const before = advance(createWorld({ tier: 2 }), 364);
+  const visited = advance(intervene(before, relic), 1);
+  assert.equal(entity(visited, 'c-ivo').alive, true);
+  assert.equal(entity(visited, 'c-ivo').settlementId, 's-hollow');
+  assert.equal(entity(visited, 's-hollow').population, 0);
+  const after = advance(visited, 1);
+  const homecoming = event(after, 'readers-returned');
+  const death = event(after, 'mender-remembered');
+  assert.ok(after.events.indexOf(homecoming) < after.events.indexOf(death));
+  assert.equal(entity(after, 'c-ivo').settlementId, 's-hearth');
+  assert.equal(entity(after, 'c-ivo').alive, false);
+  assert.equal(entity(after, 's-hearth').population, entity(before, 's-hearth').population - 1);
+  assert.equal(entity(after, 's-hollow').population, 0);
+  assertHistoryReferences(after);
+});
+
+test('long Tier 2 histories with refuge retain complete JSON structures and bounded causal references', () => {
+  let w = advance(intervene(createWorld({ tier: 2, climate: 'wet' }), east), 4);
+  w = intervene(w, { kind: 'offer-refuge', targetId: 's-hearth' });
+  w = advance(w, 5996);
+  assert.equal(w.tick, 6000);
+  assert.deepEqual(JSON.parse(JSON.stringify(w)), w);
+  assert.ok(w.events.length < 1000, 'The finite archive bounds repeated network observations.');
+  assert.ok(w.settlements.flatMap(s => s.structures).every(s => typeof s.name === 'string' && s.name.length > 0));
   assertHistoryReferences(w);
 });

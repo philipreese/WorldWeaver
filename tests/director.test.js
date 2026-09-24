@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { makeDigest, relatedEvents, shouldStop } from '../src/director.js';
+import { makeDigest, relatedEvents, selectAttentionEvent, shouldStop } from '../src/director.js';
 import { createWorld, advance, intervene } from '../src/sim/world.js';
 
 function event(id, tick, severity = 1, entities = ['c-nera'], extra = {}) {
@@ -25,6 +25,20 @@ test('settlement and recorded actor links count without requiring duplicated ent
   assert.equal(shouldStop(event('e-low', 3, 1), ['c-nera']), false);
   assert.equal(shouldStop(event('e-high', 3, 2), ['c-nera'], 'unknown'), true);
   assert.equal(shouldStop(null, ['c-nera']), false);
+});
+
+test('attention selection favors severity, preserves ties, and never promotes unrelated events', () => {
+  const minor = event('e-minor', 3, 1);
+  const unrelated = event('e-distant', 3, 3, ['s-other']);
+  const first = event('e-first', 3, 2);
+  const second = event('e-second', 3, 2);
+  const events = [minor, unrelated, first, second];
+  const before = structuredClone(events);
+  assert.equal(selectAttentionEvent(events, ['c-nera'], 'attentive'), first);
+  assert.equal(selectAttentionEvent(events, ['c-nera'], 'quiet'), null);
+  assert.equal(selectAttentionEvent(events, [], 'attentive'), null);
+  assert.equal(selectAttentionEvent([], ['c-nera']), null);
+  assert.deepEqual(events, before);
 });
 
 test('digest retains actual records and favors followed developments over unrelated drama', () => {
@@ -127,18 +141,49 @@ test('the real opening decision is discoverable through the follow list, digest 
 });
 
 test('history inspection supports numeric settlement knowledge and every real entity shape', () => {
-  const world = advance(createWorld({ seed: 8417, tier: 1 }), 4);
-  const entities = [
-    ...world.regions, ...world.settlements, ...world.characters, ...world.routes,
-    ...world.cultures, ...world.institutions, ...world.threads,
-    ...world.settlements.flatMap(settlement => settlement.structures),
-  ];
-  for (const entity of entities) {
-    const records = relatedEvents(world, entity.id);
-    assert.ok(Array.isArray(records), entity.id);
-    assert.ok(records.every(record => world.events.includes(record)), entity.id);
+  for (const tier of [1, 2]) {
+    const world = advance(intervene(createWorld({ seed: 8417, tier }), { kind: 'open-route', targetId: 'r-hearth-lattice' }), 60);
+    const entities = [
+      ...world.regions, ...world.settlements, ...world.characters, ...world.routes,
+      ...world.cultures, ...world.institutions, ...world.threads,
+      ...world.settlements.flatMap(settlement => settlement.structures),
+      ...(world.power ? [world.power] : []),
+    ];
+    for (const entity of entities) {
+      const records = relatedEvents(world, entity.id);
+      assert.ok(Array.isArray(records), entity.id);
+      assert.ok(records.every(record => world.events.includes(record)), entity.id);
+    }
+    const hearth = world.settlements.find(settlement => settlement.id === 's-hearth');
+    assert.equal(typeof hearth.knowledge, 'number');
+    assert.ok(relatedEvents(world, hearth.id).some(record => record.kind === 'seed-decision'));
   }
-  const hearth = world.settlements.find(settlement => settlement.id === 's-hearth');
-  assert.equal(typeof hearth.knowledge, 'number');
-  assert.ok(relatedEvents(world, hearth.id).some(record => record.kind === 'seed-decision'));
+});
+
+test('following a real power or diverged culture reaches recorded events without rewriting their interpretation layers', () => {
+  const world = advance(intervene(createWorld({ seed: 8417, tier: 2 }), { kind: 'open-route', targetId: 'r-hearth-lattice' }), 60);
+  const powerEvent = world.events.find(record => record.kind === 'power-emerged');
+  const cultureEvent = world.events.find(record => record.kind === 'culture-diverged');
+  assert.ok(powerEvent && cultureEvent);
+  assert.equal(shouldStop(powerEvent, [world.power.id], 'quiet'), true);
+  assert.equal(shouldStop(cultureEvent, ['culture-carriers']), true);
+  assert.equal(shouldStop(powerEvent, ['c-ves']), false);
+  assert.ok(relatedEvents(world, world.power.id).includes(powerEvent));
+  const digest = makeDigest(world, [world.power.id], 0);
+  assert.ok(digest.events.includes(powerEvent));
+  assert.ok(powerEvent.observed.length > 0);
+  assert.ok(powerEvent.interpretations.length > 1);
+  assert.equal(digest.events.find(record => record.id === powerEvent.id).interpretations, powerEvent.interpretations);
+  assert.equal(digest.threads.some(thread => thread.id === 't-authority'), false);
+});
+
+test('day 42 surfaces institutional collapse above its same-day redistribution', () => {
+  const prior = advance(intervene(createWorld({ seed: 8417, tier: 2 }), { kind: 'open-route', targetId: 'r-hearth-lattice' }), 41);
+  const world = advance(prior, 1);
+  const newEvents = world.events.slice(prior.events.length);
+  assert.ok(newEvents.some(record => record.kind === 'power-redistribution' && record.severity === 2));
+  const selected = selectAttentionEvent(newEvents, ['s-hearth', 'c-nera'], 'balanced');
+  assert.equal(selected.kind, 'channel-authority-ended');
+  assert.equal(selected.severity, 3);
+  assert.equal(selected.tick, 42);
 });

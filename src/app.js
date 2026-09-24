@@ -11,10 +11,15 @@ import {
   loadHistory,
 } from "./persistence/history.js";
 import { getInterventions, entityLabel } from "./sim/world.js";
-import { shouldStop, makeDigest, relatedEvents } from "./director.js";
+import {
+  shouldStop,
+  selectAttentionEvent,
+  makeDigest,
+  relatedEvents,
+} from "./director.js";
 import { WorldView } from "./view/world-view.js";
 import { Soundscape } from "./audio.js";
-const DEFAULT_TIER = 1;
+const DEFAULT_TIER = 2;
 const $ = (id) => document.getElementById(id);
 const escape = (value) =>
   String(value ?? "").replace(
@@ -295,9 +300,9 @@ function inspectEntity(id, move = true) {
   const isPerson = w.characters.some((c) => c.id === id),
     isSettlement = w.settlements.some((s) => s.id === id),
     isStructure = !!e.kind;
-  let html = `<div class="eyebrow">${isPerson ? "A LIFE IN THE BASIN" : isSettlement ? "A PLACE THAT REMEMBERS" : isStructure ? "A PHYSICAL TRACE" : "A THREAD OF HISTORY"}</div><h2>${esc(e.name || label(id, w))}</h2>`;
+  let html = `<div class="eyebrow">${isPerson ? (e.alive ? "A LIFE IN THE BASIN" : "A REMEMBERED LIFE") : isSettlement ? "A PLACE THAT REMEMBERS" : isStructure ? "A PHYSICAL TRACE" : "A THREAD OF HISTORY"}</div><h2>${esc(e.name || label(id, w))}</h2>`;
   if (isPerson)
-    html += `<span class="muted-badge">${esc(e.role)}</span><p>${esc(e.description)}</p><div class="scene">${esc(e.activity)}</div><p><span class="muted">Commitment:</span> ${esc(e.commitment)}</p>`;
+    html += `<span class="muted-badge">${esc(e.role)}${e.alive ? "" : ` · remembered since day ${e.diedAt}`}</span><p>${esc(e.description)}</p><div class="scene">${esc(e.activity)}</div><p><span class="muted">Commitment:</span> ${esc(e.commitment)}</p>`;
   else if (isSettlement)
     html += `<p>${esc(w.regions.find((r) => r.id === e.regionId)?.name)} · ${e.population} Emberkin${w.tier > 1 ? ` · ${e.synthetics} Vessels · ${e.collective} Chorus nodes` : ""}</p><div class="resource-grid">${[
       ["Habitat", e.habitat],
@@ -316,7 +321,28 @@ function inspectEntity(id, move = true) {
     html += `<span class="muted-badge">${esc(e.kind)} · ${e.abandonedAt !== undefined ? "ABANDONED" : "IN USE"}</span><p>${e.builtAt === 0 ? "First recorded on day" : "Built on day"} ${e.builtAt}${e.abandonedAt !== undefined ? `; abandoned on day ${e.abandonedAt}` : ""}. This place belongs to ${esc(s?.name)}. Its foundations preserve a recorded part of this history.</p><p>${esc(e.description || "")}</p>${e.lore ? `<div class="section-label">Lore · not recorded history</div><div class="interpretation">${esc(e.lore.replace(/^Lore: /, ""))}</div>` : ""}`;
   else
     html += `<p>${esc(e.practice || e.description || e.terrain || "An independent presence woven into the basin.")}</p>${e.status ? `<p>Status: ${esc(e.status)}</p>` : ""}`;
-  html += `<div class="inspect-actions"><button data-follow="${esc(id)}">${history.followed.includes(id) ? "✓ Following" : "+ Follow"}</button><button class="primary" data-visit="${esc(id)}">${isPerson ? "Walk with them" : "Explore streets"} ↗</button></div>`;
+  html += `<div class="inspect-actions"><button data-follow="${esc(id)}">${history.followed.includes(id) ? "✓ Following" : "+ Follow"}</button><button class="primary" data-visit="${esc(id)}">${isPerson ? (e.alive ? "Walk with them" : "Visit their place") : "Explore streets"} ↗</button>${s && viewTick === null ? `<button data-possibilities="${esc(s.id)}">Possibilities</button>` : ""}</div>`;
+  if (isSettlement && w.tier > 1) {
+    html += '<div class="section-label">Different ways to live here</div>';
+    if (e.population)
+      html +=
+        '<p class="tiny">Emberkin need food, livable ground, and room for growing households.</p>';
+    if (e.synthetics)
+      html += `<p class="tiny">Vessels use energy and ceramic repair material. Shell integrity: ${Math.round(e.syntheticIntegrity ?? 0)}%. Wet weather wears their bodies.</p>`;
+    if (e.collective)
+      html += `<p class="tiny">Chorus nodes live through wet connections and nutrients. Hydration: ${Math.round(e.collectiveHydration ?? e.habitat)}%. New rooms occupy more ground.</p>`;
+  }
+  if (w.cultures.some((c) => c.id === id) && e.interpretation)
+    html += `<div class="section-label">Cultural interpretation</div><div class="interpretation">${esc(e.interpretation)}</div>`;
+  if (w.institutions.some((i) => i.id === id))
+    html +=
+      '<div class="section-label">Participants</div>' +
+      e.members
+        .map(
+          (member) =>
+            `<button class="text-button" data-entity="${esc(member)}">${esc(label(member, w))} ↗</button><br>`,
+        )
+        .join("");
   if (viewTick !== null)
     html +=
       '<div class="read-only-note">You are visiting an earlier day. Branch here to change what happens next.</div>';
@@ -474,8 +500,10 @@ function step(auto = false) {
   }
   const w = currentWorld(history),
     newEvents = w.events.slice(before.events.length);
-  const stop = newEvents.find((e) =>
-    shouldStop(e, history.followed, history.attention),
+  const stop = selectAttentionEvent(
+    newEvents,
+    history.followed,
+    history.attention,
   );
   persist();
   render();
@@ -614,6 +642,24 @@ document.addEventListener("click", (event) => {
     $("location-note").textContent =
       `${s?.name || label(d.visit)} · select a person or a surviving trace`;
   }
+  if (d.possibilities) {
+    const w = world(),
+      place = w.settlements.find((s) => s.id === d.possibilities);
+    if (place && viewTick === null) {
+      const options = getInterventions(w).filter(
+        (i) =>
+          i.targetId === place.id ||
+          place.structures.some((b) => b.id === i.targetId) ||
+          w.routes.some(
+            (r) =>
+              r.id === i.targetId && (r.from === place.id || r.to === place.id),
+          ),
+      );
+      modal(
+        `<div class="eyebrow">CHANGE WHAT IS POSSIBLE</div><h2>${esc(place.name)}</h2><p>Open a possibility. The inhabitants will choose what to do with it.</p>${options.map((i) => `<div class="intervention"><h3>${esc(i.title)}</h3><p>${esc(i.description)}</p><div class="reason">${esc(i.reason)}</div><button data-intervention="${esc(i.id)}" ${i.available ? "" : "disabled"}>${i.available ? "Make possible" : "Conditions not met"}</button></div>`).join("")}`,
+      );
+    }
+  }
   if (d.follow) {
     const exists = history.followed.includes(d.follow);
     if (!exists && history.followed.length >= 12) {
@@ -649,6 +695,7 @@ document.addEventListener("click", (event) => {
   if (d.intervention && viewTick === null) {
     const i = getInterventions(world()).find((i) => i.id === d.intervention);
     if (i?.available) {
+      $("modal").close();
       pause();
       try {
         history = applyCommand(history, {

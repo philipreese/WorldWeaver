@@ -9,7 +9,11 @@
     "build": "node scripts/build.mjs",
     "preview": "node scripts/serve.mjs dist",
     "test": "node --test tests/*.test.js",
-    "check": "node scripts/check.mjs"
+    "check": "node scripts/check.mjs",
+    "verify:build": "node scripts/verify-build.mjs",
+    "verify:ui": "node scripts/verify-ui.mjs",
+    "examples": "node scripts/examples.mjs",
+    "render:evidence": "node scripts/render-world.mjs"
   },
   "engines": {
     "node": ">=22"

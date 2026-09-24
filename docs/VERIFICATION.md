@@ -6,11 +6,12 @@
 
 | Evidence | Verified scope | Limits |
 | --- | --- | --- |
-| `npm test` — 64 passing | 22 simulation, 23 history/recovery, 13 director, 6 renderer tests | Node execution; renderer input tests use synthetic events |
-| [UI report](../evidence/ui-integration.json) — 11 passing | Real app handlers: opening, exploration panel, decision layers, history/fork, refuge, relic discovery, power, institution, background pause | LinkeDOM and Skia Canvas; no browser engine, CSS layout, real touch, accessibility audit, or device performance |
-| [Build report](../evidence/build-verification.json) | `/WorldWeaver/` HTTP path, 19 precached responses, worker activation, simulated offline cache reads | Worker evaluated in Node with a cache mock; actual browser offline reload and installation remain unverified |
+| `npm test` — 72 passing | 22 simulation, 23 history/recovery, 13 director, 6 renderer, 8 statistics tests | Node execution; renderer input tests use synthetic events |
+| [UI report](../evidence/ui-integration.json) — 13 passing | Real app handlers: opening, exploration panel, decision layers, history/fork, refuge, relic discovery, power, institution, background pause | LinkeDOM and Skia Canvas; no browser engine, CSS layout, real touch, accessibility audit, or device performance |
+| [Build report](../evidence/build-verification.json) | `/WorldWeaver/` HTTP path, 22 precached responses, worker activation, simulated offline cache reads | Worker evaluated in Node with a cache mock; actual browser offline reload and installation remain unverified |
 | [Causal report](../evidence/causal-scenarios.json) | Preserved alternate futures, changed motives, exact decision context, director stops, three automated save-reload sequences | Agent-produced deterministic evidence; no human participants or qualitative session claims |
 | [Render report](../evidence/static-render-report.json) and `evidence/*.webp` | 10 frames from the production renderer, including three life forms and surviving power/infrastructure | Static Canvas renders; `render-phone` describes dimensions only. Timings are single hosted Node renders, not sustained FPS |
+| [Browser report](../evidence/browser-verification.json) | Cloud Chrome opening, alternate decision, preserved source future, and paused reload | Agent mouse/keyboard walkthrough; no real phone, touch emulation, human playtesting, sustained FPS, or continuous video |
 | [Portable examples](../public/worlds) | Three histories exported and imported with exact state equality | Separate browser-context transfer remains unverified |
 
 The Tier 1 checkpoint at `67d6731` was verified before Tier 2 integration. Its committed save is retained as a compatibility fixture in `tests/history.test.js`. Independent agent review also exercised 40 mixed-command branch transcripts and 54 Tier 2 configurations through day 6000, and checked three prior Tier 1 histories. Those exploratory checks complement the retained tests; they were not browser or human playtests.
@@ -58,7 +59,7 @@ Counts and exact records are generated in the causal report. **Interruptions per
 
 ## Remaining acceptance work
 
-The available browser rejected both local HTTP access and local file navigation. No public deployment was authorized. This blocked direct app browser inspection and capture in this workspace; it did not block the Node, source, and static-render work above.
+Initial local HTTP/file preview was blocked. The owner subsequently authorized Pages, selected GitHub Actions, and allowed the review branch in the deployment environment. The public preview now supports cloud-browser checks. [Browser evidence](../evidence/browser-verification.json) records the exercised build and interactions; device and continuous-recording gates below remain open.
 
 1. Run the real app on desktop, phone, and tablet in portrait and landscape. Exercise touch pan/pinch/select, text and focus behavior, muted/audio controls, reduced motion, camera recovery, and the entire opening-to-branch path.
 2. Record a continuous neighborhood visit: follow an inhabitant's activity, inspect a physical trace, reach its historical event, revisit the same place in the past, and branch. Retain browser screenshots and label mouse/keyboard, touch, emulation, and real-device evidence accurately.

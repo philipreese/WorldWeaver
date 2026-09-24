@@ -257,7 +257,7 @@ export class WorldView {
         const [w,h]=structureSize(object.entity.kind,object.entity.form);if(this.scale!=='region')this._hit(object.entity.id,object.x,object.y-h*.34,w*.55,h*.6,.4);
       }else{
         if(zoom>.65){const moving=distance(object.position,{x:object.position.tx,y:object.position.ty})>1;drawCharacter(ctx,object.entity,object.x,object.y,this.selectedId===object.entity.id,time,moving,this.reducedMotion);}
-        if(this.scale==='neighborhood')this._hit(object.entity.id,object.x,object.y-5,9,12,-.5);
+        if(this.scale==='neighborhood')this._hit(object.entity.id,object.x,object.y-8,9,12,-.5);
       }
     }
     const tracked=this.index.get(this.selectedId),position=this.people.get(this.selectedId);
@@ -412,22 +412,26 @@ export class WorldView {
       const people=[...(this.world.characters||[])].sort((a,b)=>(b.id===this.selectedId?1:0)-(a.id===this.selectedId?1:0));
       for(const c of people){
         if(c.alive===false)continue;const position=this.people.get(c.id);if(!position)continue;
-        const base=this.worldToScreen(position.x,position.y-17),selected=c.id===this.selectedId;
+        const base=this.worldToScreen(position.x,position.y-22),selected=c.id===this.selectedId;
         let p={...base};
         if(p.x<20||p.x>this.width-20||p.y<15||p.y>this.height-20)continue;
-        const width=c.name.length*(selected?8:7)+12;
-        for(const offset of [0,-18,-36,-54,18,36,-72]){
-          const candidate={left:base.x-width/2,right:base.x+width/2,top:base.y+offset-8,bottom:base.y+offset+8};
+        const width=c.name.length*(selected?8.5:7.8)+20;
+        for(const offset of [0,-24,-48,-72,24,48,-96]){
+          const candidate={left:base.x-width/2,right:base.x+width/2,top:base.y+offset-12,bottom:base.y+offset+12};
           if(candidate.top<10||occupiedLabels.some(r=>candidate.left<r.right&&candidate.right>r.left&&candidate.top<r.bottom&&candidate.bottom>r.top))continue;
           p.y=base.y+offset;occupiedLabels.push(candidate);break;
         }
-        if(Math.abs(p.y-base.y)>4){ctx.beginPath();ctx.moveTo(base.x,base.y+6);ctx.lineTo(p.x,p.y+8);ctx.strokeStyle='#cad2b77a';ctx.lineWidth=.6;ctx.stroke();}
-        this._label(ctx,c.name,p.x,p.y,{size:selected?13:11,color:selected?'#ffe7b3':'#ede4ce',weight:selected?'600':'400'});
+        if(Math.abs(p.y-base.y)>4){ctx.beginPath();ctx.moveTo(base.x,base.y+8);ctx.lineTo(p.x,p.y+10);ctx.strokeStyle='#e2d5ad8a';ctx.lineWidth=.7;ctx.stroke();}
+        ctx.save();ctx.beginPath();ctx.roundRect(p.x-width/2,p.y-10.5,width,21,7);ctx.fillStyle=selected?'#30474cf2':'#17343eda';ctx.fill();ctx.strokeStyle=selected?'#eed4999c':'#8eaf9d50';ctx.lineWidth=.7;ctx.stroke();ctx.restore();
+        this._label(ctx,c.name,p.x,p.y,{size:selected?14:12,color:selected?'#ffe8b7':'#f3e7cc',weight:'500',shadow:false});
         if(selected||this.hoverId===c.id){
           const activity=c.activity||c.role||'';
-          this._label(ctx,activity.length>52?`${activity.slice(0,49)}…`:activity,p.x,p.y+17,{size:10,color:'#bed0bc'});
+          const text=activity.length>52?`${activity.slice(0,49)}…`:activity,aw=Math.min(this.width-28,text.length*5.5+22),ax=clamp(p.x,aw/2+12,this.width-aw/2-12);
+          ctx.save();ctx.beginPath();ctx.roundRect(ax-aw/2,p.y-37,aw,21,6);ctx.fillStyle='#17343ee8';ctx.fill();ctx.strokeStyle='#c7c69c4a';ctx.lineWidth=.6;ctx.stroke();ctx.restore();
+          this._label(ctx,text,ax,p.y-26,{size:11,color:'#d8e2c8',shadow:false});
+          occupiedLabels.push({left:ax-aw/2,right:ax+aw/2,top:p.y-39,bottom:p.y-14});
         }
-        this.hits.push({id:c.id,x:p.x,y:p.y,rx:Math.max(22,c.name.length*3.8),ry:12,priority:-.7});
+        this.hits.push({id:c.id,x:p.x,y:p.y,rx:Math.max(22,width/2),ry:12,priority:-.7});
       }
     }
     const inspectId=this.hoverId||this.selectedId,object=this.index.get(inspectId);

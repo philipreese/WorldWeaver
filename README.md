@@ -1,5 +1,7 @@
 # Worldweaver — The Quiet Basin
 
+[**Play the browser preview**](https://philipreese.github.io/WorldWeaver/) · [Phone testing](docs/MOBILE_TESTING.md)
+
 A finite, explorable science-fiction world whose people make their own choices and leave a history you can inspect. Browser-first, statically served, no accounts, services, runtime AI, or paid dependencies.
 
 **Tier 2 mechanics are implemented; the required release remains incomplete pending browser, device, and playtesting evidence.** See [implementation status](docs/IMPLEMENTATION_STATUS.md) and [verification](docs/VERIFICATION.md). The [v0.4 brief](docs/worldweaver-build-prompt-v0.4.md) is the source of truth.
@@ -51,6 +53,10 @@ Import one of the files in [public/worlds](public/worlds) through **World settin
 
 Static Canvas frame from the actual renderer. This is not a browser screenshot or interaction recording.
 
+## Built alongside the game
+
+A [story and art guide](docs/EXPERIENCE_GUIDE.md) keeps the cast and visual identity consistent. Optional **World stats** and **Traits & memories** expose recorded data through a [versioned statistics interface](docs/DATA_MODEL.md). **World settings → Report a problem** downloads the saved world, build/browser details, and your note for reproduction. Nothing is submitted automatically; there is no analytics service.
+
 ## Development
 
 - `src/sim/`: deterministic world and recorded decisions; no rendering or clock dependency.
@@ -60,4 +66,4 @@ Static Canvas frame from the actual renderer. This is not a browser screenshot o
 - `src/app.js`: interface and bounded, interruptible advancement.
 - `tests/`: reproducible invariant and causal-path tests.
 
-[Shared contracts](docs/CONTRACTS.md) explain interfaces and protected invariants. Release gates: [Tier 1](https://github.com/philipreese/WorldWeaver/issues/1), [Tier 2](https://github.com/philipreese/WorldWeaver/issues/2), [verification](https://github.com/philipreese/WorldWeaver/issues/3). Work is reviewed in [PR #4](https://github.com/philipreese/WorldWeaver/pull/4). No public deployment is part of this change.
+[Shared contracts](docs/CONTRACTS.md) explain interfaces and protected invariants. Release gates: [Tier 1](https://github.com/philipreese/WorldWeaver/issues/1), [Tier 2](https://github.com/philipreese/WorldWeaver/issues/2), [verification](https://github.com/philipreese/WorldWeaver/issues/3). Work is reviewed in [PR #4](https://github.com/philipreese/WorldWeaver/pull/4). GitHub Pages publishes the review branch for mobile testing; merging the PR is not required.

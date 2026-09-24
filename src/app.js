@@ -19,6 +19,12 @@ import {
 } from "./director.js";
 import { WorldView } from "./view/world-view.js";
 import { Soundscape } from "./audio.js";
+import { getWorldStats, getPersonStats } from "./stats.js";
+import {
+  characterPortrait,
+  personHook,
+  friendlyIntervention,
+} from "./presentation.js";
 const DEFAULT_TIER = 2;
 const $ = (id) => document.getElementById(id);
 const escape = (value) =>
@@ -56,6 +62,14 @@ let viewTick = null,
 let inspectedEvent = null;
 let horizon = 14;
 const sound = new Soundscape();
+let buildInfo = { commit: "development", branch: "local" };
+let lastNotice = "";
+fetch(new URL("../build-info.json", import.meta.url))
+  .then((response) => (response.ok ? response.json() : null))
+  .then((info) => {
+    if (info && typeof info.commit === "string") buildInfo = info;
+  })
+  .catch(() => {});
 let sessionStart = currentWorld(history).tick;
 let entryDigest = makeDigest(
   currentWorld(history),
@@ -106,6 +120,7 @@ function settlementOf(id, w = world()) {
   return w.settlements.find((s) => s.id === e?.settlementId);
 }
 function toast(text) {
+  lastNotice = text;
   $("toast").textContent = text;
   $("toast").hidden = false;
   clearTimeout(toastTimer);
@@ -226,7 +241,7 @@ function renderJournal() {
     html += threads
       .map(
         (t, i) =>
-          `<article class="thread-card"><div class="thread-number">THREAD ${String(i + 1).padStart(2, "0")} · UNRESOLVED</div><h3>${esc(t.title)}</h3><p>${esc(t.summary)}</p><button class="text-button" data-thread="${esc(t.id)}">Follow this thread <span aria-hidden="true">↗</span></button></article>`,
+          `<article class="thread-card"><div class="thread-number">A STORY TO FOLLOW</div><h3>${esc(t.title)}</h3><p>${esc(t.summary)}</p><button class="text-button" data-thread="${esc(t.id)}">Take a look <span aria-hidden="true">↗</span></button></article>`,
       )
       .join("");
     if (!threads.length)
@@ -263,7 +278,8 @@ function renderJournal() {
 }
 function entityRow(id, w) {
   const e = entity(id, w);
-  return `<div class="entity-row"><span class="entity-symbol">${esc((e?.name || "?").slice(0, 1))}</span><button data-entity="${esc(id)}"><strong>${esc(label(id, w))}</strong><small>${esc(e?.role || e?.practice || e?.activity || (e?.population !== undefined ? "Settlement" : "Recorded presence"))}</small></button></div>`;
+  const person = w.characters.some((c) => c.id === id);
+  return `<div class="entity-row">${person ? characterPortrait(e) : `<span class="entity-symbol">${esc((e?.name || "?").slice(0, 1))}</span>`}<button data-entity="${esc(id)}"><strong>${esc(label(id, w))}</strong><small>${esc(person ? personHook(e) : e?.practice || e?.activity || (e?.population !== undefined ? "A place to visit" : "Part of this world's story"))}</small></button></div>`;
 }
 function eventButton(e) {
   return `<button class="event-link" data-event="${esc(e.id)}"><small>DAY ${e.tick} · ${esc(e.category.toUpperCase())}</small>${esc(e.title)} <span class="badged">↗</span></button>`;
@@ -300,13 +316,14 @@ function inspectEntity(id, move = true) {
   const isPerson = w.characters.some((c) => c.id === id),
     isSettlement = w.settlements.some((s) => s.id === id),
     isStructure = !!e.kind;
-  let html = `<div class="eyebrow">${isPerson ? (e.alive ? "A LIFE IN THE BASIN" : "A REMEMBERED LIFE") : isSettlement ? "A PLACE THAT REMEMBERS" : isStructure ? "A PHYSICAL TRACE" : "A THREAD OF HISTORY"}</div><h2>${esc(e.name || label(id, w))}</h2>`;
-  if (isPerson)
-    html += `<span class="muted-badge">${esc(e.role)}${e.alive ? "" : ` · remembered since day ${e.diedAt}`}</span><p>${esc(e.description)}</p><div class="scene">${esc(e.activity)}</div><p><span class="muted">Commitment:</span> ${esc(e.commitment)}</p>`;
+  let html = isPerson
+    ? `<div class="portrait-heading">${characterPortrait(e)}<div><div class="eyebrow">${e.alive ? "MEET A NEIGHBOR" : "A REMEMBERED LIFE"}</div><h2>${esc(e.name)}</h2><span class="muted-badge">${esc(e.role)}${e.alive ? "" : ` · remembered since day ${e.diedAt}`}</span></div></div>`
+    : `<div class="eyebrow">${isSettlement ? "A PLACE THAT REMEMBERS" : isStructure ? "A PLACE WITH A STORY" : "PART OF THE STORY"}</div><h2>${esc(e.name || label(id, w))}</h2>`;
+  if (isPerson) html += `<p class="character-hook">${esc(personHook(e))}</p>`;
   else if (isSettlement)
-    html += `<p>${esc(w.regions.find((r) => r.id === e.regionId)?.name)} · ${e.population} Emberkin${w.tier > 1 ? ` · ${e.synthetics} Vessels · ${e.collective} Chorus nodes` : ""}</p><div class="resource-grid">${[
-      ["Habitat", e.habitat],
-      ["Sustenance", e.food],
+    html += `<p>${esc(w.regions.find((r) => r.id === e.regionId)?.name)} · ${e.population} Emberkin${w.tier > 1 ? ` · ${e.synthetics} Vessels · ${e.collective} Chorus nodes` : ""}</p><details class="story-details"><summary>How is this place doing?</summary><div class="resource-grid">${[
+      ["Living ground", e.habitat],
+      ["Food", e.food],
       ["Energy", e.energy],
       ["Materials", e.materials],
     ]
@@ -316,14 +333,16 @@ function inspectEntity(id, move = true) {
       )
       .join(
         "",
-      )}</div><p>${esc(w.cultures.find((c) => c.id === e.cultureId)?.practice || "A community still finding its own way.")}</p>`;
+      )}</div><p>${esc(w.cultures.find((c) => c.id === e.cultureId)?.practice || "A community still finding its own way.")}</p></details>`;
   else if (isStructure)
     html += `<span class="muted-badge">${esc(e.kind)} · ${e.abandonedAt !== undefined ? "ABANDONED" : "IN USE"}</span><p>${e.builtAt === 0 ? "First recorded on day" : "Built on day"} ${e.builtAt}${e.abandonedAt !== undefined ? `; abandoned on day ${e.abandonedAt}` : ""}. This place belongs to ${esc(s?.name)}. Its foundations preserve a recorded part of this history.</p><p>${esc(e.description || "")}</p>${e.lore ? `<div class="section-label">Lore · not recorded history</div><div class="interpretation">${esc(e.lore.replace(/^Lore: /, ""))}</div>` : ""}`;
   else
     html += `<p>${esc(e.practice || e.description || e.terrain || "An independent presence woven into the basin.")}</p>${e.status ? `<p>Status: ${esc(e.status)}</p>` : ""}`;
-  html += `<div class="inspect-actions"><button data-follow="${esc(id)}">${history.followed.includes(id) ? "✓ Following" : "+ Follow"}</button><button class="primary" data-visit="${esc(id)}">${isPerson ? (e.alive ? "Walk with them" : "Visit their place") : "Explore streets"} ↗</button>${s && viewTick === null ? `<button data-possibilities="${esc(s.id)}">Possibilities</button>` : ""}</div>`;
+  html += `<div class="inspect-actions"><button data-follow="${esc(id)}">${history.followed.includes(id) ? "✓ Following" : "+ Follow"}</button><button class="primary" data-visit="${esc(id)}">${isPerson ? (e.alive ? "Walk with them" : "Visit their place") : "Explore streets"} ↗</button>${s && viewTick === null ? `<button data-possibilities="${esc(s.id)}">Lend a hand</button>` : ""}</div>`;
+  if (isPerson)
+    html += `<button class="text-button" data-person-stats="${esc(id)}">Traits & memories ↗</button>`;
   if (isSettlement && w.tier > 1) {
-    html += '<div class="section-label">Different ways to live here</div>';
+    html += '<details class="story-details"><summary>Who lives here?</summary>';
     if (e.population)
       html +=
         '<p class="tiny">Emberkin need food, livable ground, and room for growing households.</p>';
@@ -331,6 +350,7 @@ function inspectEntity(id, move = true) {
       html += `<p class="tiny">Vessels use energy and ceramic repair material. Shell integrity: ${Math.round(e.syntheticIntegrity ?? 0)}%. Wet weather wears their bodies.</p>`;
     if (e.collective)
       html += `<p class="tiny">Chorus nodes live through wet connections and nutrients. Hydration: ${Math.round(e.collectiveHydration ?? e.habitat)}%. New rooms occupy more ground.</p>`;
+    html += "</details>";
   }
   if (w.cultures.some((c) => c.id === id) && e.interpretation)
     html += `<div class="section-label">Cultural interpretation</div><div class="interpretation">${esc(e.interpretation)}</div>`;
@@ -348,13 +368,14 @@ function inspectEntity(id, move = true) {
       '<div class="read-only-note">You are visiting an earlier day. Branch here to change what happens next.</div>';
   if (isPerson) {
     html +=
-      '<div class="section-label">Relationships</div>' +
+      `${e.alive ? `<p class="current-activity"><span class="muted">Right now:</span> ${esc(e.activity)}</p>` : ""}<details class="story-details"><summary>Get to know ${esc(e.name)}</summary><p>${esc(e.description)}</p><p><b>What matters to them:</b> ${esc(e.commitment)}</p><div class="section-label">Friends & connections</div>` +
       e.relationships
         .map(
           (r) =>
             `<button class="event-link" data-entity="${esc(r.otherId)}">${esc(label(r.otherId, w))}<small>${esc(r.label)}</small></button>`,
         )
-        .join("");
+        .join("") +
+      "</details>";
   }
   if (isSettlement) {
     const occupants = w.characters.filter(
@@ -364,7 +385,7 @@ function inspectEntity(id, move = true) {
       '<div class="section-label">People you may meet</div>' +
       occupants.map((c) => entityRow(c.id, w)).join("");
     html +=
-      '<div class="section-label">Traces & architecture</div>' +
+      '<div class="section-label">Buildings & old places</div>' +
       e.structures
         .map(
           (b) =>
@@ -402,21 +423,23 @@ function inspectEntity(id, move = true) {
       '<div class="section-label">Recorded history · ask why</div>' +
       events.map(eventButton).join("");
   if (s && viewTick === null) {
-    const options = getInterventions(w).filter(
-      (i) =>
-        i.targetId === s.id ||
-        s.structures.some((b) => b.id === i.targetId) ||
-        w.routes.some(
-          (r) => r.id === i.targetId && (r.from === s.id || r.to === s.id),
-        ),
-    );
+    const options = getInterventions(w)
+      .map(friendlyIntervention)
+      .filter(
+        (i) =>
+          i.targetId === s.id ||
+          s.structures.some((b) => b.id === i.targetId) ||
+          w.routes.some(
+            (r) => r.id === i.targetId && (r.from === s.id || r.to === s.id),
+          ),
+      );
     if (options.length)
       html +=
         '<div class="section-label">Change what is possible</div>' +
         options
           .map(
             (i) =>
-              `<div class="intervention"><h3>${esc(i.title)}</h3><p>${esc(i.description)}</p><div class="reason">${esc(i.reason)}</div><button data-intervention="${esc(i.id)}" ${i.available ? "" : "disabled"}>${i.available ? "Make possible" : "Conditions not met"}</button></div>`,
+              `<div class="intervention"><h3>${esc(i.title)}</h3><p>${esc(i.description)}</p><div class="reason">${esc(i.reason)}</div><button data-intervention="${esc(i.id)}" ${i.available ? "" : "disabled"}>${i.available ? "Try this" : "Not available"}</button></div>`,
           )
           .join("");
   }
@@ -433,11 +456,11 @@ function showEvent(id, move = true) {
     $("inspector").scrollTop = 0;
     if (e.settlementId) renderer.focus(e.settlementId, "settlement");
   }
-  let html = `<div class="eyebrow">DAY ${e.tick} · ${esc(e.category)}</div><h2>${esc(e.title)}</h2><div class="scene">${esc(e.text)}</div><div class="section-label">Observed effects</div><ul class="explanation-list">${e.observed.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>`;
+  let html = `<div class="eyebrow">DAY ${e.tick}</div><h2>${esc(e.title)}</h2><div class="scene">${esc(e.text)}</div><div class="inspect-actions"><button class="primary" data-visit="${esc(e.settlementId)}">Visit this place ↗</button><button data-visit-day="${e.tick}">Visit day ${e.tick}</button></div><details class="story-details" data-event-explanation><summary>Why did this happen?</summary><div class="section-label">Observed effects · what changed</div><ul class="explanation-list">${e.observed.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>`;
   if (e.decision) {
     const d = e.decision;
     html +=
-      `<div class="section-label">Recorded decision · ${esc(label(d.actorId, w))}</div><p>What they knew at the time:</p><ul class="explanation-list">${d.known.map((k) => `<li>${esc(k)}</li>`).join("")}</ul><p>${d.motives.map(esc).join(" · ")}</p><div class="section-label">Their alternatives</div>` +
+      `<div class="section-label">Recorded decision · ${esc(label(d.actorId, w))}</div><p>What they knew at the time:</p><ul class="explanation-list">${d.known.map((k) => `<li>${esc(k)}</li>`).join("")}</ul><p>${d.motives.map(esc).join(" · ")}</p><div class="section-label">What else could they do?</div>` +
       d.alternatives
         .map(
           (a) =>
@@ -445,25 +468,26 @@ function showEvent(id, move = true) {
         )
         .join("");
   }
-  html += '<div class="section-label">Cultural interpretations</div>';
-  html += e.interpretations.length
-    ? e.interpretations
-        .map(
-          (i) =>
-            `<div class="interpretation"><small>${esc(label(i.cultureId, w))} believes:</small><br>${esc(i.text)}</div>`,
-        )
-        .join("")
-    : '<p class="tiny muted">No cultural interpretation was recorded for this event. Observation does not establish a divine intention.</p>';
+  if (e.interpretations.length) {
+    html +=
+      '<div class="section-label">Cultural interpretations · what people believe</div>';
+    html += e.interpretations
+      .map(
+        (i) =>
+          `<div class="interpretation"><small>${esc(label(i.cultureId, w))} believes:</small><br>${esc(i.text)}</div>`,
+      )
+      .join("");
+  }
   if (e.causes.length)
     html +=
-      '<div class="section-label">Underlying records</div>' +
+      '<div class="section-label">How this began · earlier records</div>' +
       e.causes
         .map((c) => w.events.find((x) => x.id === c))
         .filter(Boolean)
         .map(eventButton)
         .join("");
   html +=
-    `<div class="inspect-actions"><button data-visit-day="${e.tick}">Visit day ${e.tick}</button><button data-visit="${esc(e.settlementId)}">Visit this place ↗</button></div><div class="section-label">People & places involved</div>` +
+    '<div class="section-label">People & places involved</div>' +
     e.entities
       .filter((id) => entity(id, w))
       .slice(0, 6)
@@ -471,12 +495,18 @@ function showEvent(id, move = true) {
         (id) =>
           `<button class="text-button" data-entity="${esc(id)}">${esc(label(id, w))} ↗</button><br>`,
       )
-      .join("");
+      .join("") +
+    "</details>";
   openInspector(html);
 }
 function intro() {
+  const nera = world().characters.find((c) => c.id === "c-nera");
+  renderer.focus(nera.id, "neighborhood");
+  renderer.select(nera.id);
+  scale = "neighborhood";
+  renderScale();
   openInspector(
-    `<div class="eyebrow">YOUR FIRST VISIT</div><h2>Every place<br>remembers.</h2><p>The basin has been living before you arrived. Its people will choose their own way. You can follow them, listen, and sometimes open a possibility.</p><div class="scene">Nera keeps the seed archive. Its cooling seam is failing. Across the closed eastern passage, someone may know how to mend it.</div><p>Visit Hearth. Meet Nera. You have time to look around.</p><div class="inspect-actions"><button class="primary" data-entity="c-nera">Meet Nera ↗</button></div><button class="text-button" data-action="dismiss-intro">Or simply explore the basin →</button><div class="rule"></div><p class="tiny">Time is paused. Explore freely. Use <b>Next moment</b> when you are ready to see what happens.</p>`,
+    `<div class="portrait-heading">${characterPortrait(nera)}<div><div class="eyebrow">WELCOME TO HEARTH</div><h2>Come meet Nera.</h2></div></div><p class="character-hook">She counts plates before people. She also has a problem: her seed room is getting wet.</p><p>Across a blocked path, Oren may know how to help.</p><div class="inspect-actions"><button class="primary" data-entity="c-nera">Meet Nera ↗</button><button data-action="dismiss-intro">Look around</button></div><p class="tiny">Time is paused. Explore as long as you like. Press <b>Next moment</b> when you’re ready.</p>`,
   );
 }
 function pause() {
@@ -567,14 +597,160 @@ function modal(html) {
 }
 function showHelp() {
   modal(
-    `<div class="eyebrow">AN OBSERVER'S GUIDE</div><h2>Follow a life. Find a history.</h2><p>You are outside this world's pantheon. Inhabitants choose their own answers. Your interventions change the alternatives they can consider.</p><div class="guide-grid"><div><b>01 · Explore</b><p>Select Hearth, then Explore streets. Drag to move, pinch or use + / − to zoom. Select a person to walk with their actual activity.</p></div><div><b>02 · Follow</b><p>Keep a few people or places close. Their important events stop time. Your field journal is always one tap away.</p></div><div><b>03 · Ask why</b><p>History opens recorded effects, decision-time knowledge, alternatives, and separately labeled interpretations.</p></div><div><b>04 · Ask what if</b><p>Open a viable passage or restore habitat. Visit an earlier day on the timeline, then branch to preserve both futures.</p></div></div><p><b>Try this:</b> meet Nera, inspect Hearth's archive, and look for the eastern passage. Advance to her decision. Revisit day 2 and try the other possibility.</p><p class="tiny">Space: pause/play · Escape: close inspection · arrows: move camera · + / −: zoom · 0: overview. Time pauses whenever the app is hidden. No time passes while away.</p><div class="modal-actions"><button class="primary" data-action="close-modal">Enter the basin</button></div>`,
+    `<div class="eyebrow">YOUR FIRST FEW MINUTES</div><h2>Follow someone.<br>See what happens.</h2><div class="guide-grid"><div><b>1 · Meet a neighbor</b><p>Tap Nera, then Walk with them. Drag to look around. Tap a building to find its story.</p></div><div><b>2 · Watch, or lend a hand</b><p>Open a path or uncover an old place. People choose what to do next. You can also just watch.</p></div><div><b>3 · See what happens</b><p>Press Next moment. Time stops when someone you follow has an important moment.</p></div><div><b>4 · Follow your curiosity</b><p>Ask Why did this happen? Or visit an earlier day and Branch here to try another future. Both are kept.</p></div></div><p>Meet the neighbors: <b>Emberkin</b> are people, <b>Vessels</b> are machine people, and <b>Chorus</b> live through connected root rooms.</p><details class="story-details"><summary>Camera & keyboard tips</summary><p>Drag or use arrow keys to move. Pinch or use + / − to zoom. The overview button brings the whole basin back.</p><p>Space pauses or plays; Escape closes a panel. Nothing happens while you’re away.</p></details><div class="modal-actions"><button class="primary" data-action="close-modal">Let’s explore</button><button data-action="report">Report a problem</button></div>`,
   );
 }
+
 function showSettings() {
   modal(
-    `<div class="eyebrow">THE OBSERVATORY</div><h2>Your world, safely kept.</h2><label class="field">What deserves a pause?<select id="attention"><option value="quiet" ${history.attention === "quiet" ? "selected" : ""}>Only turning points</option><option value="balanced" ${history.attention === "balanced" ? "selected" : ""}>Meaningful changes</option><option value="attentive" ${history.attention === "attentive" ? "selected" : ""}>Small moments too</option></select></label><label class="field">Next moment horizon<select id="horizon"><option value="7" ${horizon === 7 ? "selected" : ""}>Up to 7 days</option><option value="14" ${horizon === 14 ? "selected" : ""}>Up to 14 days</option><option value="30" ${horizon === 30 ? "selected" : ""}>Up to 30 days</option></select></label><label class="field">Rendering detail<select id="quality"><option value="auto">Automatic</option><option value="low">Gentle on battery</option><option value="high">Full detail</option></select></label><label class="field">Reduce motion<input id="reduced-motion" type="checkbox" ${matchMedia("(prefers-reduced-motion: reduce)").matches ? "checked" : ""}></label><label class="field">Sound volume<input id="volume" type="range" min="0" max="60" value="${sound.volume * 100}"></label><div class="rule"></div><p>Portable saves include every retained branch, character, decision, and consequence. Import validates the entire history before replacing this world.</p><div class="modal-actions"><button data-action="export">Export history ↓</button><button data-action="import">Import history ↑</button><button data-action="branches">View branches</button></div><p class="tiny">Simulation version ${esc(world().version)} · bounded local history. Export before reaching the retention limit. Browser storage can be cleared by the browser; keep a portable copy.</p><div class="rule"></div><button class="text-button" data-action="new-world">Shape another beginning →</button>`,
+    `<div class="eyebrow">WORLD SETTINGS</div><h2>Your world, safely kept.</h2><p>Keep a copy of your world, or bring a saved one back. All its different futures come with it.</p><div class="modal-actions"><button data-action="export">Export history ↓</button><button data-action="import">Import history ↑</button><button data-action="branches">View branches</button><button data-action="stats">World stats</button></div><label class="field">Sound volume<input id="volume" type="range" min="0" max="60" value="${sound.volume * 100}"></label><details class="story-details"><summary>Time, motion & picture settings</summary><label class="field">When should time stop?<select id="attention"><option value="quiet" ${history.attention === "quiet" ? "selected" : ""}>Only turning points</option><option value="balanced" ${history.attention === "balanced" ? "selected" : ""}>Meaningful changes</option><option value="attentive" ${history.attention === "attentive" ? "selected" : ""}>Small moments too</option></select></label><label class="field">How far can Next moment go?<select id="horizon"><option value="7" ${horizon === 7 ? "selected" : ""}>Up to 7 days</option><option value="14" ${horizon === 14 ? "selected" : ""}>Up to 14 days</option><option value="30" ${horizon === 30 ? "selected" : ""}>Up to 30 days</option></select></label><label class="field">Picture detail<select id="quality"><option value="auto">Automatic</option><option value="low">Gentle on battery</option><option value="high">Full detail</option></select></label><label class="field">Reduce motion<input id="reduced-motion" type="checkbox" ${matchMedia("(prefers-reduced-motion: reduce)").matches ? "checked" : ""}></label></details><p class="tiny">Saves stay in this browser. Export a copy before clearing browser data or starting a new world.</p><button class="text-button" data-action="new-world">Shape another beginning →</button><div class="rule"></div><button data-action="report">Report a problem</button><p class="tiny">Build ${esc(buildInfo.commit.slice(0, 8))}</p>`,
   );
 }
+function showStats(personId = null) {
+  const snapshot = world();
+  const person = personId
+    ? snapshot.characters.find((c) => c.id === personId)
+    : null;
+  const report = personId
+    ? getPersonStats(snapshot, personId)
+    : getWorldStats(snapshot, history);
+  if (!report) return;
+  const labels = {
+    "characters.alive": "People you can follow",
+    "population.organic": "Emberkin residents",
+    "population.synthetic": "Vessel neighbors",
+    "population.collective": "Chorus nodes",
+    "structures.built": "New buildings",
+    "events.total": "Moments in history",
+    "history.branches": "Different futures kept",
+    "person.ageDays": "Age in days",
+    "person.alive": "Alive",
+    "motive.duty": "Sense of duty",
+    "power.materialResponses": "Times the Undersong answered",
+  };
+  const highlights = new Set(
+    person
+      ? [
+          "person.ageYears",
+          "motive.care",
+          "motive.curiosity",
+          "motive.duty",
+          "person.memories",
+          "person.relationships",
+        ]
+      : [
+          "time.days",
+          "characters.alive",
+          "structures.built",
+          "events.total",
+          "history.branches",
+          "power.materialResponses",
+        ],
+  );
+  const grid = (items) =>
+    `<dl class="stats-grid">${items
+      .map((stat) => {
+        const value =
+          stat.id === "person.alive"
+            ? stat.value
+              ? "Yes"
+              : "No"
+            : Number.isInteger(stat.value)
+              ? stat.value.toLocaleString()
+              : stat.value.toFixed(1);
+        const unit = stat.unit
+          ? ` <small>${esc(stat.unit === "model units" ? "units" : stat.unit)}</small>`
+          : "";
+        return `<div class="stat-card"><dt>${esc(labels[stat.id] || stat.label)}</dt><dd>${value}${unit}</dd></div>`;
+      })
+      .join("")}</dl>`;
+  const remaining = report.stats.filter(
+    (stat) => !highlights.has(stat.id) && stat.id !== "history.commands",
+  );
+  const groups = person
+    ? [["More of their story", remaining]]
+    : [
+        [
+          "Places & neighbors",
+          remaining.filter((stat) =>
+            /^(regions|settlements|population|characters|structures|routes)\./.test(
+              stat.id,
+            ),
+          ),
+        ],
+        [
+          "Stories & traditions",
+          remaining.filter((stat) =>
+            /^(cultures|institutions|threads|events)\./.test(stat.id),
+          ),
+        ],
+        [
+          "Supplies & the shared channel",
+          remaining.filter((stat) =>
+            /^(resources|knowledge|power|network)\./.test(stat.id),
+          ),
+        ],
+        [
+          "This telling",
+          remaining.filter((stat) => stat.id.startsWith("history.")),
+        ],
+      ];
+  modal(
+    `<div class="eyebrow">${person ? "TRAITS & MEMORIES" : "YOUR WORLD IN NUMBERS"} · DAY ${snapshot.tick}</div>${person ? `<div class="portrait-heading">${characterPortrait(person)}<h2>${esc(person.name)}</h2></div><p>These traits help shape their choices. Their memories grow as life happens.</p>` : "<h2>A world with a history.</h2><p>A closer look at the people, places, and changes in this telling.</p>"}${grid(report.stats.filter((stat) => highlights.has(stat.id)))}${groups
+      .filter(([, items]) => items.length)
+      .map(
+        ([name, items]) =>
+          `<details class="story-details"><summary>${name}</summary>${grid(items)}</details>`,
+      )
+      .join(
+        "",
+      )}<div class="modal-actions"><button data-action="close-modal">Back to the world</button></div>`,
+  );
+}
+function showProblemReport() {
+  modal(
+    `<div class="eyebrow">HELP US MEND THINGS</div><h2>Something went wrong?</h2><p>Save a report you can share with the person testing the game. It includes this world’s history, game version, browser details, and your note.</p><label for="problem-note">What happened?</label><textarea id="problem-note" class="report-note" maxlength="2000" placeholder="What were you trying to do? What happened instead?"></textarea><p class="tiny">The report downloads to your device. It is not sent anywhere automatically.</p><div class="modal-actions"><button class="primary" data-action="download-report">Download report ↓</button><button data-action="close-modal">Back to the world</button></div>`,
+  );
+}
+function exportProblemReport() {
+  const report = {
+    format: "worldweaver-problem-report",
+    reportVersion: 1,
+    build: buildInfo,
+    note: $("problem-note").value.slice(0, 2000),
+    browser: navigator.userAgent || "unknown",
+    viewport: {
+      width: window.innerWidth || null,
+      height: window.innerHeight || null,
+      pixelRatio: globalThis.devicePixelRatio || 1,
+    },
+    view: {
+      day: world().tick,
+      historicalDay: viewTick,
+      camera: renderer.getViewState(),
+    },
+    saveStatus: $("save-state").textContent,
+    lastNotice,
+    stats: getWorldStats(world(), history),
+    history: JSON.parse(serializeHistory(history)),
+  };
+  downloadFile(
+    `worldweaver-report-day-${world().tick}.json`,
+    JSON.stringify(report, null, 2),
+  );
+  toast("Report downloaded. Share it when you’re ready.");
+}
+function downloadFile(filename, contents) {
+  const url = URL.createObjectURL(
+    new Blob([contents], { type: "application/json" }),
+  );
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 function showBranches() {
   modal(
     `<div class="eyebrow">ASK WHAT IF</div><h2>Histories that could be.</h2><p>Each branch preserves its source future. Visit a day on the timeline, then continue from there.</p>${history.branches.map((b) => `<div class="branch-row"><div><h3>${esc(b.name)}</h3><small>Day ${b.head.tick} · ${b.parentId ? `branched on day ${b.forkTick}` : "original history"}</small></div><button data-branch="${esc(b.id)}" ${b.id === history.activeBranchId ? "disabled" : ""}>${b.id === history.activeBranchId ? "Here now" : "Visit"}</button></div>`).join("")}<div class="modal-actions"><button class="primary" data-action="branch-present">Branch from ${viewTick === null ? "now" : `day ${viewTick}`}</button><button data-action="export">Export all branches ↓</button></div>`,
@@ -630,6 +806,7 @@ document.addEventListener("click", (event) => {
     renderJournal();
   }
   if (d.entity) inspectEntity(d.entity);
+  if (d.personStats) showStats(d.personStats);
   if (d.visit) {
     selectedId = null;
     inspectedEvent = null;
@@ -646,17 +823,20 @@ document.addEventListener("click", (event) => {
     const w = world(),
       place = w.settlements.find((s) => s.id === d.possibilities);
     if (place && viewTick === null) {
-      const options = getInterventions(w).filter(
-        (i) =>
-          i.targetId === place.id ||
-          place.structures.some((b) => b.id === i.targetId) ||
-          w.routes.some(
-            (r) =>
-              r.id === i.targetId && (r.from === place.id || r.to === place.id),
-          ),
-      );
+      const options = getInterventions(w)
+        .map(friendlyIntervention)
+        .filter(
+          (i) =>
+            i.targetId === place.id ||
+            place.structures.some((b) => b.id === i.targetId) ||
+            w.routes.some(
+              (r) =>
+                r.id === i.targetId &&
+                (r.from === place.id || r.to === place.id),
+            ),
+        );
       modal(
-        `<div class="eyebrow">CHANGE WHAT IS POSSIBLE</div><h2>${esc(place.name)}</h2><p>Open a possibility. The inhabitants will choose what to do with it.</p>${options.map((i) => `<div class="intervention"><h3>${esc(i.title)}</h3><p>${esc(i.description)}</p><div class="reason">${esc(i.reason)}</div><button data-intervention="${esc(i.id)}" ${i.available ? "" : "disabled"}>${i.available ? "Make possible" : "Conditions not met"}</button></div>`).join("")}`,
+        `<div class="eyebrow">LEND A HAND</div><h2>${esc(place.name)}</h2><p>You can open a way forward. The neighbors decide what happens next.</p>${options.map((i) => `<div class="intervention"><h3>${esc(i.title)}</h3><p>${esc(i.description)}</p><div class="reason">${esc(i.reason)}</div><button data-intervention="${esc(i.id)}" ${i.available ? "" : "disabled"}>${i.available ? "Try this" : "Not available"}</button></div>`).join("")}`,
       );
     }
   }
@@ -750,6 +930,9 @@ document.addEventListener("click", (event) => {
   if (action === "close-journal") $("journal").classList.remove("mobile-open");
   if (action === "close-modal") $("modal").close();
   if (action === "export") exportSave();
+  if (action === "stats") showStats();
+  if (action === "report") showProblemReport();
+  if (action === "download-report") exportProblemReport();
   if (action === "import") $("import-file").click();
   if (action === "branches") showBranches();
   if (action === "branch-present") branchNow();

@@ -75,14 +75,16 @@
           <div class="follow-strip" id="follow-strip"></div>
           <nav class="journal-tabs" aria-label="Journal view">
             <button data-tab="threads" class="active">
-              Threads <span id="thread-count"></span></button
+              Stories <span id="thread-count"></span></button
             ><button data-tab="followed">Following</button
             ><button data-tab="chronicle">History</button>
           </nav>
           <div id="journal-content" class="journal-content"></div>
           <div class="journal-footer">
             <span class="tiny-dot"></span
-            ><span>History waits while you are away.</span>
+            ><button class="text-button" data-action="stats">
+              World stats ↗
+            </button>
           </div>
         </aside>
         <aside
@@ -141,7 +143,7 @@
         </div>
         <div class="timeline">
           <div class="timeline-label">
-            <span>CHRONICLE</span><span id="timeline-range">Day 0 — 0</span>
+            <span>LOOK BACK</span><span id="timeline-range">Day 0 — 0</span>
           </div>
           <input
             type="range"

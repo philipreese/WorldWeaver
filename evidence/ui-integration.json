@@ -1,6 +1,6 @@
 {
   "kind": "Node DOM + Canvas integration; not browser execution, layout, performance, touch or human playtesting.",
-  "passed": 11,
+  "passed": 13,
   "cases": [
     "Tier 2 opening initializes paused on day 2 with saved development",
     "Meet Nera reaches a conditional intervention and recorded history",
@@ -12,6 +12,8 @@
     "Surveyed ancient trace distinguishes lore from recorded history",
     "Material power emerges in play, remains inspectable, and can be followed",
     "Institution collapse retains accessible participants and recorded history",
+    "Optional world and character statistics expose recorded data without advancing time",
+    "Problem report downloads a reproducible saved world and the player's note",
     "Background handler pauses and preserves exact world state"
   ]
 }

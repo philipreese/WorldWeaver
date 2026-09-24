@@ -74,7 +74,11 @@ assert.equal(currentWorld(saved()).tier, 2);
 cases.push("Tier 2 opening initializes paused on day 2 with saved development");
 click('[data-entity="c-nera"]');
 assert.match($("#inspector").textContent, /Nera/);
-assert.match($("#inspector").textContent, /Expose the Silt Saddle/);
+assert.match($("#inspector").textContent, /Open the path/);
+click('[data-person-stats="c-nera"]');
+assert.match($("#modal-content").textContent, /Curiosity/);
+assert.match($("#modal-content").textContent, /Personal memories/);
+dialog.close();
 cases.push("Meet Nera reaches a conditional intervention and recorded history");
 click('[data-visit="c-nera"]');
 assert.equal($("#inspector").hidden, true);
@@ -90,8 +94,13 @@ const decision = currentWorld(first).events.find(
   (e) => e.kind === "seed-decision",
 );
 click(`[data-event="${decision.id}"]`);
+assert.equal($("[data-event-explanation]").hasAttribute("open"), false);
+assert.match(
+  $("[data-event-explanation] summary").textContent,
+  /Why did this happen/,
+);
 assert.match($("#inspector").textContent, /Recorded decision/);
-assert.match($("#inspector").textContent, /Cultural interpretations/);
+assert.doesNotMatch($("#inspector").textContent, /Cultural interpretations/);
 cases.push("Closed-route choice reaches its separate explanation layers");
 const range = $("#timeline-slider");
 range.value = "2";
@@ -166,10 +175,37 @@ assert.match($("#inspector").textContent, /Nera/);
 cases.push(
   "Institution collapse retains accessible participants and recorded history",
 );
+click('[data-action="stats"]');
+assert.match($("#modal-content").textContent, /Different futures kept/);
+assert.match($("#modal-content").textContent, /Times the Undersong answered/);
+dialog.close();
+cases.push(
+  "Optional world and character statistics expose recorded data without advancing time",
+);
 click("#settings");
 assert.equal(dialog.open, true);
 assert.ok($("#horizon"));
 assert.ok($("#attention"));
+click('[data-action="report"]');
+$("#problem-note").value = "The path was hard to find.";
+let reportBlob;
+const originalObjectURL = URL.createObjectURL;
+URL.createObjectURL = (blob) => {
+  reportBlob = blob;
+  return "blob:node-test-report";
+};
+click('[data-action="download-report"]');
+URL.createObjectURL = originalObjectURL;
+const report = JSON.parse(await reportBlob.text());
+assert.equal(report.note, "The path was hard to find.");
+assert.deepEqual(
+  currentWorld(parseHistory(JSON.stringify(report.history))),
+  currentWorld(saved()),
+);
+assert.equal(report.view.day, 42);
+cases.push(
+  "Problem report downloads a reproducible saved world and the player's note",
+);
 dialog.close();
 const before = JSON.stringify(currentWorld(saved()));
 click("#play");

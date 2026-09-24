@@ -125,7 +125,7 @@
       "tick": 2,
       "scale": "region",
       "focus": null,
-      "renderMs": 131.06,
+      "renderMs": 114.12,
       "view": {
         "scale": "region",
         "selectedId": null,
@@ -149,7 +149,7 @@
       "tick": 2,
       "scale": "neighborhood",
       "focus": "s-hearth",
-      "renderMs": 32.65,
+      "renderMs": 22.01,
       "view": {
         "scale": "neighborhood",
         "selectedId": "s-hearth",
@@ -173,7 +173,7 @@
       "tick": 2,
       "scale": "neighborhood",
       "focus": "k-hearth-door",
-      "renderMs": 30.39,
+      "renderMs": 22.57,
       "view": {
         "scale": "neighborhood",
         "selectedId": "k-hearth-door",
@@ -197,7 +197,7 @@
       "tick": 0,
       "scale": "region",
       "focus": null,
-      "renderMs": 32.08,
+      "renderMs": 17.97,
       "view": {
         "scale": "region",
         "selectedId": null,
@@ -221,7 +221,7 @@
       "tick": 2,
       "scale": "neighborhood",
       "focus": "s-hearth",
-      "renderMs": 22.88,
+      "renderMs": 15.52,
       "view": {
         "scale": "neighborhood",
         "selectedId": "s-hearth",
@@ -245,7 +245,7 @@
       "tick": 24,
       "scale": "region",
       "focus": null,
-      "renderMs": 21.2,
+      "renderMs": 23.82,
       "view": {
         "scale": "region",
         "selectedId": null,
@@ -269,7 +269,7 @@
       "tick": 24,
       "scale": "neighborhood",
       "focus": "s-lattice",
-      "renderMs": 16.09,
+      "renderMs": 19.64,
       "view": {
         "scale": "neighborhood",
         "selectedId": "s-lattice",
@@ -293,7 +293,7 @@
       "tick": 24,
       "scale": "neighborhood",
       "focus": "s-choir",
-      "renderMs": 15.99,
+      "renderMs": 15.08,
       "view": {
         "scale": "neighborhood",
         "selectedId": "s-choir",
@@ -317,7 +317,7 @@
       "tick": 42,
       "scale": "neighborhood",
       "focus": "s-hearth",
-      "renderMs": 16.37,
+      "renderMs": 16.83,
       "view": {
         "scale": "neighborhood",
         "selectedId": "s-hearth",
@@ -341,7 +341,7 @@
       "tick": 42,
       "scale": "neighborhood",
       "focus": "p-undersong",
-      "renderMs": 15.18,
+      "renderMs": 14.35,
       "view": {
         "scale": "neighborhood",
         "selectedId": "p-undersong",

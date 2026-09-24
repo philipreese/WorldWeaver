@@ -5,6 +5,13 @@ await mkdir("dist", { recursive: true });
 for (const path of ["index.html", "src"])
   await cp(path, `dist/${path}`, { recursive: true });
 await cp("public", "dist", { recursive: true });
+await writeFile(
+  "dist/build-info.json",
+  JSON.stringify({
+    commit: process.env.GITHUB_SHA || "development",
+    branch: process.env.GITHUB_REF_NAME || "local",
+  }) + "\n",
+);
 async function walk(dir) {
   const result = [];
   for (const entry of await readdir(dir, { withFileTypes: true })) {

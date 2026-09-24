@@ -64,6 +64,8 @@ Counts and exact records are generated in the causal report. **Interruptions per
 
 ## Remaining acceptance work
 
+These checks govern a release claim, not whether development may continue. Owner feedback can be short and focused; no exhaustive owner playthrough is required. Build and test the next playable slice while closing relevant defects.
+
 Initial local HTTP/file preview was blocked. The owner subsequently authorized Pages, selected GitHub Actions, and allowed the review branch in the deployment environment. The public preview now supports cloud-browser checks. [Browser evidence](../evidence/browser-verification.json) records the exercised build and interactions; device and continuous-recording gates below remain open.
 
 Before release, generalize the remaining personal/institutional dynamics and address or deliberately resolve persistent deprivation. The household subsystem is a genuine extension, not completion of the brief.

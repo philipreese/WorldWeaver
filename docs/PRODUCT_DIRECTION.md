@@ -19,3 +19,14 @@ The first preview demonstrated an authored opening and reliable history, but its
 The introduction must also establish the universe: where the player is, who lives here, and the player's role. Introduce those through people, places, and small encounters; preserve the mysteries that make exploration worthwhile. This requirement is recorded for the next introduction pass, after the simulation work.
 
 A future audio pass should provide music, environmental ambience, and a much wider range of character/activity sounds. The current soft event tones are only a placeholder. Plan sound around places, people, weather, and activity, with separate music/effects controls and a comfortable muted experience. Audio expansion is deferred while the underlying world is being corrected.
+
+
+## Prototype pace and the next playable slice
+
+Owner clarification: nobody needs to play every path or exhaust the prototype before development continues. Ask for brief, focused visits to learn whether people care about the cast, understand an action and its consequence, and want to return. Automated mechanical checks belong to development. The full device/release evidence checklist is for declaring a release, not permission to build the next feature. Do not wait for an owner playthrough sign-off.
+
+Prototype saves may become incompatible as the design changes. Announce a reset requirement clearly and offer export before replacing a world; never silently reinterpret a saved past. The captured 1.0.0 engine is a temporary safeguard for the already shared preview, not a promise to retain every prototype engine or maintain a migration platform. Keep in-world rewind and alternate futures correct; avoid further compatibility expansion until the design stabilizes.
+
+The owner suggested that contact with civilizations or regions beyond the basin could sustain later play. Proposed next slice: one outside community with a distinct need and practice, encountered through a visitor or reachable route. Trade, exchanged knowledge, and conflicting obligations should change familiar people and places over several encounters. Begin with a bounded neighboring community; a fully simulated continent is unnecessary for testing this idea. This extends Tier 2 contact without adding the optional Tier 3 systems.
+
+The household work supplies useful consequences for that contact. Diversity counts and an indefinitely active closed basin are not the product goal. Build a short, engaging interaction whose outcome follows actual needs, access, knowledge and relationships; use a focused playtest to guide the next iteration. More geography alone would leave the same authored-event limitation, so the encounter's rules should be reusable by other communities.

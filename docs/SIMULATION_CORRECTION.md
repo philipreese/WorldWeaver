@@ -30,6 +30,8 @@ Counterfactual checks must use the same state and change only a relevant conditi
 
 ## Saved worlds
 
+This is a one-time safeguard for the shared preview, not a commitment to maintain every prototype engine. Future prototype updates may require a clearly announced new beginning. Preserve in-world history integrity without turning cross-build compatibility into a project prerequisite.
+
 Engine 1.0.0 is archived in `src/sim/legacy/` and remains authoritative for its saved worlds. New beginnings use engine 2.0.0. A save's version chooses its engine; unknown or mixed versions fail validation. Existing saves are never silently replayed under changed rules.
 
 Export an old world before using **World settings → Shape another beginning**. The new rules do not automatically appear in an old world's future. The old archive can still be imported and played with its original rules.

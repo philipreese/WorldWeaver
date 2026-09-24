@@ -1,0 +1,61 @@
+name: Mobile preview
+
+# This branch uses the repository's one Pages site as its review preview.
+# Publishing was authorized when the owner enabled Pages for mobile testing.
+on:
+  push:
+    branches: [feat/tier-2-world]
+  # GitHub exposes this manual trigger only after the workflow also exists on
+  # the default branch. Push is the initial trigger; no app PR merge is needed.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: worldweaver-pages-preview
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/feat/tier-2-world'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # Read the existing Pages configuration. Do not enable Pages or alter
+      # repository settings from the workflow.
+      - uses: actions/configure-pages@v5
+      - run: npm run check
+      - run: npm test
+      - run: npm run build
+      - run: npm run verify:build
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      pages: write
+      id-token: write
+    # Keep the repository's real deployment protections in force. A branch
+    # restriction must explicitly allow feat/tier-2-world; do not bypass it
+    # with a different environment or pull_request_target.
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish the verified preview
+        id: deployment
+        uses: actions/deploy-pages@v4

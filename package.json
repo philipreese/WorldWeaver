@@ -1,0 +1,6 @@
+{
+  "name": "worldweaver", "version": "0.1.0", "private": true, "type": "module",
+  "description": "The Quiet Basin: a deterministic, explorable history",
+  "scripts": {"dev":"node scripts/serve.mjs", "build":"node scripts/build.mjs", "preview":"node scripts/serve.mjs dist", "test":"node --test tests/*.test.js", "check":"node scripts/check.mjs"},
+  "engines": {"node": ">=22"}
+}

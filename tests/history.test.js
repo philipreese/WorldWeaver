@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createWorld, advance, intervene, getInterventions } from '../src/sim/world.js';
+import { createWorld, advance, intervene, getInterventions, getEntity, entityLabel } from '../src/sim/world.js';
 import { createHistory, currentWorld, applyCommand, worldAt, forkHistory, selectBranch, serializeHistory, parseHistory, saveHistory, loadHistory, setPersonStyle, setHomeStyle, setGuideProgress, HISTORY_LIMITS, SAVE_KEYS } from '../src/persistence/history.js';
 import { STYLE_COLORS, resolveStyleColor, PERSONALIZATION_LIMITS } from '../src/customization.js';
 
@@ -139,8 +139,9 @@ test('Tier and alternate creation settings persist through deterministic replay'
   assert.deepEqual(currentWorld(parseHistory(serializeHistory(history))), currentWorld(history));
 });
 
+// These claims describe the shipped authored episode; v1 must retain it exactly.
 function developedTier2History() {
-  let history = createHistory({ tier: 2 });
+  let history = createHistory({ tier: 2 }, '1.0.0');
   history = applyCommand(history, { type: 'intervene', intervention: availableIntervention(currentWorld(history)) });
   history = step(history, 4);
   history = applyCommand(history, { type: 'intervene', intervention: availableIntervention(currentWorld(history), 'offer-refuge') });
@@ -557,4 +558,130 @@ test('invalid slots remain untouched, inaccessible storage reports an accurate e
   const denied = { getItem() { throw new Error('Access denied'); }, removeItem() {} };
   assert.match(loadHistory(denied).error, /could not be read/);
   assert.equal(saveHistory(denied, createHistory()).ok, false);
+});
+
+// Captured from the published v1 examples before the ecological engine change.
+// Kept inline so regenerating current examples cannot bless a legacy replay drift.
+const LEGACY_PORTABLE_SAVES = {
+  "quiet-basin": "{\"format\":\"worldweaver\",\"saveVersion\":1,\"simulationVersion\":\"1.0.0\",\"initialConfig\":{\"seed\":8417,\"tier\":2,\"climate\":\"temperate\",\"temperament\":\"careful\",\"density\":\"balanced\"},\"activeBranchId\":\"b1\",\"nextBranchId\":2,\"branches\":[{\"id\":\"b1\",\"name\":\"First history\",\"parentId\":null,\"forkTick\":0,\"forkCommandIndex\":0,\"commands\":[{\"atTick\":0,\"command\":{\"type\":\"advance\",\"days\":2}}],\"headDigest\":\"294772f4b40c309ccc41c1e47e3274a0\"}],\"followed\":[\"s-hearth\",\"c-nera\"],\"attention\":\"balanced\",\"session\":{\"lastSeenTick\":0}}",
+  "two-tellings": "{\"format\":\"worldweaver\",\"saveVersion\":1,\"simulationVersion\":\"1.0.0\",\"initialConfig\":{\"seed\":8417,\"tier\":2,\"climate\":\"temperate\",\"temperament\":\"careful\",\"density\":\"balanced\"},\"activeBranchId\":\"b2\",\"nextBranchId\":3,\"branches\":[{\"id\":\"b1\",\"name\":\"First history\",\"parentId\":null,\"forkTick\":0,\"forkCommandIndex\":0,\"commands\":[{\"atTick\":0,\"command\":{\"type\":\"advance\",\"days\":2}},{\"atTick\":2,\"command\":{\"type\":\"advance\",\"days\":50}}],\"headDigest\":\"b9e8deb37fdb768f1d6fb405d26d0063\"},{\"id\":\"b2\",\"name\":\"The open passage\",\"parentId\":\"b1\",\"forkTick\":2,\"forkCommandIndex\":1,\"commands\":[{\"atTick\":0,\"command\":{\"type\":\"advance\",\"days\":2}},{\"atTick\":2,\"command\":{\"type\":\"intervene\",\"intervention\":{\"kind\":\"open-route\",\"targetId\":\"r-hearth-lattice\"}}},{\"atTick\":2,\"command\":{\"type\":\"advance\",\"days\":50}}],\"headDigest\":\"1297221c41127abc560d1b3072840bf8\"}],\"followed\":[\"s-hearth\",\"c-nera\"],\"attention\":\"balanced\",\"session\":{\"lastSeenTick\":0}}",
+  "wet-beginning": "{\"format\":\"worldweaver\",\"saveVersion\":1,\"simulationVersion\":\"1.0.0\",\"initialConfig\":{\"seed\":2026,\"tier\":2,\"climate\":\"wet\",\"temperament\":\"curious\",\"density\":\"sparse\"},\"activeBranchId\":\"b1\",\"nextBranchId\":2,\"branches\":[{\"id\":\"b1\",\"name\":\"First history\",\"parentId\":null,\"forkTick\":0,\"forkCommandIndex\":0,\"commands\":[{\"atTick\":0,\"command\":{\"type\":\"advance\",\"days\":2}}],\"headDigest\":\"f8883cc893e3e0d485d5888242d0cac8\"}],\"followed\":[\"s-hearth\",\"c-nera\"],\"attention\":\"balanced\",\"session\":{\"lastSeenTick\":0}}"
+};
+
+test('all published v1 example archives remain byte-identical without an engine upgrade', () => {
+  for (const [name, bytes] of Object.entries(LEGACY_PORTABLE_SAVES)) {
+    const restored = parseHistory(bytes);
+    assert.equal(restored.simulationVersion, '1.0.0', name);
+    assert.ok(restored.branches.every(branch => branch.head.version === '1.0.0'), name);
+    assert.equal(serializeHistory(restored), bytes, name);
+    const continued = step(restored, 5);
+    assert.equal(continued.simulationVersion, '1.0.0', name);
+    assert.deepEqual(currentWorld(continued), advance(currentWorld(restored), 5), name);
+  }
+});
+
+test('new archives use v2 while explicit v1 creation and every world operation retain their engine', () => {
+  const current = createHistory({ tier: 2 });
+  const legacy = createHistory({ tier: 2 }, '1.0.0');
+  assert.equal(current.simulationVersion, '2.0.0');
+  assert.equal(currentWorld(current).version, '2.0.0');
+  assert.equal(legacy.simulationVersion, '1.0.0');
+  assert.equal(currentWorld(legacy).version, '1.0.0');
+  for (const source of [legacy, current]) {
+    const world = currentWorld(source);
+    assert.equal(advance(world, 3).version, source.simulationVersion);
+    assert.equal(intervene(world, availableIntervention(world)).version, source.simulationVersion);
+    assert.equal(getEntity(world, 'c-nera').id, 'c-nera');
+    assert.equal(entityLabel(world, 'c-nera'), 'Nera');
+  }
+  assert.throws(() => createHistory({}, '9.0.0'), /unsupported simulation version/);
+  assert.throws(() => createWorld({ engineVersion: '9.0.0' }), /Unsupported simulation version/);
+  for (const operation of [world => advance(world), world => intervene(world, {}), getInterventions, world => getEntity(world, 'c-nera'), world => entityLabel(world, 'c-nera')]) {
+    assert.throws(() => operation({ ...currentWorld(current), version: '9.0.0' }), /Unsupported simulation version/);
+  }
+});
+
+test('v2 long-run replay, forks and cold recovery preserve the original future and presentation metadata', () => {
+  const source = step(createHistory({ tier: 2, seed: 177, climate: 'wet' }), 300);
+  const original = serializeHistory(source);
+  let branched = forkHistory(source, 240, 'A later beginning');
+  branched = setPersonStyle(branched, 'c-nera', 'lilac');
+  branched = setHomeStyle(branched, 'k-hearth-table', { color: 'jade', decoration: 'planter' });
+  branched = setGuideProgress(branched, { completed: ['meet', 'watch'], dismissed: true });
+  branched = step(branched, 60);
+  assert.deepEqual(currentWorld(branched), currentWorld(source), 'Splitting the same future retains every event, identity and resource.');
+  assert.equal(serializeHistory(source), original);
+  const text = serializeHistory(branched);
+  const replayed = parseHistory(text);
+  assert.equal(serializeHistory(replayed), text);
+  assert.deepEqual(replayed, branched);
+  assert.deepEqual(worldAt(replayed, 275), worldAt(source, 275));
+  const storage = new MemoryStorage();
+  assert.equal(saveHistory(storage, branched).ok, true);
+  assert.equal(saveHistory(storage, step(branched, 1)).ok, true);
+  storage.data.set(SAVE_KEYS.current, '{damaged');
+  const cold = new MemoryStorage();
+  cold.data = new Map(storage.data);
+  const recovered = loadHistory(cold);
+  assert.match(recovered.error, /previous valid save/);
+  assert.deepEqual(recovered.history, branched);
+  assert.equal(recovered.history.simulationVersion, '2.0.0');
+  assert.equal(cold.getItem(SAVE_KEYS.current), '{damaged', 'Recovery must not silently overwrite the damaged slot.');
+});
+
+test('cross-engine recovery does not upgrade the previous v1 archive or discard its metadata', () => {
+  let legacy = parseHistory(LEGACY_PORTABLE_SAVES['two-tellings']);
+  legacy = setPersonStyle(legacy, 'c-nera', 'amber');
+  legacy = setHomeStyle(legacy, 'k-hearth-table', { color: 'sky', decoration: 'lantern' });
+  legacy = setGuideProgress(legacy, { completed: ['meet', 'style'], dismissed: false });
+  const bytes = serializeHistory(legacy);
+  const storage = new MemoryStorage();
+  assert.equal(saveHistory(storage, legacy).ok, true);
+  assert.equal(loadHistory(storage).history.simulationVersion, '1.0.0', 'The warm cache keeps the archive version too.');
+  assert.equal(saveHistory(storage, createHistory({ tier: 2 })).ok, true);
+  assert.equal(storage.getItem(SAVE_KEYS.previous), bytes);
+  const cold = new MemoryStorage();
+  cold.data = new Map(storage.data);
+  cold.data.set(SAVE_KEYS.current, '{damaged');
+  const recovered = loadHistory(cold);
+  assert.match(recovered.error, /previous valid save/);
+  assert.deepEqual(recovered.history, legacy);
+  assert.equal(serializeHistory(recovered.history), bytes);
+});
+
+test('version tampering and mixed-engine branches or checkpoints fail closed before saving', () => {
+  const legacy = forkHistory(step(createHistory({ tier: 2 }, '1.0.0'), 15), 3, 'Legacy fork');
+  const current = forkHistory(step(createHistory({ tier: 2 }), 15), 3, 'Current fork');
+  for (const [source, opposite] of [[legacy, current], [current, legacy]]) {
+    assert.throws(() => parseHistory(altered(source, save => { save.simulationVersion = opposite.simulationVersion; })), /deterministic replay/);
+    const wrongVersion = { ...source, simulationVersion: opposite.simulationVersion };
+    const mixedHeads = { ...source, branches: [source.branches[0], opposite.branches[1]] };
+    const mixedCheckpoint = { ...source, branches: [{ ...source.branches[0], checkpoints: opposite.branches[0].checkpoints }, source.branches[1]] };
+    for (const changed of [wrongVersion, mixedHeads, mixedCheckpoint]) {
+      for (const operation of [serializeHistory, currentWorld, history => worldAt(history, 0), history => step(history, 1), history => forkHistory(history, 1)]) {
+        assert.throws(() => operation(changed), /mixed simulation versions/);
+      }
+      const storage = new MemoryStorage();
+      assert.equal(saveHistory(storage, source).ok, true);
+      const before = storage.getItem(SAVE_KEYS.current);
+      assert.equal(saveHistory(storage, changed).ok, false);
+      assert.equal(storage.getItem(SAVE_KEYS.current), before);
+    }
+  }
+});
+
+
+test('an advance or fork cannot bless an untrusted head or changed genesis under either engine', () => {
+  for (const version of ['1.0.0', '2.0.0']) {
+    const history = step(createHistory({ tier: 2 }, version), 10);
+    const before = serializeHistory(history);
+    const changedHead = { ...history, branches: [{ ...history.branches[0], head: { ...currentWorld(history), rng: 123 } }] };
+    const changedGenesis = { ...history, initialConfig: { ...history.initialConfig, seed: 901 } };
+    for (const changed of [changedHead, changedGenesis]) {
+      for (const operation of [serializeHistory, currentWorld, candidate => step(candidate, 1), candidate => forkHistory(candidate, 3)]) {
+        assert.throws(() => operation(changed), /outside the simulation/);
+      }
+    }
+    assert.equal(serializeHistory(history), before);
+  }
 });

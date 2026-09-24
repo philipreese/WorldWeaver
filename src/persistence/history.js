@@ -1,15 +1,14 @@
-import { createWorld, advance, intervene, getEntity } from '../sim/world.js';
+import { createWorld, advance, intervene, getEntity, DEFAULT_ENGINE_VERSION, SUPPORTED_ENGINE_VERSIONS } from '../sim/world.js';
 import { STYLE_COLOR_IDS, HOME_DECORATION_IDS, GUIDE_STEP_IDS, PERSONALIZATION_LIMITS } from '../customization.js';
 
 export const HISTORY_LIMITS = Object.freeze({ ticks: 6000, commands: 1200, branches: 8, followed: 24, exportBytes: 4 * 1024 * 1024 });
 export const SAVE_KEYS = Object.freeze({ current: 'worldweaver.save.current', previous: 'worldweaver.save.previous', staging: 'worldweaver.save.staging' });
 const FORMAT = 'worldweaver';
 const SAVE_VERSION = 1;
-const SIMULATION_VERSION = '1.0.0';
-// Pre-release compatibility is deliberately exact, not best-effort migration:
-// the version must match AND every stored head fingerprint must match replay.
-// Tier 2 additions preserve Tier 1 inputs; any changed pre-release transcript
-// is rejected with its original bytes intact rather than silently rewritten.
+// Protected invariant: import, continuation, replay and recovery keep the saved
+// engine version. No upgrade rewrites an existing future. The engine version is
+// part of branch trust, and each head/checkpoint must agree with the archive.
+// Exact replay fingerprints still reject damaged or reinterpreted transcripts.
 const CHECKPOINT_EVERY = 20;
 const trustedBranches = new WeakMap();
 const slotCache = new WeakMap();
@@ -93,23 +92,41 @@ function execute(world, command) {
   return command.type === 'advance' ? advance(world, command.days) : intervene(world, command.intervention);
 }
 function activeBranch(history, id = history.activeBranchId) {
+  simulationVersion(history.simulationVersion);
+  const expectedTrust = trustKey(history.initialConfig, history.simulationVersion);
+  for (const candidate of history.branches) {
+    matchingEngine(candidate, history.simulationVersion);
+    // Do not turn an externally modified head into trusted state by advancing it.
+    if (trustedBranches.get(candidate) !== expectedTrust) fail('History was changed outside the simulation. Recorded state has not been changed.');
+  }
   const branch = history.branches.find(item => item.id === id);
   if (!branch) fail(`Unknown history branch “${id}”.`);
   return branch;
 }
-function trust(branch, config) {
+function simulationVersion(version) {
+  if (!SUPPORTED_ENGINE_VERSIONS.includes(version)) fail('This save uses an unsupported simulation version (supported: 1.0.0 and 2.0.0 / save 1).');
+  return version;
+}
+function trustKey(config, version) { return canonical({ simulationVersion: version, config }); }
+function matchingEngine(branch, version) {
+  if (branch.head?.version !== version || branch.checkpoints.some(checkpoint => checkpoint.world?.version !== version)) fail('History contains mixed simulation versions. The saved engine and every branch must agree.');
+}
+function trust(branch, config, version) {
+  simulationVersion(version);
+  matchingEngine(branch, version);
   freeze(branch);
-  trustedBranches.set(branch, canonical(config));
+  trustedBranches.set(branch, trustKey(config, version));
   return branch;
 }
 function totalCommands(history) { return history.branches.reduce((sum, branch) => sum + branch.commands.length, 0); }
 function complete(history) { return freeze(history); }
 
-export function createHistory(config = {}) {
+export function createHistory(config = {}, version = DEFAULT_ENGINE_VERSION) {
+  simulationVersion(version);
   const settings = initialConfig(config);
-  const world = freeze(createWorld(settings));
-  const branch = trust({ id: 'b1', name: 'First history', parentId: null, forkTick: 0, forkCommandIndex: 0, commands: [], checkpoints: [{ commandIndex: 0, world }], head: world }, settings);
-  return complete({ format: FORMAT, saveVersion: SAVE_VERSION, simulationVersion: SIMULATION_VERSION, initialConfig: settings, activeBranchId: 'b1', nextBranchId: 2, branches: [branch], followed: ['s-hearth', 'c-nera'], attention: 'balanced', session: { lastSeenTick: 0 } });
+  const world = freeze(createWorld({ ...settings, engineVersion: version }));
+  const branch = trust({ id: 'b1', name: 'First history', parentId: null, forkTick: 0, forkCommandIndex: 0, commands: [], checkpoints: [{ commandIndex: 0, world }], head: world }, settings, version);
+  return complete({ format: FORMAT, saveVersion: SAVE_VERSION, simulationVersion: version, initialConfig: settings, activeBranchId: 'b1', nextBranchId: 2, branches: [branch], followed: ['s-hearth', 'c-nera'], attention: 'balanced', session: { lastSeenTick: 0 } });
 }
 
 export function currentWorld(history) { return activeBranch(history).head; }
@@ -124,7 +141,7 @@ export function applyCommand(history, input) {
   const head = freeze(execute(source.head, command));
   const commands = [...source.commands, freeze({ atTick: source.head.tick, command })];
   const checkpoints = commands.length % CHECKPOINT_EVERY === 0 ? [...source.checkpoints, { commandIndex: commands.length, world: head }] : source.checkpoints;
-  const updated = trust({ ...source, commands, checkpoints, head }, history.initialConfig);
+  const updated = trust({ ...source, commands, checkpoints, head }, history.initialConfig, history.simulationVersion);
   return complete({ ...history, branches: history.branches.map(branch => branch === source ? updated : branch) });
 }
 
@@ -179,7 +196,7 @@ export function forkHistory(history, tick, name = `History ${history.nextBranchI
   const checkpoints = source.checkpoints.filter(checkpoint => checkpoint.commandIndex <= prefix.completeCount);
   if (prefix.commands.length % CHECKPOINT_EVERY === 0 && checkpoints.at(-1).commandIndex !== prefix.commands.length) checkpoints.push({ commandIndex: prefix.commands.length, world: head });
   const id = `b${history.nextBranchId}`;
-  const branch = trust({ id, name: name.trim(), parentId: source.id, forkTick: tick, forkCommandIndex: prefix.commands.length, commands: prefix.commands, checkpoints, head }, history.initialConfig);
+  const branch = trust({ id, name: name.trim(), parentId: source.id, forkTick: tick, forkCommandIndex: prefix.commands.length, commands: prefix.commands, checkpoints, head }, history.initialConfig, history.simulationVersion);
   return complete({ ...history, activeBranchId: id, nextBranchId: history.nextBranchId + 1, branches: [...history.branches, branch] });
 }
 
@@ -281,7 +298,8 @@ export function setGuideProgress(history, progress) {
 }
 
 function metadata(history) {
-  if (history.format !== FORMAT || history.saveVersion !== SAVE_VERSION || history.simulationVersion !== SIMULATION_VERSION) fail('This save is incompatible with this simulation version (1.0.0 / save 1).');
+  if (history.format !== FORMAT || history.saveVersion !== SAVE_VERSION) fail('This save is incompatible with save format 1.');
+  simulationVersion(history.simulationVersion);
   const settings = initialConfig(history.initialConfig);
   if (!Array.isArray(history.branches) || history.branches.length < 1 || history.branches.length > HISTORY_LIMITS.branches) fail('The save has an invalid branch count.');
   if (history.nextBranchId !== history.branches.length + 1) fail('The next branch identity is inconsistent.');
@@ -301,14 +319,14 @@ function metadata(history) {
 
 function portable(history) {
   const settings = metadata(history);
-  const configurationKey = canonical(settings);
+  const configurationKey = trustKey(settings, history.simulationVersion);
   for (const [index, branch] of history.branches.entries()) {
     if (trustedBranches.get(branch) !== configurationKey) fail('History was changed outside the simulation. Export was stopped to protect recorded state.');
     if (branch.id !== `b${index + 1}`) fail('Branch identities must be unique and ordered.');
     validateLineage(branch, history.branches.slice(0, index));
   }
   return {
-    format: FORMAT, saveVersion: SAVE_VERSION, simulationVersion: SIMULATION_VERSION, initialConfig: settings,
+    format: FORMAT, saveVersion: SAVE_VERSION, simulationVersion: history.simulationVersion, initialConfig: settings,
     activeBranchId: history.activeBranchId, nextBranchId: history.nextBranchId,
     branches: history.branches.map(branch => ({ id: branch.id, name: branch.name, parentId: branch.parentId, forkTick: branch.forkTick, forkCommandIndex: branch.forkCommandIndex, commands: branch.commands, headDigest: digest(branch.head) })),
     followed: [...history.followed], attention: history.attention, session: { lastSeenTick: history.session.lastSeenTick },
@@ -355,11 +373,12 @@ export function parseHistory(text) {
   try { data = JSON.parse(text); } catch { fail('The save is not valid JSON. Your current world has not been changed.'); }
   validateTree(data);
   record(data, ['format', 'saveVersion', 'simulationVersion', 'initialConfig', 'activeBranchId', 'nextBranchId', 'branches', 'followed', 'attention', 'session'], 'Save', ['personalization', 'guide']);
-  if (data.format !== FORMAT || data.saveVersion !== SAVE_VERSION || data.simulationVersion !== SIMULATION_VERSION) fail('This save is incompatible with this simulation version (1.0.0 / save 1).');
+  if (data.format !== FORMAT || data.saveVersion !== SAVE_VERSION) fail('This save is incompatible with save format 1.');
+  const version = simulationVersion(data.simulationVersion);
   record(data.initialConfig, ['seed', 'tier', 'climate', 'temperament', 'density'], 'Initial world settings');
   const settings = initialConfig(data.initialConfig);
   if (!Array.isArray(data.branches) || data.branches.length < 1 || data.branches.length > HISTORY_LIMITS.branches) fail('The save has an invalid branch count.');
-  const genesis = freeze(createWorld(settings));
+  const genesis = freeze(createWorld({ ...settings, engineVersion: version }));
   const branches = [];
   let count = 0;
   // Protected invariant: imported heads and checkpoints are never authoritative.
@@ -393,9 +412,9 @@ export function parseHistory(text) {
     if (digest(world) !== entry.headDigest) fail('The saved state does not match deterministic replay. The file may be damaged or from a different simulation.');
     const branch = { id: entry.id, name: entry.name, parentId: entry.parentId, forkTick: entry.forkTick, forkCommandIndex: entry.forkCommandIndex, commands, checkpoints, head: world };
     validateLineage(branch, branches);
-    branches.push(trust(branch, settings));
+    branches.push(trust(branch, settings, version));
   }
-  const history = { format: FORMAT, saveVersion: SAVE_VERSION, simulationVersion: SIMULATION_VERSION, initialConfig: settings, activeBranchId: data.activeBranchId, nextBranchId: data.nextBranchId, branches, followed: data.followed, attention: data.attention, session: data.session };
+  const history = { format: FORMAT, saveVersion: SAVE_VERSION, simulationVersion: version, initialConfig: settings, activeBranchId: data.activeBranchId, nextBranchId: data.nextBranchId, branches, followed: data.followed, attention: data.attention, session: data.session };
   if (Object.hasOwn(data, 'personalization')) history.personalization = validatePersonalization(data.personalization, history);
   if (Object.hasOwn(data, 'guide')) history.guide = validateGuide(data.guide);
   metadata(history);
@@ -419,7 +438,7 @@ function remember(storage, text, history) {
   // UI preferences may arrive via an ordinary object spread. Keep the cached
   // saved value independent of later caller edits, just like the stored bytes.
   cache.set(text, complete({
-    format: FORMAT, saveVersion: SAVE_VERSION, simulationVersion: SIMULATION_VERSION,
+    format: FORMAT, saveVersion: SAVE_VERSION, simulationVersion: history.simulationVersion,
     initialConfig: history.initialConfig, activeBranchId: history.activeBranchId,
     nextBranchId: history.nextBranchId, branches: [...history.branches],
     followed: [...history.followed], attention: history.attention,

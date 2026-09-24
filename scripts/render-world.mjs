@@ -5,7 +5,10 @@ import { createRequire } from 'node:module';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { WorldView } from '../src/view/world-view.js';
-import { createWorld, advance, intervene, getInterventions } from '../src/sim/world.js';
+import { createWorld as createVersionedWorld, advance, intervene, getInterventions } from '../src/sim/world.js';
+// Preserve the original prototype's published static evidence. Current v2
+// topology and interaction are covered by the generated-place renderer tests.
+const createWorld = options => createVersionedWorld({ ...options, engineVersion: '1.0.0' });
 
 const require=createRequire(import.meta.url);
 let Canvas;

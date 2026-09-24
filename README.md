@@ -4,7 +4,7 @@
 
 A finite, explorable science-fiction world whose people make their own choices and leave a history you can inspect. Browser-first, statically served, no accounts, services, runtime AI, or paid dependencies.
 
-**Tier 2 mechanics are implemented; the required release remains incomplete pending browser, device, and playtesting evidence.** See [implementation status](docs/IMPLEMENTATION_STATUS.md) and [verification](docs/VERIFICATION.md). The [v0.4 brief](docs/worldweaver-build-prompt-v0.4.md) and [owner follow-ups](docs/PRODUCT_DIRECTION.md) define the current direction.
+**The preview now combines its authored opening with reusable household, migration, and settlement rules. The required Tier 2 release remains incomplete: general personal and institutional situations, persistent deprivation, and device/playtesting work remain.** See [implementation status](docs/IMPLEMENTATION_STATUS.md) and [verification](docs/VERIFICATION.md). The [v0.4 brief](docs/worldweaver-build-prompt-v0.4.md) and [owner follow-ups](docs/PRODUCT_DIRECTION.md) define the current direction.
 
 ## Run locally
 
@@ -25,6 +25,7 @@ npm run check     # JavaScript syntax and relative imports
 npm run build     # standalone production files in dist/
 npm run verify:build # HTTP subpath and worker contract checks in Node
 npm run preview   # serve the production build on port 4173
+npm run audit:world -- --engine-version 2.0.0 --label local-v2
 ```
 
 Do not run dev and preview on the same port simultaneously. Preview also supports `http://localhost:4173/WorldWeaver/` for subpath checks. Serve the contents of `dist/` using any static web server. Opening `index.html` directly as a file is unsupported because the app uses JavaScript modules.
@@ -37,6 +38,8 @@ Open **✦ Guide** for one small step at a time: meet a neighbor, try a look, wa
 
 Meet Nera in Hearth. Inspect the archive, follow a person or place, then decide whether to open the eastern passage. **Next moment** advances at most fourteen days and stops for a meaningful event affecting your follow list. Open History to ask why. Visit day 2 on the timeline and **Branch here** to explore an alternate future without deleting the original.
 
+**Trying the updated simulation:** existing saves keep their original rules. Export your world, then use **World settings → Shape another beginning** for engine 2.0.0. This preserves old histories rather than rewriting their past.
+
 Time advances only with your permission and pauses on backgrounding. You may explore while paused. See the [player guide](docs/PLAYER_GUIDE.md) for controls and a complete alternate-history demonstration.
 
 The starting world includes organic Emberkin, synthetic Vessels, and collective Chorus nodes. Their different needs and structures lead to contact, cultural divergence, shared infrastructure, and an independently acting phenomenon called the Undersong. Observation alone can reach this history. Traditions, inhabitants, and physical traces survive the shared institution's collapse.
@@ -48,6 +51,9 @@ Import one of the files in [public/worlds](public/worlds) through **World settin
 - `quiet-basin.json`: the default Tier 2 beginning on day 2.
 - `two-tellings.json`: closed and opened passage histories through day 52, preserving both futures.
 - `wet-beginning.json`: a wetter, sparse beginning with a curious founding disposition.
+- `growing-basin.json`: the current default world observed to day 300, including a surveyed and founded settlement.
+
+New examples use engine 2.0.0; prior engine 1.0.0 archives remain importable. [Simulation correction](docs/SIMULATION_CORRECTION.md) records the frozen baseline, comparison, and limits.
 
 `npm run examples` regenerates these files and the causal/pacing report. Production builds include them under `worlds/`. The [verification record](docs/VERIFICATION.md) explains optional Node UI checks and static rendering, and lists the remaining release work.
 

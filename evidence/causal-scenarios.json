@@ -1,5 +1,6 @@
 {
   "kind": "Deterministic engine evidence; no human or browser playtesting.",
+  "simulationVersion": "2.0.0",
   "histories": [
     {
       "branch": "First history",
@@ -8,8 +9,8 @@
       "title": "The vessels above the water",
       "known": [
         "Seed integrity is 37/100 and still falling.",
-        "Hearth has 43.6 materials and 40.8 food.",
-        "The garden habitat is 58/100.",
+        "Hearth has 43.536 materials and 35.532 food.",
+        "The garden habitat is 57.972/100.",
         "Oren’s old letter names a method, but the closed saddle prevents exchange."
       ],
       "alternatives": [
@@ -70,21 +71,21 @@
         {
           "id": "k-hearth-loft",
           "name": "The Dry Loft",
-          "eventId": "e-00008"
+          "eventId": "e-00009"
         },
         {
           "id": "k-hearth-recovery",
           "name": "The Second Garden",
-          "eventId": "e-00013"
+          "eventId": "e-00010"
         },
         {
           "id": "k-hearth-conduit",
           "name": "The Common Sluice",
-          "eventId": "e-00018"
+          "eventId": "e-00020"
         }
       ],
       "power": "The Undersong",
-      "powerFirstRecorded": 24
+      "powerFirstRecorded": 25
     },
     {
       "branch": "The open passage",
@@ -93,8 +94,8 @@
       "title": "Nera makes room for a stranger",
       "known": [
         "Seed integrity is 37/100 and still falling.",
-        "Hearth has 43.61 materials and 49.4 food.",
-        "The garden habitat is 58/100.",
+        "Hearth has 43.546 materials and 42.53 food.",
+        "The garden habitat is 57.972/100.",
         "Oren’s repair leaf has arrived across the usable saddle."
       ],
       "alternatives": [
@@ -126,7 +127,7 @@
       ],
       "causes": [
         "e-00003",
-        "e-00008"
+        "e-00009"
       ],
       "orenAt": "s-hearth",
       "structures": [
@@ -158,22 +159,27 @@
         {
           "id": "k-hearth-pattern",
           "name": "Oren’s Open Workshop",
-          "eventId": "e-00010"
+          "eventId": "e-00011"
         },
         {
           "id": "k-hearth-bridge",
           "name": "The Welcome Landing",
-          "eventId": "e-00010"
+          "eventId": "e-00011"
         },
         {
           "id": "k-hearth-recovery",
           "name": "The Borrowed Channels",
-          "eventId": "e-00011"
+          "eventId": "e-00012"
         },
         {
           "id": "k-hearth-conduit",
           "name": "The Common Sluice",
           "eventId": "e-00015"
+        },
+        {
+          "id": "k-ecology-site-1-1",
+          "name": "Rain Catchment",
+          "eventId": "e-00021"
         }
       ],
       "power": "The Undersong",
@@ -187,8 +193,8 @@
       "actorId": "c-nera",
       "known": [
         "Seed integrity is 37/100 and still falling.",
-        "Hearth has 43.6 materials and 40.8 food.",
-        "The garden habitat is 58/100.",
+        "Hearth has 43.536 materials and 35.532 food.",
+        "The garden habitat is 57.972/100.",
         "Oren’s old letter names a method, but the closed saddle prevents exchange."
       ],
       "motives": [
@@ -240,17 +246,17 @@
           "severity": 3
         },
         {
-          "day": 15,
+          "day": 16,
           "kind": "common-channel-founded",
           "severity": 3
         },
         {
-          "day": 24,
+          "day": 25,
           "kind": "power-emerged",
           "severity": 3
         },
         {
-          "day": 53,
+          "day": 54,
           "kind": "channel-authority-ended",
           "severity": 3
         }
@@ -267,8 +273,8 @@
       ],
       "simulatedDays": 60,
       "simulatedHours": 1440,
-      "stops": 8,
-      "stopsPerSimulatedHour": 0.005555555555555556,
+      "stops": 12,
+      "stopsPerSimulatedHour": 0.008333333333333333,
       "stopRecords": [
         {
           "day": 4,
@@ -276,39 +282,59 @@
           "severity": 3
         },
         {
-          "day": 14,
-          "kind": "seed-recovery",
+          "day": 5,
+          "kind": "provisioning-pressure",
+          "severity": 2
+        },
+        {
+          "day": 7,
+          "kind": "households-migrated",
           "severity": 2
         },
         {
           "day": 15,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 16,
           "kind": "common-channel-founded",
           "severity": 3
         },
         {
-          "day": 19,
-          "kind": "culture-diverged",
+          "day": 20,
+          "kind": "site-surveyed",
           "severity": 2
         },
         {
-          "day": 24,
+          "day": 25,
           "kind": "power-emerged",
           "severity": 3
         },
         {
-          "day": 33,
+          "day": 30,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 34,
           "kind": "power-redistribution",
           "severity": 2
         },
         {
-          "day": 43,
+          "day": 44,
           "kind": "power-redistribution",
           "severity": 2
         },
         {
-          "day": 53,
+          "day": 54,
           "kind": "channel-authority-ended",
           "severity": 3
+        },
+        {
+          "day": 61,
+          "kind": "settlement-adapted",
+          "severity": 2
         }
       ],
       "realPlayInterruptionsPerHour": null,
@@ -323,8 +349,8 @@
       ],
       "simulatedDays": 60,
       "simulatedHours": 1440,
-      "stops": 8,
-      "stopsPerSimulatedHour": 0.005555555555555556,
+      "stops": 12,
+      "stopsPerSimulatedHour": 0.008333333333333333,
       "stopRecords": [
         {
           "day": 4,
@@ -332,39 +358,59 @@
           "severity": 3
         },
         {
-          "day": 14,
-          "kind": "seed-recovery",
+          "day": 5,
+          "kind": "provisioning-pressure",
+          "severity": 2
+        },
+        {
+          "day": 7,
+          "kind": "households-migrated",
           "severity": 2
         },
         {
           "day": 15,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 16,
           "kind": "common-channel-founded",
           "severity": 3
         },
         {
-          "day": 19,
-          "kind": "culture-diverged",
+          "day": 20,
+          "kind": "site-surveyed",
           "severity": 2
         },
         {
-          "day": 24,
+          "day": 25,
           "kind": "power-emerged",
           "severity": 3
         },
         {
-          "day": 33,
+          "day": 30,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 34,
           "kind": "power-redistribution",
           "severity": 2
         },
         {
-          "day": 43,
+          "day": 44,
           "kind": "power-redistribution",
           "severity": 2
         },
         {
-          "day": 53,
+          "day": 54,
           "kind": "channel-authority-ended",
           "severity": 3
+        },
+        {
+          "day": 61,
+          "kind": "settlement-adapted",
+          "severity": 2
         }
       ],
       "realPlayInterruptionsPerHour": null,
@@ -410,8 +456,8 @@
       ],
       "simulatedDays": 60,
       "simulatedHours": 1440,
-      "stops": 8,
-      "stopsPerSimulatedHour": 0.005555555555555556,
+      "stops": 13,
+      "stopsPerSimulatedHour": 0.009027777777777777,
       "stopRecords": [
         {
           "day": 3,
@@ -439,8 +485,23 @@
           "severity": 2
         },
         {
+          "day": 29,
+          "kind": "provisioning-pressure",
+          "severity": 2
+        },
+        {
+          "day": 31,
+          "kind": "settlement-adapted",
+          "severity": 2
+        },
+        {
           "day": 32,
           "kind": "power-redistribution",
+          "severity": 2
+        },
+        {
+          "day": 39,
+          "kind": "site-surveyed",
           "severity": 2
         },
         {
@@ -449,8 +510,18 @@
           "severity": 3
         },
         {
-          "day": 55,
-          "kind": "settlement-growth",
+          "day": 43,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 47,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 51,
+          "kind": "site-surveyed",
           "severity": 2
         }
       ],
@@ -466,8 +537,8 @@
       ],
       "simulatedDays": 60,
       "simulatedHours": 1440,
-      "stops": 10,
-      "stopsPerSimulatedHour": 0.006944444444444444,
+      "stops": 15,
+      "stopsPerSimulatedHour": 0.010416666666666666,
       "stopRecords": [
         {
           "day": 3,
@@ -495,8 +566,23 @@
           "severity": 2
         },
         {
+          "day": 29,
+          "kind": "provisioning-pressure",
+          "severity": 2
+        },
+        {
+          "day": 31,
+          "kind": "settlement-adapted",
+          "severity": 2
+        },
+        {
           "day": 32,
           "kind": "power-redistribution",
+          "severity": 2
+        },
+        {
+          "day": 39,
+          "kind": "site-surveyed",
           "severity": 2
         },
         {
@@ -505,14 +591,24 @@
           "severity": 3
         },
         {
+          "day": 43,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 47,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 51,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
           "day": 52,
           "kind": "power-redistribution",
           "severity": 1
-        },
-        {
-          "day": 55,
-          "kind": "settlement-growth",
-          "severity": 2
         },
         {
           "day": 62,
@@ -531,14 +627,14 @@
       "toDay": 4,
       "recordedDiscoveries": [
         "The vessels above the water",
+        "Mira checks the other end",
+        "Room for the saved seeds",
         "A heading for ordinary things",
-        "Two more answers in the glass",
-        "A room learns the rain"
+        "Two more answers in the glass"
       ],
       "openThreads": [
         "A letter beyond the silt",
         "Who is the water for?",
-        "What the saved seeds can become",
         "The hall that stayed behind"
       ],
       "qualitativeEnjoyment": "Not assessed. This is an automated load/advance/digest sequence."
@@ -551,11 +647,12 @@
         "A promise with three signatures",
         "A pattern with a meal attached",
         "Oren works from his end",
-        "Mira checks the other end",
-        "Room for the saved seeds",
-        "A room learns the rain"
+        "Hearth looks beyond the roofs",
+        "Households move from Hearth to Choir",
+        "Hearth counts the stores twice"
       ],
       "openThreads": [
+        "Enough for Hearth?",
         "Three readings, one answer",
         "The hall that stayed behind"
       ],
@@ -567,9 +664,12 @@
       "toDay": 28,
       "recordedDiscoveries": [
         "The channel answers out of turn",
-        "A debt you can reproduce"
+        "Hearth looks beyond the roofs",
+        "A debt you can reproduce",
+        "Hearth looks beyond the roofs"
       ],
       "openThreads": [
+        "Enough for Hearth?",
         "The hall that stayed behind",
         "Who gets to answer for the channel?"
       ],

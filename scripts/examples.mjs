@@ -40,6 +40,7 @@ for (const [name, history] of [
   ["quiet-basin", opening],
   ["two-tellings", alternatives],
   ["wet-beginning", wet],
+  ["growing-basin", applyCommand(createHistory({ tier: 2 }), { type: "advance", days: 300 })],
 ]) {
   const text = serializeHistory(history);
   assert.deepEqual(parseHistory(text), history);
@@ -131,6 +132,7 @@ await writeFile(
   JSON.stringify(
     {
       kind: "Deterministic engine evidence; no human or browser playtesting.",
+      simulationVersion: currentWorld(opening).version,
       histories,
       secondLook: {
         changedCondition:
@@ -161,5 +163,5 @@ assert.equal(
   false,
 );
 console.log(
-  "Generated three validated portable worlds, alternate-history evidence and simulated attention measurements.",
+  "Generated four validated portable worlds, alternate-history evidence and simulated attention measurements.",
 );

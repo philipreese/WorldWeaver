@@ -94,11 +94,11 @@ For a reproducible route through the shared history, use the default Tier 2 sett
 | 22, 32, 42 | The Undersong redistributes real reserves. Read the measured changes separately from the communities' interpretations. |
 | 42 | **The ledger gives up its throne** ends the Common Channel's central authority. Its conduits, populations, and local maintenance survive; the Undersong continues acting. |
 
-These dates describe one checked run, not scheduled milestones. The power needs a functioning shared network, transmitted knowledge, accumulated charge, and participating forms. Watching without intervening also works: in the default passive run, inhabitants open the passage on day 14, the shared institution forms on day 15, and the Undersong appears on day 24. No intervention is required to unlock this history.
+These dates describe one checked run, not scheduled milestones. The power needs a functioning shared network, transmitted knowledge, accumulated charge, and participating forms. Watching without intervening also works: in the default passive run, inhabitants open the passage on day 15, the shared institution forms on day 16, and the Undersong appears on day 25. No intervention is required to unlock this history.
 
 To follow the material chain, inspect the Undersong's emergence record, expand **Why did this happen?**, then look under **How this began · earlier records** for the shared channel, cultural divergence, and recovered gardens. Different communities offer different accounts of the same pulse. Those accounts are interpretations; the observed energy and habitat changes do not prove consciousness.
 
-After the shared channel exists, **Lend a hand → Make room** may become available at Hearth. In the day-2 passage example, try it on **day 4**, then advance one day. **Neighbors with different mornings** records two synthetic bodies and three collective nodes relocating to Hearth, with their original communities' counts reduced accordingly. Inspect **The Neighbor Array** and **The Borrowed Room**. The intervention first makes a suitable place; inhabitants decide whether its conditions support the move.
+After the shared channel exists, **Lend a hand → Make room** may become available at Hearth. Wait until its supplies and habitat make the option available; in the current day-2 passage example this is **day 68**. Then advance one day. **Neighbors with different mornings** records two synthetic bodies and three collective nodes relocating to Hearth, with their original communities' counts reduced accordingly. Inspect **The Neighbor Array** and **The Borrowed Room**. The intervention first makes a suitable place; inhabitants decide whether its conditions support the move.
 
 Reproduce the main sequence directly:
 
@@ -127,3 +127,11 @@ A [browser preview](https://philipreese.github.io/WorldWeaver/) is available for
 Curious about the bigger picture? Open **World stats** at the bottom of the journal. Select a person and open **Traits & memories** for age, care, curiosity, duty, memories, and relationships. More detailed numbers live in expandable sections. Looking at the past shows the numbers for that day.
 
 If something goes wrong, choose **World settings → Report a problem**. Write what happened and download the report. It includes your saved world and version details so the problem can be reproduced. You decide whether to share the file.
+
+## New beginnings and growing places
+
+Existing saved worlds keep their original simulation rules. Export a copy before choosing **World settings → Shape another beginning** to try the updated rules. Importing an old archive still replays its original history.
+
+In a new default world, simply observing can lead households to improve growing ground, share reachable homes, survey new ground, and found another settlement. These actions spend supplies and move existing residents. New places can face the same choices. Visit their homes and routes to see the recorded decisions and earlier surveys. Other seeds and climates can develop differently, including quiet or struggling worlds.
+
+For a quick inspection, import `public/worlds/growing-basin.json`: the default world on day 300. Its new settlement appears only after its recorded founding; rewind before that day to see the landscape without it. This example demonstrates household dynamics, not a complete generative society.

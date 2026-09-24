@@ -16,7 +16,7 @@ The simulation and command history are the source of truth. `src/stats.js` adds 
 | Thread | Identity, referenced entities/event, open/resolved status | Existing unresolved situations; not invented player objectives. |
 | History | Versioned initial settings, immutable branch heads, command logs, checkpoints, parent/fork metadata, follow list, attention setting, session day | `advance` and `intervene` commands are sufficient for reconstruction. Twenty-command checkpoints accelerate local timeline access. Forks retain their inherited prefix and preserve the source future. |
 
-Portable saves contain initial settings, branches and command logs, head fingerprints, and player preferences. Import validates and replays every branch to rebuild checkpoints and heads; it never trusts imported snapshots. Compatibility requires save format 1, simulation 1.0.0, and exact replay fingerprints. Incompatible or changed pre-release transcripts are rejected without replacing current state. Retention is bounded to 6,000 days per branch, 1,200 commands across retained branches, eight branches, 24 follows, and a 4 MB portable file.
+Portable saves contain initial settings, branches and command logs, head fingerprints, and player preferences. Import validates and replays every branch to rebuild checkpoints and heads; it never trusts imported snapshots. Compatibility requires save format 1, simulation 1.0.0 or 2.0.0, and exact replay fingerprints. Incompatible or changed pre-release transcripts are rejected without replacing current state. Retention is bounded to 6,000 days per branch, 1,200 commands across retained branches, eight branches, 24 follows, and a 4 MB portable file.
 
 ## Statistics DTO, version 1
 
@@ -50,7 +50,7 @@ Age uses 365 simulation days per year and stops at a recorded death day. No age 
 
 Historical views pass their restored snapshot directly to these functions. They never read a later world head for population, culture, power, memory, or relationship facts. The optional history argument supplies archive metadata and actual commands, not a substitute current world.
 
-For future features, use stable entity/stat IDs and the recorded causal graph. Data that is not retained—player places visited, a list of people met, real playtime, combat skills, per-event numeric resource deltas—must not be inferred from visibility, prose, or later state. If a future feature needs new canonical measurements, add them deliberately with versioned replay and save compatibility work.
+For future features, use stable entity/stat IDs and the recorded causal graph. Data that is not retained—player places visited, a list of people met, real playtime, combat skills, numerical deltas for every authored event—must not be inferred from visibility, prose, or later state. If a future feature needs new canonical measurements, add them deliberately with versioned replay and save compatibility work.
 
 ## Appearance and guide preferences
 
@@ -59,3 +59,11 @@ Portable save format 1 accepts two optional, separately versioned metadata field
 `personalization: {version: 1, people: {id: {color}}, homes: {id: {color?, decoration}}}` uses the six allowlisted colors and four decoration choices in `src/customization.js`. Only actual character IDs and home-kind structure IDs in the retained archive are accepted, with bounded maps and strict field validation. Original colors and no decoration remove the override. Preferences apply to every branch and historical view; they are not evidence that a coat or decoration existed on a recorded day.
 
 `guide: {version: 1, completed: [], dismissed: false}` records explicit interface actions using the six allowlisted step IDs. It is a resumable introduction, not a learning score, playtime measure, or a list of entities visited. Restarting the guide changes these preferences only. Temporary context such as a historical view or branch limit is never saved. Both fields travel through autosave, recovery and export/import; neither infers completion from a later world state.
+
+## Engine 2.0.0 household records
+
+`world.ecology` retains seeded physical sites, finite landscape limits, total household births and ecological production/use/waste/cost counters. Each settlement retains its plots, soil condition, catchments, pressure, nourishment, work burden, known survey records, arrivals/departures, and latest daily flow.
+
+Generic events carry structured `evidence`: the rule, copied decision-time inventories/budget, costs and cargo, destination before/after values, surveys and population changes when relevant. These supplement readable observations. They are facts about the aggregate household model, not invented knowledge or personalities for named characters.
+
+The ledger covers ecological flows and ecological actions only. Existing authored and non-organic flows are not a complete global ledger. Food shortfalls accumulate without modeled starvation deaths. Statistics add `households.births`, `.moves`, `.adaptations`, `.shortfalls`, and `settlements.founded` from these actual records. History metadata is attached only when engine version and creation settings match the supplied snapshot.

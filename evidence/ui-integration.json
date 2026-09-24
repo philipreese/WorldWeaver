@@ -1,6 +1,7 @@
 {
   "kind": "Node DOM + Canvas integration; not browser execution, layout, performance, touch or human playtesting.",
-  "passed": 17,
+  "simulationVersion": "2.0.0",
+  "passed": 18,
   "cases": [
     "Tier 2 opening initializes paused on day 2 with saved development",
     "Character and shared-home styling survives saved reload without changing time, events or decisions",
@@ -18,6 +19,7 @@
     "Guide dismissal, reopening and restart preserve the existing world and recorded styles",
     "A failed style save preserves the last good file and never claims the new look is saved",
     "Problem report downloads a reproducible saved world and the player's note",
-    "Background handler pauses and preserves exact world state"
+    "Background handler pauses and preserves exact world state",
+    "Observation grows a selectable settlement and buildings; its real decision is inspectable and rewinding hides the future place"
   ]
 }

@@ -40,7 +40,6 @@ export function evolveLife(w, api) {
   actPower(w, api);
   changeSharedInstitution(w, api);
   settleRefuge(w, api);
-  organicMigration(w, api);
   sharedHome(w, api);
   continuity(w, api);
 }
@@ -49,7 +48,8 @@ function sharedHome(w, api) {
   if (w.flags.sharedHome || !w.flags.supper) return;
   const { settlement, character, addEvent, lastEvent, relationship, decision } = api;
   const h = settlement(w, 's-hearth');
-  const home = h.structures.find(b => b.id === 'k-hearth-home-1');
+  const home = h.structures.find(b => b.kind === 'home' && b.builtAt > 0 && b.abandonedAt == null
+    && !w.characters.some(person => person.alive && person.homeId === b.id));
   const tavi = character(w, 'c-tavi'), daro = character(w, 'c-daro');
   if (!home || !tavi.alive || !daro.alive || tavi.settlementId !== h.id || daro.settlementId !== h.id) return;
   const trust = tavi.relationships.find(r => r.otherId === daro.id)?.strength || 0;
@@ -236,19 +236,6 @@ function settleRefuge(w, api) {
   const e = addEvent(w, { kind: 'mixed-refuge-settled', family: 'recovery', category: 'civilizational', severity: 3, title: 'Neighbors with different mornings', text: `Two synthetic bodies move to Hearth’s sheltered terrace. Choir extends three existing nodes there through the shared wet channel. ${daroPresent ? 'Daro brings a reed mat, then asks which of the new neighbors actually needs a floor.' : 'The organic neighbors leave one dry approach clear beside the new wet rooms.'}`, entities: ['s-hearth', 's-lattice', 's-choir', ...(daroPresent ? ['c-daro'] : []), 'i-confluence', 'culture-table', 'culture-measure', 'culture-rain'], causes: [lastEvent(w, 'refuge-possible').id, lastEvent(w, 'common-channel-founded').id], observed: [`Synthetic bodies moved: Lattice ${before.ls} → ${l.synthetics}, Hearth ${before.hs} → ${h.synthetics}.`, `Collective nodes relocated: Choir ${before.cc} → ${c.collective}, Hearth ${before.hc} → ${h.collective}.`, 'No new bodies were created by the move.', 'Hearth now contains all three forms, each with different resource needs and occupied structures.', 'Residents spent 6 materials and 4 food establishing the terrace.'], decision: decision(actor, [`The offered terrace has habitat ${h.habitat} and energy ${h.energy}.`, 'The shared channel connects the terrace to maintained patterns and wet root rooms.'], [{ id: 'settle', label: 'Establish a second maintained home', available: true, reason: 'The new bank supports both forms and remains connected.' }, { id: 'remain', label: 'Remain entirely at the original settlements', available: true, reason: 'Their existing homes are still viable.' }], 'settle', ['Distribute maintained patterns across more than one place.', 'Keep the collective wet connection intact during relocation.']) });
   addStructure(w, h, { id: 'k-hearth-refuge-spire', name: 'The Neighbor Array', kind: 'spire', form: 'synthetic', x: -150, y: 20, description: 'Two synthetic bodies chose to make a second home here. Their current and ceramic needs differ from their organic neighbors.' }, e);
   addStructure(w, h, { id: 'k-hearth-refuge-root', name: 'The Borrowed Room', kind: 'nest', form: 'collective', x: -142, y: 80, description: 'Three relocated collective nodes live through the wet channel. Their original community remains connected.' }, e);
-}
-
-function organicMigration(w, api) {
-  const { settlement, character, addEvent, lastEvent, clamp } = api;
-  const h = settlement(w, 's-hearth'), destination = settlement(w, 's-choir');
-  if (h.food >= 18 || h.population <= 18 || destination.food < 45 || destination.habitat < 55 || !w.routes.find(r => r.id === 'r-hearth-choir')?.open) return;
-  const before = { hp: h.population, cp: destination.population, knowledge: destination.knowledge };
-  const amount = Math.min(4, h.population - 18);
-  h.population -= amount; destination.population += amount; destination.food = clamp(destination.food - 4); destination.knowledge += 2;
-  const migrant = character(w, 'c-daro');
-  const moves = migrant.alive && migrant.settlementId === h.id;
-  if (moves) { migrant.settlementId = destination.id; migrant.residenceId = destination.id; migrant.homeId = 'k-choir-house'; }
-  addEvent(w, { kind: 'organic-migration', family: 'recovery', category: 'civilizational', severity: 2, title: 'A wetter place to set the table', text: `${moves ? 'Daro and three neighbors' : 'Four more neighbors'} leave Hearth’s thin food reserves for Choir’s viable rain terraces. They carry garden knowledge and the practice of keeping a place at supper.`, settlementId: destination.id, entities: ['s-hearth', 's-choir', ...(moves ? [migrant.id] : []), 'culture-table'], causes: [lastEvent(w, 'downstream-contact')?.id || 'e-00001', lastEvent(w, 'organic-migration')?.id], observed: [`Hearth population: ${before.hp} → ${h.population}; Choir population: ${before.cp} → ${destination.population}.`, `Choir knowledge: ${before.knowledge} → ${destination.knowledge}.`, `Hearth food is ${h.food}/100; Choir habitat is ${destination.habitat}/100.`, ...(moves ? ['Daro now resides at Choir.'] : [])] });
 }
 
 function continuity(w, api) {

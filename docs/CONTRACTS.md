@@ -4,9 +4,9 @@ The build brief is authoritative. Plain JavaScript ES modules, Canvas 2D world, 
 
 ## World and records
 
-`createWorld({seed=8417, tier=1, climate='temperate', temperament='careful', density='balanced'}={})` returns JSON-only World. `advance(world, days=1)` and `intervene(world, command)` return a NEW world without mutating input. `getInterventions(world)` returns `{id, kind, targetId, title, description, available, reason}` records, including disabled alternatives. Commands are `{kind:'open-route'|'reveal-relic'|'restore-habitat'|'offer-refuge', targetId:string}`. Invalid commands throw before mutation. `entityLabel(world,id)` handles every entity type. `getEntity(world,id)` returns an entity or null.
+`createWorld({engineVersion='2.0.0', seed=8417, tier=1, climate='temperate', temperament='careful', density='balanced'}={})` returns JSON-only World. `advance(world, days=1)` and `intervene(world, command)` return a NEW world without mutating input. `getInterventions(world)` returns `{id, kind, targetId, title, description, available, reason}` records, including disabled alternatives. Commands are `{kind:'open-route'|'reveal-relic'|'restore-habitat'|'offer-refuge', targetId:string}`. Invalid commands throw before mutation. `entityLabel(world,id)` handles every entity type. `getEntity(world,id)` returns an entity or null.
 
-World fields: `version:'1.0.0'`, `seed`, `rng` (uint32), `tick`, `tier`, `config`, `regions`, `settlements`, `characters`, `routes`, `cultures`, `institutions`, `power` (null or object), `events`, `threads`, `flags`.
+World fields: `version:'1.0.0'|'2.0.0'`, `seed`, `rng` (uint32), `tick`, `tier`, `config`, `regions`, `settlements`, `characters`, `routes`, `cultures`, `institutions`, `power` (null or object), `events`, `threads`, `flags`.
 
 - Region: `{id,name,x,y,color,description}`; world coordinates approx x=0..1200, y=0..800.
 - Settlement: `{id,name,regionId,x,y,habitat,energy,materials,food,population,synthetics,collective,knowledge,cultureId,institutionId,structures}`. Resources/habitat 0..100; populations nonnegative. `structures`: `{id,name,kind,x,y,builtAt,eventId,abandonedAt?}`; x/y are LOCAL coordinates about -150..150; kinds `home,archive,garden,workshop,spire,bridge,ruin,conduit,nest,memorial`. Abandoned structures persist.
@@ -25,7 +25,7 @@ Simulation exports from `src/sim/world.js`: createWorld, advance, intervene, get
 ## History and persistence
 
 Exports `src/persistence/history.js`:
-- `createHistory(config={})` => `{format:'worldweaver',saveVersion:1,simulationVersion:'1.0.0',activeBranchId:'b1',nextBranchId:2,branches:[{id,name,parentId:null,forkTick:0,commands:[],checkpoints:[{commandIndex:0,world}],head:world}],followed:['s-hearth','c-nera'],attention:'balanced',session:{lastSeenTick:0}}`.
+- `createHistory(config={}, simulationVersion='2.0.0')` => `{format:'worldweaver',saveVersion:1,simulationVersion:'2.0.0',activeBranchId:'b1',nextBranchId:2,branches:[{id,name,parentId:null,forkTick:0,commands:[],checkpoints:[{commandIndex:0,world}],head:world}],followed:['s-hearth','c-nera'],attention:'balanced',session:{lastSeenTick:0}}`.
 - `currentWorld(history)` => active branch head.
 - `applyCommand(history, command)` immutable, commands are `{type:'advance',days}` or `{type:'intervene',intervention}`; branch command entry `{atTick,command}`. Max bounded history (e.g. 6000 ticks, 1200 commands, 8 branches), throws actionable export-first message at limits; no silent trim.
 - `worldAt(history,tick,branchId=active)` reconstructs state at integer tick, including interventions at that tick. Read-only view enforced by UI. Checkpoints every 20 commands.
@@ -45,3 +45,6 @@ Visual identity: THE QUIET BASIN. Ink-blue atmospheric landscape, luminous amber
 `src/director.js` exports `shouldStop(event,followed,attention='balanced')` (follow-linked entities + severity; quiet=3, balanced=2, attentive=1), `makeDigest(world,followed,lastSeenTick)` => `{title,summary,events,threads}`, and `relatedEvents(world,entityId)`.
 
 Lead owns app.js, index.html, CSS, audio, build scripts and integration. Simulation agent owns src/sim/**. Persistence agent owns src/persistence/** and tests/history.test.js. Renderer agent owns src/view/**. Director/narrative-review agent owns src/director.js, tests/director.test.js, and docs/PLAYER_GUIDE.md (coordinate questions; do not duplicate simulation).
+
+
+Engine dispatch is mandatory for all world operations. The byte-preserved original modules in `src/sim/legacy/` serve version 1.0.0 histories. Version 2.0.0 adds `world.ecology`, settlement ecology and optional event `evidence`; the same immutable command/replay contract applies. See [recorded data](DATA_MODEL.md) for ledger scope and [simulation correction](SIMULATION_CORRECTION.md) for remaining limitations.

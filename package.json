@@ -13,7 +13,8 @@
     "verify:build": "node scripts/verify-build.mjs",
     "verify:ui": "node scripts/verify-ui.mjs",
     "examples": "node scripts/examples.mjs",
-    "render:evidence": "node scripts/render-world.mjs"
+    "render:evidence": "node scripts/render-world.mjs",
+    "audit:world": "node scripts/long-run-audit.mjs"
   },
   "engines": {
     "node": ">=22"

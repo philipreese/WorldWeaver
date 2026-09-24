@@ -36,6 +36,7 @@ function appendHistoryStats(stats, world, history) {
   if (!history || !Array.isArray(history.branches)) return;
   const branch = history.branches.find(item => item.id === history.activeBranchId);
   if (!branch || !Array.isArray(branch.commands) || branch.head.tick < world.tick) return;
+  if (branch.head.version !== world.version || history.simulationVersion !== world.version) return;
   // A caller must supply the selected branch's history. World facts always come
   // from the supplied snapshot, never the head of a more advanced branch.
   if (branch.head.seed !== world.seed || branch.head.tier !== world.tier) return;
@@ -121,6 +122,13 @@ export function getWorldStats(world, history) {
   if (world.flags.sharedNetwork) stats.push(
     entry('network.storedCharge', 'Charge stored in the shared channel', world.flags.networkCharge, 'model units'),
     entry('network.transferredCharge', 'Charge supplied to the shared channel', world.flags.networkTransfers, 'model units'),
+  );
+  if (world.ecology) stats.push(
+    entry('households.births', 'Children born among the households', world.ecology.births),
+    entry('households.moves', 'Household journeys between places', count(world.events, event => event.kind === 'households-migrated')),
+    entry('settlements.founded', 'New places founded', count(world.events, event => event.kind === 'settlement-founded')),
+    entry('households.adaptations', 'Homes and growing ground improved', count(world.events, event => event.kind === 'settlement-adapted')),
+    entry('households.shortfalls', 'Food needs left unmet (household model)', world.ecology.unmetFood, 'model units'),
   );
   appendHistoryStats(stats, world, history);
   return { version: VERSION, scope: 'world', tick: world.tick, entityId: null, name: 'The Quiet Basin', stats };

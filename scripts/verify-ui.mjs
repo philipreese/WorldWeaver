@@ -6,6 +6,7 @@ import assert from "node:assert/strict";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { createRequire } from "node:module";
 import { parseHistory, currentWorld } from "../src/persistence/history.js";
+import { getInterventions } from "../src/sim/world.js";
 const require = createRequire(import.meta.url);
 const { parseHTML } = require(process.env.LINKEDOM_MODULE || "linkedom");
 const { Canvas } = require(process.env.SKIA_CANVAS_MODULE || "skia-canvas");
@@ -69,8 +70,28 @@ const $ = (selector) => {
   assert.ok(element, `Missing control: ${selector}`);
   return element;
 };
-const click = (selector) => $(selector).click();
-const saved = () => parseHistory(slots.get("worldweaver.save.current"));
+const click = (selector) => {
+  const before = $("#clock").textContent;
+  $(selector).click();
+  if (selector === "#step") {
+    assert.notEqual($("#clock").textContent, before, `Clock stalled: ${$("#toast").textContent}`);
+    assert.doesNotMatch($("#save-state").textContent, /Save failed/, $("#toast").textContent);
+  }
+};
+let parsedSaveText, parsedSave;
+const saved = () => {
+  const text = slots.get("worldweaver.save.current");
+  if (text !== parsedSaveText) {
+    parsedSave = parseHistory(text);
+    parsedSaveText = text;
+  }
+  return parsedSave;
+};
+const displayedDay = () => {
+  const match = /^Day (\d+)$/.exec($("#clock").textContent);
+  assert.ok(match, "The current day must be displayed.");
+  return Number(match[1]);
+};
 const cases = [];
 assert.equal($("#clock").textContent, "Day 2");
 assert.equal($("#run-state").textContent, "Paused");
@@ -156,6 +177,9 @@ cases.push(
   "Historical controls are read-only; branch changes a decision and preserves source future",
 );
 click('[data-entity="s-hearth"]');
+// The new resource economy does not promise a refuge on a scripted day.
+while (currentWorld(saved()).tick < 400 && !getInterventions(currentWorld(saved())).find(item => item.id === "offer-refuge").available) click("#step");
+assert.ok(getInterventions(currentWorld(saved())).find(item => item.id === "offer-refuge").available);
 click('[data-possibilities="s-hearth"]');
 assert.equal(dialog.open, true);
 click('#modal-content [data-intervention="offer-refuge"]');
@@ -184,7 +208,8 @@ click('[data-entity="k-hearth-door"]');
 assert.match($("#inspector").textContent, /First recorded on day 0/);
 assert.match($("#inspector").textContent, /Lore · not recorded history/);
 cases.push("Surveyed ancient trace distinguishes lore from recorded history");
-while (currentWorld(saved()).tick < 42) click("#step");
+while (currentWorld(saved()).tick < 400 && !currentWorld(saved()).events.some(event => event.kind === "channel-authority-ended")) click("#step");
+const inspectionDay = currentWorld(saved()).tick;
 assert.ok(
   currentWorld(saved()).events.some((e) => e.kind === "power-redistribution"),
 );
@@ -225,7 +250,7 @@ click("#help");
 click('#modal-content [data-action="guide-next"]');
 assert.equal(saved().guide.dismissed, false);
 assert.ok(saved().guide.completed.includes("meet"));
-assert.equal(currentWorld(saved()).tick, 42);
+assert.equal(currentWorld(saved()).tick, inspectionDay);
 cases.push("Guide dismissal, reopening and restart preserve the existing world and recorded styles");
 const lastGoodSave = slots.get("worldweaver.save.current");
 failStorage = true;
@@ -260,7 +285,7 @@ assert.deepEqual(
   currentWorld(parseHistory(JSON.stringify(report.history))),
   currentWorld(saved()),
 );
-assert.equal(report.view.day, 42);
+assert.equal(report.view.day, inspectionDay);
 cases.push(
   "Problem report downloads a reproducible saved world and the player's note",
 );
@@ -273,12 +298,44 @@ document.dispatchEvent(new window.Event("visibilitychange"));
 assert.equal($("#run-state").textContent, "Paused");
 assert.equal(JSON.stringify(currentWorld(saved())), before);
 cases.push("Background handler pauses and preserves exact world state");
+click("#branches");
+click('[data-branch="b1"]');
+// Exercise every real button press. Replaying every growing command log three
+// times per day only measures the test harness; cold-replay the final save once.
+for (let steps = 0; displayedDay() < 300 && steps < 300; steps++) {
+  const priorDay = displayedDay();
+  click("#step");
+  assert.equal(displayedDay(), priorDay + 1, `Advancement failed: ${$("#toast").textContent}; ${$("#save-state").textContent}`);
+}
+const grown = currentWorld(saved());
+assert.equal(grown.tick, 300, "The saved archive must replay to the displayed final day.");
+const founding = grown.events.find(event => event.kind === "settlement-founded");
+assert.ok(founding, "Observation creates a real new place in this reference world.");
+const place = grown.settlements.find(item => item.eventId === founding.id);
+click('[data-tab="followed"]');
+click(`[data-entity="${place.id}"]`);
+assert.match($("#inspector").textContent, new RegExp(place.name));
+click(`[data-entity="${place.structures[0].id}"]`);
+assert.match($("#inspector").textContent, new RegExp(`Built on day ${founding.tick}`));
+click(`[data-event="${founding.id}"]`);
+assert.match($("#inspector").textContent, /Recorded decision/);
+const foundingPast = $("#timeline-slider");
+foundingPast.value = String(founding.tick - 1);
+foundingPast.dispatchEvent(new window.Event("input", { bubbles: true }));
+assert.equal($("#step").disabled, true);
+assert.equal(displayedDay(), founding.tick - 1);
+assert.equal($("#inspector").hidden, true);
+// A closed inspector retains its prior markup. Verify the visible historical
+// journal, and compare booleans so a failure cannot format LinkeDOM's whole tree.
+assert.equal(Boolean(document.querySelector(`#journal [data-entity="${place.id}"]`)), false);
+cases.push("Observation grows a selectable settlement and buildings; its real decision is inspectable and rewinding hides the future place");
 await mkdir("evidence", { recursive: true });
 await writeFile(
   "evidence/ui-integration.json",
   JSON.stringify(
     {
       kind: "Node DOM + Canvas integration; not browser execution, layout, performance, touch or human playtesting.",
+      simulationVersion: grown.version,
       passed: cases.length,
       cases,
     },

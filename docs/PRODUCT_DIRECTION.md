@@ -11,3 +11,11 @@
 - **Review and phone access:** commit work to the review branch, keep issues and a draft PR current, and publish the branch through GitHub Pages so the owner can play before merge.
 
 Original release gates still apply: history invariants, a continuous neighborhood visit, real device controls and performance, browser offline/transfer checks, and human prediction/return-session playtests. Cosmetics and tutorials do not substitute for them.
+
+## Review correction and next priorities
+
+The first preview demonstrated an authored opening and reliable history, but its long-running world was too limited. The earlier “Tier 2 mechanics integrated” wording overstated the result. Freeze additional authored story milestones, cosmetic work, and tutorial polish until reusable state-driven behavior has been measured. New generic rule outcomes must arise from actual needs, resources, available space, and connections; naming another scene does not meet this requirement.
+
+The introduction must also establish the universe: where the player is, who lives here, and the player's role. Introduce those through people, places, and small encounters; preserve the mysteries that make exploration worthwhile. This requirement is recorded for the next introduction pass, after the simulation work.
+
+A future audio pass should provide music, environmental ambience, and a much wider range of character/activity sounds. The current soft event tones are only a placeholder. Plan sound around places, people, weather, and activity, with separate music/effects controls and a comfortable muted experience. Audio expansion is deferred while the underlying world is being corrected.

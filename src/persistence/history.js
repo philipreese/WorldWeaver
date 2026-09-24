@@ -1,4 +1,5 @@
 import { createWorld, advance, intervene, getEntity } from '../sim/world.js';
+import { STYLE_COLOR_IDS, HOME_DECORATION_IDS, GUIDE_STEP_IDS, PERSONALIZATION_LIMITS } from '../customization.js';
 
 export const HISTORY_LIMITS = Object.freeze({ ticks: 6000, commands: 1200, branches: 8, followed: 24, exportBytes: 4 * 1024 * 1024 });
 export const SAVE_KEYS = Object.freeze({ current: 'worldweaver.save.current', previous: 'worldweaver.save.previous', staging: 'worldweaver.save.staging' });
@@ -20,9 +21,9 @@ function integer(value, minimum, maximum, label) {
   if (!Number.isSafeInteger(value) || value < minimum || value > maximum) fail(`${label} must be an integer from ${minimum} to ${maximum}.`);
   return value;
 }
-function record(value, keys, label) {
+function record(value, keys, label, optional = []) {
   if (!value || typeof value !== 'object' || Array.isArray(value) || ![Object.prototype, null].includes(Object.getPrototypeOf(value))) fail(`${label} must be an object.`);
-  for (const key of Object.keys(value)) if (!keys.includes(key) || dangerousKeys.has(key)) fail(`${label} contains unsupported field “${key}”.`);
+  for (const key of Object.keys(value)) if ((!keys.includes(key) && !optional.includes(key)) || dangerousKeys.has(key)) fail(`${label} contains unsupported field “${key}”.`);
   for (const key of keys) if (!Object.hasOwn(value, key)) fail(`${label} is missing “${key}”.`);
 }
 function shortText(value, maximum, label) {
@@ -187,6 +188,98 @@ export function selectBranch(history, id) {
   return complete({ ...history, activeBranchId: id });
 }
 
+function archiveHasPerson(history, id) {
+  return history.branches.some(branch => branch.head.characters.some(person => person.id === id));
+}
+function archiveHasHome(history, id) {
+  return history.branches.some(branch => branch.head.settlements.some(place => place.structures.some(structure => structure.id === id && structure.kind === 'home')));
+}
+function styleMap(value, maximum, label) {
+  if (!value || typeof value !== 'object' || Array.isArray(value) || ![Object.prototype, null].includes(Object.getPrototypeOf(value))) fail(`${label} must be an identity map.`);
+  const ids = Object.keys(value);
+  if (ids.length > maximum) fail(`${label} exceeds its ${maximum}-entry limit.`);
+  for (const id of ids) if (dangerousKeys.has(id) || !/^[a-z][a-z0-9-]{0,99}$/u.test(id)) fail(`${label} contains an invalid stable identity.`);
+  return ids.sort();
+}
+function validatePersonalization(value, history) {
+  record(value, ['version', 'people', 'homes'], 'Personalization');
+  if (value.version !== 1) fail('Unsupported personalization version.');
+  const people = {}, homes = {};
+  for (const id of styleMap(value.people, PERSONALIZATION_LIMITS.people, 'Person styles')) {
+    if (!archiveHasPerson(history, id)) fail(`Person style refers to unknown character “${id}”.`);
+    record(value.people[id], ['color'], 'Person style');
+    people[id] = { color: choice(value.people[id].color, STYLE_COLOR_IDS, 'Person color') };
+  }
+  for (const id of styleMap(value.homes, PERSONALIZATION_LIMITS.homes, 'Home styles')) {
+    if (!archiveHasHome(history, id)) fail(`Home style refers to an unknown home “${id}”.`);
+    const style = value.homes[id];
+    record(style, ['decoration'], 'Home style', ['color']);
+    homes[id] = {
+      ...(Object.hasOwn(style, 'color') ? { color: choice(style.color, STYLE_COLOR_IDS, 'Home color') } : {}),
+      decoration: choice(style.decoration, HOME_DECORATION_IDS, 'Home decoration'),
+    };
+  }
+  return { version: 1, people, homes };
+}
+function validateGuide(value) {
+  record(value, ['version', 'completed', 'dismissed'], 'Guide progress');
+  if (value.version !== 1) fail('Unsupported guide version.');
+  if (!Array.isArray(value.completed) || value.completed.length > GUIDE_STEP_IDS.length || new Set(value.completed).size !== value.completed.length) fail('Guide completion steps must be a bounded list without duplicates.');
+  for (const id of value.completed) choice(id, GUIDE_STEP_IDS, 'Guide step');
+  if (typeof value.dismissed !== 'boolean') fail('Guide dismissal must be true or false.');
+  return { version: 1, completed: GUIDE_STEP_IDS.filter(id => value.completed.includes(id)), dismissed: value.dismissed };
+}
+function presentationMetadata(history) {
+  return {
+    ...(Object.hasOwn(history, 'personalization') ? { personalization: validatePersonalization(history.personalization, history) } : {}),
+    ...(Object.hasOwn(history, 'guide') ? { guide: validateGuide(history.guide) } : {}),
+  };
+}
+
+// Protected invariant: cosmetic choices and guide progress are archive-wide
+// presentation metadata, shared across branches and timeline views. They never
+// enter snapshots, command logs, fingerprints, decision context, or events.
+// Absence remains absence so older uncustomized exports stay byte-identical.
+function withPersonalization(history, personalization) {
+  const result = { ...history, ...presentationMetadata(history) };
+  if (Object.keys(personalization.people).length || Object.keys(personalization.homes).length) result.personalization = validatePersonalization(personalization, history);
+  else delete result.personalization;
+  return complete(result);
+}
+
+/** Use 'original' to remove a character's color override. */
+export function setPersonStyle(history, id, color) {
+  if (typeof id !== 'string' || !archiveHasPerson(history, id)) fail('Choose an existing character before changing their colors.');
+  choice(color, [...STYLE_COLOR_IDS, 'original'], 'Person color');
+  const metadata = presentationMetadata(history);
+  const existing = metadata.personalization ?? { version: 1, people: {}, homes: {} };
+  const people = { ...existing.people };
+  if (color === 'original') delete people[id];
+  else people[id] = { color };
+  return withPersonalization(history, { ...existing, people });
+}
+
+/** Supply both fields; 'original' clears color, and 'none' clears decoration. */
+export function setHomeStyle(history, id, style) {
+  if (typeof id !== 'string' || !archiveHasHome(history, id)) fail('Choose an existing home before changing its appearance.');
+  record(style, ['color', 'decoration'], 'Home appearance');
+  choice(style.color, [...STYLE_COLOR_IDS, 'original'], 'Home color');
+  choice(style.decoration, HOME_DECORATION_IDS, 'Home decoration');
+  const metadata = presentationMetadata(history);
+  const existing = metadata.personalization ?? { version: 1, people: {}, homes: {} };
+  const homes = { ...existing.homes };
+  if (style.color === 'original' && style.decoration === 'none') delete homes[id];
+  else homes[id] = { ...(style.color !== 'original' ? { color: style.color } : {}), decoration: style.decoration };
+  return withPersonalization(history, { ...existing, homes });
+}
+
+/** Completion is reported by the UI's actual actions; persistence never infers it. */
+export function setGuideProgress(history, progress) {
+  record(progress, ['completed', 'dismissed'], 'Guide progress update');
+  const guide = validateGuide({ version: 1, completed: progress.completed, dismissed: progress.dismissed });
+  return complete({ ...history, ...presentationMetadata(history), guide });
+}
+
 function metadata(history) {
   if (history.format !== FORMAT || history.saveVersion !== SAVE_VERSION || history.simulationVersion !== SIMULATION_VERSION) fail('This save is incompatible with this simulation version (1.0.0 / save 1).');
   const settings = initialConfig(history.initialConfig);
@@ -202,6 +295,7 @@ function metadata(history) {
   choice(history.attention, ['quiet', 'balanced', 'attentive'], 'Attention');
   record(history.session, ['lastSeenTick'], 'Session');
   integer(history.session.lastSeenTick, 0, HISTORY_LIMITS.ticks, 'Last seen day');
+  presentationMetadata(history);
   return settings;
 }
 
@@ -218,6 +312,7 @@ function portable(history) {
     activeBranchId: history.activeBranchId, nextBranchId: history.nextBranchId,
     branches: history.branches.map(branch => ({ id: branch.id, name: branch.name, parentId: branch.parentId, forkTick: branch.forkTick, forkCommandIndex: branch.forkCommandIndex, commands: branch.commands, headDigest: digest(branch.head) })),
     followed: [...history.followed], attention: history.attention, session: { lastSeenTick: history.session.lastSeenTick },
+    ...presentationMetadata(history),
   };
 }
 
@@ -259,7 +354,7 @@ export function parseHistory(text) {
   let data;
   try { data = JSON.parse(text); } catch { fail('The save is not valid JSON. Your current world has not been changed.'); }
   validateTree(data);
-  record(data, ['format', 'saveVersion', 'simulationVersion', 'initialConfig', 'activeBranchId', 'nextBranchId', 'branches', 'followed', 'attention', 'session'], 'Save');
+  record(data, ['format', 'saveVersion', 'simulationVersion', 'initialConfig', 'activeBranchId', 'nextBranchId', 'branches', 'followed', 'attention', 'session'], 'Save', ['personalization', 'guide']);
   if (data.format !== FORMAT || data.saveVersion !== SAVE_VERSION || data.simulationVersion !== SIMULATION_VERSION) fail('This save is incompatible with this simulation version (1.0.0 / save 1).');
   record(data.initialConfig, ['seed', 'tier', 'climate', 'temperament', 'density'], 'Initial world settings');
   const settings = initialConfig(data.initialConfig);
@@ -301,6 +396,8 @@ export function parseHistory(text) {
     branches.push(trust(branch, settings));
   }
   const history = { format: FORMAT, saveVersion: SAVE_VERSION, simulationVersion: SIMULATION_VERSION, initialConfig: settings, activeBranchId: data.activeBranchId, nextBranchId: data.nextBranchId, branches, followed: data.followed, attention: data.attention, session: data.session };
+  if (Object.hasOwn(data, 'personalization')) history.personalization = validatePersonalization(data.personalization, history);
+  if (Object.hasOwn(data, 'guide')) history.guide = validateGuide(data.guide);
   metadata(history);
   return complete(history);
 }
@@ -327,6 +424,7 @@ function remember(storage, text, history) {
     nextBranchId: history.nextBranchId, branches: [...history.branches],
     followed: [...history.followed], attention: history.attention,
     session: { lastSeenTick: history.session.lastSeenTick },
+    ...presentationMetadata(history),
   }));
 }
 function cleanup(storage) { try { storage.removeItem(SAVE_KEYS.staging); } catch { /* A leftover verified stage is safe. */ } }

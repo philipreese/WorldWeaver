@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createWorld, advance, intervene, getInterventions } from '../src/sim/world.js';
-import { createHistory, currentWorld, applyCommand, worldAt, forkHistory, selectBranch, serializeHistory, parseHistory, saveHistory, loadHistory, HISTORY_LIMITS, SAVE_KEYS } from '../src/persistence/history.js';
+import { createHistory, currentWorld, applyCommand, worldAt, forkHistory, selectBranch, serializeHistory, parseHistory, saveHistory, loadHistory, setPersonStyle, setHomeStyle, setGuideProgress, HISTORY_LIMITS, SAVE_KEYS } from '../src/persistence/history.js';
+import { STYLE_COLORS, resolveStyleColor, PERSONALIZATION_LIMITS } from '../src/customization.js';
 
 class MemoryStorage {
   constructor() { this.data = new Map(); this.failAt = null; this.corruptAt = null; }
@@ -225,6 +226,147 @@ test('cold storage reload preserves Tier 2 follows, pre-emergence branches and p
   assert.deepEqual(restored.history, history);
   assert.equal(currentWorld(restored.history).tick, 2);
   assert.equal(currentWorld(selectBranch(restored.history, 'b1')).tick, 60);
+});
+
+test('presentation metadata does not change snapshots, fingerprints, commands or later choices', () => {
+  const source = developedTier2History();
+  const original = serializeHistory(source);
+  let styled = setPersonStyle(source, 'c-nera', 'rose');
+  styled = setHomeStyle(styled, 'k-hearth-table', { color: 'jade', decoration: 'planter' });
+  styled = setGuideProgress(styled, { completed: ['style', 'meet'], dismissed: false });
+  assert.equal(currentWorld(styled), currentWorld(source));
+  assert.equal(styled.branches, source.branches);
+  assert.equal(serializeHistory(source), original);
+  const portable = JSON.parse(serializeHistory(styled));
+  assert.deepEqual(portable.branches, JSON.parse(original).branches);
+  assert.deepEqual(portable.guide.completed, ['meet', 'style']);
+  assert.deepEqual(currentWorld(step(styled, 12)), currentWorld(step(source, 12)));
+  assert.deepEqual(worldAt(styled, 1), worldAt(source, 1));
+  assert.throws(() => { styled.personalization.people['c-nera'].color = 'amber'; }, TypeError);
+});
+
+test('cosmetics follow stable IDs across archive branches and survive export plus a cold reload', () => {
+  let history = developedTier2History();
+  history = forkHistory(history, 2, 'A quieter beginning');
+  history = setPersonStyle(history, 'c-nera', 'lilac');
+  history = setHomeStyle(history, 'k-hearth-table', { color: 'original', decoration: 'lantern' });
+  history = setGuideProgress(history, { completed: ['meet', 'style', 'watch', 'why'], dismissed: true });
+  assert.deepEqual(history.personalization.homes['k-hearth-table'], { decoration: 'lantern' });
+  assert.deepEqual(selectBranch(history, 'b1').personalization, history.personalization);
+  assert.deepEqual(parseHistory(serializeHistory(history)), history);
+  const storage = new MemoryStorage();
+  assert.equal(saveHistory(storage, history).ok, true);
+  const cold = new MemoryStorage();
+  cold.data = new Map(storage.data);
+  const loaded = loadHistory(cold);
+  assert.equal(loaded.error, null);
+  assert.deepEqual(loaded.history, history);
+  assert.equal(currentWorld(loaded.history).tick, 2);
+  assert.equal(currentWorld(selectBranch(loaded.history, 'b1')).tick, 60);
+});
+
+test('original-color and no-decoration reset removes overrides without adding fields to legacy exports', () => {
+  const original = JSON.stringify(TIER1_MILESTONE_SAVE);
+  let history = parseHistory(original);
+  assert.equal(Object.hasOwn(history, 'personalization'), false);
+  assert.equal(Object.hasOwn(history, 'guide'), false);
+  history = setPersonStyle(history, 'c-nera', 'amber');
+  history = setHomeStyle(history, 'k-hearth-table', { color: 'sky', decoration: 'bunting' });
+  history = setPersonStyle(history, 'c-nera', 'original');
+  assert.equal(Object.hasOwn(history.personalization.people, 'c-nera'), false);
+  history = setHomeStyle(history, 'k-hearth-table', { color: 'original', decoration: 'none' });
+  assert.equal(Object.hasOwn(history, 'personalization'), false);
+  assert.equal(serializeHistory(history), original);
+  assert.equal(serializeHistory(setPersonStyle(history, 'c-nera', 'original')), original);
+});
+
+test('setters require real character/home identities, exact fields and allowlisted presentation values', () => {
+  const history = createHistory({ tier: 2 });
+  const before = serializeHistory(history);
+  assert.throws(() => setPersonStyle(history, 's-hearth', 'amber'), /existing character/);
+  assert.throws(() => setPersonStyle(history, 'imagined-person', 'amber'), /existing character/);
+  assert.throws(() => setPersonStyle(history, 'c-nera', '#ff0000'), /Person color/);
+  assert.throws(() => setPersonStyle(history, 'c-nera', { color: 'amber' }), /Person color/);
+  assert.throws(() => setHomeStyle(history, 'k-hearth-archive', { color: 'amber', decoration: 'none' }), /existing home/);
+  assert.throws(() => setHomeStyle(history, 'c-nera', { color: 'amber', decoration: 'none' }), /existing home/);
+  assert.throws(() => setHomeStyle(history, 'k-hearth-table', { color: 'amber', decoration: 'turret' }), /Home decoration/);
+  assert.throws(() => setHomeStyle(history, 'k-hearth-table', { color: 'amber', decoration: 'none', population: 900 }), /unsupported field/);
+  assert.throws(() => setHomeStyle(history, 'k-hearth-table', { decoration: 'none' }), /missing/);
+  assert.throws(() => setGuideProgress(history, { completed: ['combat'], dismissed: false }), /Guide step/);
+  assert.throws(() => setGuideProgress(history, { completed: ['meet', 'meet'], dismissed: false }), /duplicates/);
+  assert.throws(() => setGuideProgress(history, { completed: [], dismissed: 'yes' }), /true or false/);
+  assert.throws(() => setGuideProgress(history, { completed: [], dismissed: false, award: 10 }), /unsupported field/);
+  assert.equal(serializeHistory(history), before);
+});
+
+test('invalid presentation imports reject unknown identities, arbitrary objects, extra fields, versions and unbounded maps', () => {
+  let history = setPersonStyle(createHistory(), 'c-nera', 'amber');
+  history = setHomeStyle(history, 'k-hearth-table', { color: 'ivory', decoration: 'lantern' });
+  history = setGuideProgress(history, { completed: ['meet'], dismissed: false });
+  const mutations = [
+    save => { save.personalization.version = 2; },
+    save => { save.personalization.people = []; },
+    save => { save.personalization.people['unknown-person'] = { color: 'amber' }; },
+    save => { save.personalization.people['c-nera'] = { color: 'original' }; },
+    save => { save.personalization.people['c-nera'] = { color: { url: 'arbitrary' } }; },
+    save => { save.personalization.people['c-nera'].motives = { care: 100 }; },
+    save => { save.personalization.homes['k-hearth-archive'] = { decoration: 'none' }; },
+    save => { save.personalization.homes['k-hearth-table'].decoration = 'tower'; },
+    save => { save.personalization.homes['k-hearth-table'].color = '#ffffff'; },
+    save => { save.personalization.homes['k-hearth-table'].x = 12; },
+    save => { save.personalization.people = Object.fromEntries(Array.from({ length: PERSONALIZATION_LIMITS.people + 1 }, (_, index) => [`c-${index}`, { color: 'amber' }])); },
+    save => { save.personalization.homes = Object.fromEntries(Array.from({ length: PERSONALIZATION_LIMITS.homes + 1 }, (_, index) => [`home-${index}`, { decoration: 'none' }])); },
+    save => { Object.defineProperty(save.personalization.people, '__proto__', { value: { color: 'amber' }, enumerable: true }); },
+    save => { save.guide.version = 2; },
+    save => { save.guide.completed = ['meet', 'unknown']; },
+    save => { save.guide.completed = ['meet', 'meet']; },
+    save => { save.guide.dismissed = 1; },
+    save => { save.guide.completeAll = true; },
+  ];
+  const before = serializeHistory(history);
+  for (const mutate of mutations) assert.throws(() => parseHistory(altered(history, mutate)));
+  assert.equal(serializeHistory(history), before);
+});
+
+test('guide progress is explicit, immutable, resumable and independent of world evolution', () => {
+  const beginning = createHistory({ tier: 2 });
+  const completed = ['why'];
+  const guided = setGuideProgress(beginning, { completed, dismissed: false });
+  completed.push('meet');
+  assert.deepEqual(guided.guide.completed, ['why'], 'The caller owns its input list; no other steps are inferred.');
+  const advanced = step(guided, 60);
+  assert.deepEqual(advanced.guide, guided.guide);
+  const dismissed = setGuideProgress(advanced, { completed: advanced.guide.completed, dismissed: true });
+  const restored = parseHistory(serializeHistory(dismissed));
+  assert.deepEqual(restored.guide, { version: 1, completed: ['why'], dismissed: true });
+  assert.equal(currentWorld(dismissed), currentWorld(advanced));
+  assert.deepEqual(currentWorld(advanced), currentWorld(step(beginning, 60)));
+});
+
+test('failed metadata-only saves preserve the committed appearance and guide state', () => {
+  const storage = new MemoryStorage();
+  let original = setPersonStyle(createHistory(), 'c-nera', 'jade');
+  original = setGuideProgress(original, { completed: ['meet'], dismissed: false });
+  assert.equal(saveHistory(storage, original).ok, true);
+  let attempted = setPersonStyle(original, 'c-nera', 'rose');
+  attempted = setGuideProgress(attempted, { completed: ['meet', 'style'], dismissed: true });
+  storage.failAt = SAVE_KEYS.current;
+  assert.equal(saveHistory(storage, attempted).ok, false);
+  const cold = new MemoryStorage();
+  cold.data = new Map(storage.data);
+  assert.deepEqual(loadHistory(cold).history, original);
+  assert.deepEqual(currentWorld(attempted), currentWorld(original));
+});
+
+test('shared cosmetic palette is bounded, immutable and resolves original to no override', () => {
+  assert.equal(STYLE_COLORS.length, 6);
+  assert.equal(resolveStyleColor('original'), null);
+  assert.equal(resolveStyleColor('unrecognized'), null);
+  for (const color of STYLE_COLORS) {
+    assert.equal(resolveStyleColor(color.id), color);
+    for (const field of ['coat', 'shade', 'accent', 'trim']) assert.match(color[field], /^#[0-9a-f]{6}$/);
+    assert.equal(Object.isFrozen(color), true);
+  }
 });
 
 test('invalid imports fail closed across versions, state, commands, references and bounds', () => {

@@ -50,4 +50,12 @@ Age uses 365 simulation days per year and stops at a recorded death day. No age 
 
 Historical views pass their restored snapshot directly to these functions. They never read a later world head for population, culture, power, memory, or relationship facts. The optional history argument supplies archive metadata and actual commands, not a substitute current world.
 
-For future features, use stable entity/stat IDs and the recorded causal graph. Data that is not retained—player places visited, people met, real playtime, combat skills, per-event numeric resource deltas—must not be inferred from visibility, prose, or later state. If a future feature needs new canonical measurements, add them deliberately with versioned replay and save compatibility work.
+For future features, use stable entity/stat IDs and the recorded causal graph. Data that is not retained—player places visited, a list of people met, real playtime, combat skills, per-event numeric resource deltas—must not be inferred from visibility, prose, or later state. If a future feature needs new canonical measurements, add them deliberately with versioned replay and save compatibility work.
+
+## Appearance and guide preferences
+
+Portable save format 1 accepts two optional, separately versioned metadata fields. They never enter simulation snapshots, commands, events, or head fingerprints. Saves without them retain their previous exact serialization; older app builds will reject saves containing these new fields, so transfer to the current build.
+
+`personalization: {version: 1, people: {id: {color}}, homes: {id: {color?, decoration}}}` uses the six allowlisted colors and four decoration choices in `src/customization.js`. Only actual character IDs and home-kind structure IDs in the retained archive are accepted, with bounded maps and strict field validation. Original colors and no decoration remove the override. Preferences apply to every branch and historical view; they are not evidence that a coat or decoration existed on a recorded day.
+
+`guide: {version: 1, completed: [], dismissed: false}` records explicit interface actions using the six allowlisted step IDs. It is a resumable introduction, not a learning score, playtime measure, or a list of entities visited. Restarting the guide changes these preferences only. Temporary context such as a historical view or branch limit is never saved. Both fields travel through autosave, recovery and export/import; neither infers completion from a later world state.

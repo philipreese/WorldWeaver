@@ -1,10 +1,12 @@
 {
   "kind": "Node DOM + Canvas integration; not browser execution, layout, performance, touch or human playtesting.",
-  "passed": 13,
+  "passed": 17,
   "cases": [
     "Tier 2 opening initializes paused on day 2 with saved development",
+    "Character and shared-home styling survives saved reload without changing time, events or decisions",
     "Meet Nera reaches a conditional intervention and recorded history",
     "Walking with a person does not reopen the panel on advancement",
+    "The guide progresses through real actions and opens the recorded decision explanation",
     "Closed-route choice reaches its separate explanation layers",
     "Historical controls are read-only; branch changes a decision and preserves source future",
     "Possibilities opens conditional refuge; arrivals expose distinct needs in inspection",
@@ -13,6 +15,8 @@
     "Material power emerges in play, remains inspectable, and can be followed",
     "Institution collapse retains accessible participants and recorded history",
     "Optional world and character statistics expose recorded data without advancing time",
+    "Guide dismissal, reopening and restart preserve the existing world and recorded styles",
+    "A failed style save preserves the last good file and never claims the new look is saved",
     "Problem report downloads a reproducible saved world and the player's note",
     "Background handler pauses and preserves exact world state"
   ]

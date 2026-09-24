@@ -4,7 +4,7 @@
 
 A finite, explorable science-fiction world whose people make their own choices and leave a history you can inspect. Browser-first, statically served, no accounts, services, runtime AI, or paid dependencies.
 
-**Tier 2 mechanics are implemented; the required release remains incomplete pending browser, device, and playtesting evidence.** See [implementation status](docs/IMPLEMENTATION_STATUS.md) and [verification](docs/VERIFICATION.md). The [v0.4 brief](docs/worldweaver-build-prompt-v0.4.md) is the source of truth.
+**Tier 2 mechanics are implemented; the required release remains incomplete pending browser, device, and playtesting evidence.** See [implementation status](docs/IMPLEMENTATION_STATUS.md) and [verification](docs/VERIFICATION.md). The [v0.4 brief](docs/worldweaver-build-prompt-v0.4.md) and [owner follow-ups](docs/PRODUCT_DIRECTION.md) define the current direction.
 
 ## Run locally
 
@@ -32,6 +32,8 @@ Do not run dev and preview on the same port simultaneously. Preview also support
 Production builds generate a content-versioned service worker and relative asset paths. Installation and offline use require HTTPS or localhost, and a successfully completed first cache. Cloud sync is out of scope; export saves to transfer devices.
 
 ## Start playing
+
+Open **✦ Guide** for one small step at a time: meet a neighbor, try a look, watch a change, and discover why. The three chapters can be left, resumed, or restarted without resetting the world. Choose **Choose a look** on a character or **Make their home cozy** to pick coat colors, home trim, and doorstep decorations. Looks travel with exported saves and apply across all tellings.
 
 Meet Nera in Hearth. Inspect the archive, follow a person or place, then decide whether to open the eastern passage. **Next moment** advances at most fourteen days and stops for a meaningful event affecting your follow list. Open History to ask why. Visit day 2 on the timeline and **Branch here** to explore an alternate future without deleting the original.
 
@@ -62,6 +64,8 @@ A [story and art guide](docs/EXPERIENCE_GUIDE.md) keeps the cast and visual iden
 - `src/sim/`: deterministic world and recorded decisions; no rendering or clock dependency.
 - `src/persistence/`: commands, checkpoints, branches, validation, staged saves and recovery.
 - `src/director.js`: follow-driven attention and factual digests.
+- `src/guide.js`: optional, context-aware introduction and invitations to notice.
+- `src/customization.js`: bounded appearance vocabulary shared by saved preferences and renderers.
 - `src/view/`: Canvas world; reads state but never changes history.
 - `src/app.js`: interface and bounded, interruptible advancement.
 - `tests/`: reproducible invariant and causal-path tests.

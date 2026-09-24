@@ -2,6 +2,10 @@
 
 Start with Nera. She keeps Hearth's seeds safe, counts plates before people, and has a seed room that's getting wet. Across a blocked path, Oren may know how to help.
 
+Want a little company? Open **✦ Guide**. It offers one small action at a time in three chapters: meet the neighbors, notice what changes, and try another possibility. You can leave it, come back, or choose **Start the guide again** without losing your world. Watching is always a valid choice.
+
+Select someone and choose **Choose a look** to try a coat color. **Make their home cozy** offers trim colors and a planter, lantern, or bunting for the doorstep. Shared homes share decorations. **Original** restores their original color; **None** removes a decoration. Your choices stay with the saved world across all its tellings and earlier days. Return to the present before changing a look.
+
 ## Your first three minutes
 
 1. **Meet someone.** Choose **Meet Nera**, then **Walk with them**. Look around her home. Tap a building to learn its story. Time is paused, so you can take your time.

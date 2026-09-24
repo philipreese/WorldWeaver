@@ -1,8 +1,8 @@
 {
   "kind": "Node HTTP and service-worker contract checks; not a browser offline/install test.",
   "subpath": "/WorldWeaver/",
-  "assets": 22,
-  "cache": "worldweaver-2a51041e74bd",
+  "assets": 24,
+  "cache": "worldweaver-61fb07a815fc",
   "checks": [
     "Subpath serves HTML and all precached relative assets",
     "Generated worker installs complete asset set",

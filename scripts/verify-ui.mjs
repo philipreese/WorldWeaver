@@ -11,9 +11,13 @@ const { parseHTML } = require(process.env.LINKEDOM_MODULE || "linkedom");
 const { Canvas } = require(process.env.SKIA_CANVAS_MODULE || "skia-canvas");
 const { window, document } = parseHTML(await readFile("index.html", "utf8"));
 const slots = new Map();
+let failStorage = false;
 const storage = {
   getItem: (key) => slots.get(key) ?? null,
-  setItem: (key, value) => slots.set(key, String(value)),
+  setItem: (key, value) => {
+    if (failStorage) throw new Error("Test storage is full");
+    slots.set(key, String(value));
+  },
   removeItem: (key) => slots.delete(key),
 };
 const makeCanvas = () => new Canvas(1440, 760);
@@ -72,9 +76,27 @@ assert.equal($("#clock").textContent, "Day 2");
 assert.equal($("#run-state").textContent, "Paused");
 assert.equal(currentWorld(saved()).tier, 2);
 cases.push("Tier 2 opening initializes paused on day 2 with saved development");
+click('[data-action="stats"]');
+assert.doesNotMatch($("#modal-content").textContent, /Undersong/);
+dialog.close();
 click('[data-entity="c-nera"]');
 assert.match($("#inspector").textContent, /Nera/);
 assert.match($("#inspector").textContent, /Open the path/);
+assert.deepEqual(saved().guide.completed, ["meet"]);
+const beforeStyle = JSON.stringify(currentWorld(saved()));
+click('[data-style-person="c-nera"]');
+click('[data-style-color="jade"]');
+assert.equal(saved().personalization.people["c-nera"].color, "jade");
+assert.equal($("[data-style-color='jade']").getAttribute("aria-pressed"), "true");
+const neraHome = currentWorld(saved()).characters.find((c) => c.id === "c-nera").homeId;
+click(`#modal-content [data-style-home="${neraHome}"]`);
+click('[data-style-color="rose"]');
+click('[data-decoration="lantern"]');
+assert.deepEqual(saved().personalization.homes[neraHome], { color: "rose", decoration: "lantern" });
+assert.equal(JSON.stringify(currentWorld(saved())), beforeStyle);
+click('[data-action="style-done"]');
+assert.ok(saved().guide.completed.includes("style"));
+cases.push("Character and shared-home styling survives saved reload without changing time, events or decisions");
 click('[data-person-stats="c-nera"]');
 assert.match($("#modal-content").textContent, /Curiosity/);
 assert.match($("#modal-content").textContent, /Personal memories/);
@@ -89,6 +111,13 @@ click("#step");
 const first = saved();
 assert.equal(currentWorld(first).flags.archiveResolved, "raise");
 assert.equal(currentWorld(first).tick, 4);
+assert.ok(first.guide.completed.includes("watch"));
+click("#help");
+assert.match($("#modal-content").textContent, /Notice what changes/);
+click('#modal-content [data-action="guide-next"]');
+assert.equal($("[data-event-explanation]").hasAttribute("open"), true);
+assert.ok(saved().guide.completed.includes("why"));
+cases.push("The guide progresses through real actions and opens the recorded decision explanation");
 click('[data-tab="chronicle"]');
 const decision = currentWorld(first).events.find(
   (e) => e.kind === "seed-decision",
@@ -107,6 +136,8 @@ range.value = "2";
 range.dispatchEvent(new window.Event("input", { bubbles: true }));
 assert.equal($("#step").disabled, true);
 assert.equal($("#historic-banner").hidden, false);
+click('[data-entity="c-nera"]');
+assert.equal(document.querySelector('[data-style-person="c-nera"]'), null);
 assert.match($("#journal-content").textContent, /No|Day|recorded|development/i);
 click("#branch-here");
 assert.equal(saved().branches.length, 2);
@@ -119,6 +150,8 @@ const fork = saved();
 assert.equal(currentWorld(fork).flags.archiveResolved, "exchange");
 assert.equal(fork.branches[0].head.flags.archiveResolved, "raise");
 assert.equal(fork.branches[0].head.tick, 4);
+assert.equal(fork.personalization.people["c-nera"].color, "jade");
+assert.deepEqual(new Set(fork.guide.completed), new Set(["meet", "style", "watch", "why", "branch", "possibility"]));
 cases.push(
   "Historical controls are read-only; branch changes a decision and preserves source future",
 );
@@ -182,6 +215,31 @@ dialog.close();
 cases.push(
   "Optional world and character statistics expose recorded data without advancing time",
 );
+click("#help");
+click('[data-action="guide-restart"]');
+assert.deepEqual(saved().guide.completed, []);
+click('[data-action="guide-dismiss"]');
+assert.equal(saved().guide.dismissed, true);
+assert.equal($("#guide-card").hidden, true);
+click("#help");
+click('#modal-content [data-action="guide-next"]');
+assert.equal(saved().guide.dismissed, false);
+assert.ok(saved().guide.completed.includes("meet"));
+assert.equal(currentWorld(saved()).tick, 42);
+cases.push("Guide dismissal, reopening and restart preserve the existing world and recorded styles");
+const lastGoodSave = slots.get("worldweaver.save.current");
+failStorage = true;
+click('[data-style-person="c-nera"]');
+click('[data-style-color="lilac"]');
+click('[data-action="style-done"]');
+assert.equal(slots.get("worldweaver.save.current"), lastGoodSave);
+assert.match($("#save-state").textContent, /Save failed/);
+assert.doesNotMatch($("#toast").textContent, /Your look is kept/);
+failStorage = false;
+click('[data-style-person="c-nera"]');
+click('[data-action="style-done"]');
+assert.equal(saved().personalization.people["c-nera"].color, "lilac");
+cases.push("A failed style save preserves the last good file and never claims the new look is saved");
 click("#settings");
 assert.equal(dialog.open, true);
 assert.ok($("#horizon"));

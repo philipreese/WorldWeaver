@@ -6,9 +6,9 @@
 
 | Evidence | Verified scope | Limits |
 | --- | --- | --- |
-| `npm test` — 72 passing | 22 simulation, 23 history/recovery, 13 director, 6 renderer, 8 statistics tests | Node execution; renderer input tests use synthetic events |
-| [UI report](../evidence/ui-integration.json) — 13 passing | Real app handlers: opening, exploration panel, decision layers, history/fork, refuge, relic discovery, power, institution, background pause | LinkeDOM and Skia Canvas; no browser engine, CSS layout, real touch, accessibility audit, or device performance |
-| [Build report](../evidence/build-verification.json) | `/WorldWeaver/` HTTP path, 22 precached responses, worker activation, simulated offline cache reads | Worker evaluated in Node with a cache mock; actual browser offline reload and installation remain unverified |
+| `npm test` — 92 passing | 22 simulation, 31 history/recovery, 13 director, 10 guide, 8 renderer, 8 statistics tests | Node execution; renderer input tests use synthetic events |
+| [UI report](../evidence/ui-integration.json) — 17 passing | Real app handlers: opening, saved customization, guide progression/restart, failed-save messaging, exploration panel, decision layers, history/fork, refuge, relic discovery, power, institution, background pause | LinkeDOM and Skia Canvas; no browser engine, CSS layout, real touch, accessibility audit, or device performance |
+| [Build report](../evidence/build-verification.json) | `/WorldWeaver/` HTTP path, 24 precached responses, worker activation, simulated offline cache reads | Worker evaluated in Node with a cache mock; actual browser offline reload and installation remain unverified |
 | [Causal report](../evidence/causal-scenarios.json) | Preserved alternate futures, changed motives, exact decision context, director stops, three automated save-reload sequences | Agent-produced deterministic evidence; no human participants or qualitative session claims |
 | [Render report](../evidence/static-render-report.json) and `evidence/*.webp` | 10 frames from the production renderer, including three life forms and surviving power/infrastructure | Static Canvas renders; `render-phone` describes dimensions only. Timings are single hosted Node renders, not sustained FPS |
 | [Browser report](../evidence/browser-verification.json) | Cloud Chrome opening, alternate decision, preserved source future, and paused reload | Agent mouse/keyboard walkthrough; no real phone, touch emulation, human playtesting, sustained FPS, or continuous video |
@@ -17,6 +17,8 @@
 The Tier 1 checkpoint at `67d6731` was verified before Tier 2 integration. Its committed save is retained as a compatibility fixture in `tests/history.test.js`. Independent agent review also exercised 40 mixed-command branch transcripts and 54 Tier 2 configurations through day 6000, and checked three prior Tier 1 histories. Those exploratory checks complement the retained tests; they were not browser or human playtests.
 
 Review found and corrected historical digest leakage, save readback rollback, an unreachable relic intervention, invalid scene participants, information used before arrival, unaffordable refuge, and succession beyond the ordinary playable command horizon. No confirmed protected-invariant defect remained in that source-level review.
+
+The guide/customization review corrected a branch suggestion that retained an already-opened path, a stalled guide after all interventions were used, and a style-save success notice after storage failure. Cosmetic tests verify unchanged snapshots, decisions, fingerprints and hit targets; optional guide progress records interface actions only. The design invites learning through observation and comparison, but no educational efficacy claim or completed child playtest is made.
 
 ## Reproduce
 

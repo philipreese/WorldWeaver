@@ -1375,3 +1375,131 @@ dialog .field input[type="checkbox"] {
 .stat-card dd small {
   font-size: 12px;
 }
+
+.guide-button {
+  color: var(--gold);
+  padding-inline: 10px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.guide-card {
+  padding: 14px 17px 9px;
+  border-top: 1px solid var(--edge);
+  background: linear-gradient(125deg, #d6bd7912, transparent);
+  flex-shrink: 0;
+  max-height: 230px;
+  overflow-y: auto;
+}
+.guide-card .eyebrow {
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+.guide-card h3 {
+  margin: 5px 0;
+  font-size: 19px;
+}
+.guide-card p {
+  color: #b8c9bd;
+  font-size: 11px;
+  margin-bottom: 10px;
+}
+.guide-card > .primary {
+  width: 100%;
+  font-size: 12px;
+}
+.guide-modal {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #e4c08245;
+  border-radius: 12px;
+  background: #c9af6510;
+}
+.guide-modal h3 {
+  font-size: 26px;
+  margin: 9px 0;
+}
+.guide-modal p {
+  margin-bottom: 16px;
+}
+.guide-modal .text-button {
+  display: block;
+  margin-top: 8px;
+}
+.personal-actions,
+.decoration-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0;
+}
+.personal-actions button {
+  font-size: 12px;
+}
+.style-preview {
+  display: grid;
+  place-items: center;
+  min-height: 155px;
+  margin: 16px 0;
+  padding: 12px;
+  border-radius: 16px;
+  background: radial-gradient(ellipse at center, #7caa9730, #10232b40);
+}
+.style-preview .character-portrait {
+  width: 138px;
+  height: 144px;
+}
+.style-preview svg:not(.character-portrait) {
+  width: min(100%, 240px);
+  max-height: 175px;
+}
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 20px 0;
+}
+.color-choice {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  padding: 10px 5px;
+  font-size: 12px;
+}
+.color-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--swatch);
+  border: 2px solid #ffffffe0;
+  box-shadow: 0 2px 7px #0004;
+}
+.original-color {
+  background: conic-gradient(#d2a266, #93a9c9, #97c8b5, #d2a266);
+}
+.color-choice[aria-pressed="true"],
+.decoration-grid [aria-pressed="true"] {
+  border-color: var(--gold);
+  background: #dfc2801c;
+  box-shadow: inset 0 0 0 1px var(--gold);
+}
+.curiosity-note {
+  padding: 12px 14px;
+  border-left: 2px solid var(--jade);
+  color: #c2d9ca;
+  background: #78b6a709;
+  margin: 14px 0;
+}
+@media (max-width: 900px), (max-height: 650px) {
+  .guide-card {
+    display: none;
+  }
+}
+@media (max-width: 480px) {
+  .guide-button {
+    padding-inline: 7px;
+    font-size: 11px;
+  }
+  .guide-modal {
+    padding: 16px;
+  }
+}

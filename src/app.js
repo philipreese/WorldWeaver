@@ -9,6 +9,10 @@ import {
   parseHistory,
   saveHistory,
   loadHistory,
+  setPersonStyle,
+  setHomeStyle,
+  setGuideProgress,
+  HISTORY_LIMITS,
 } from "./persistence/history.js";
 import { getInterventions, entityLabel } from "./sim/world.js";
 import {
@@ -24,7 +28,10 @@ import {
   characterPortrait,
   personHook,
   friendlyIntervention,
+  homeStylePreview,
 } from "./presentation.js";
+import { STYLE_COLORS, HOME_DECORATIONS } from "./customization.js";
+import { getGuideStep, getCuriosityPrompt } from "./guide.js";
 const DEFAULT_TIER = 2;
 const $ = (id) => document.getElementById(id);
 const escape = (value) =>
@@ -167,6 +174,7 @@ function persist() {
 }
 function render() {
   const w = world();
+  renderer.setPersonalization(history.personalization);
   renderer.setWorld(w);
   document.querySelectorAll(".tier2").forEach((e) => (e.hidden = w.tier < 2));
   $("clock").textContent = `Day ${w.tick}`;
@@ -189,6 +197,7 @@ function render() {
   renderJournal();
   renderMarkers();
   renderScale();
+  renderGuide();
   if (inspectedEvent) showEvent(inspectedEvent, false);
   else if (selectedId) inspectEntity(selectedId, false);
 }
@@ -317,7 +326,7 @@ function inspectEntity(id, move = true) {
     isSettlement = w.settlements.some((s) => s.id === id),
     isStructure = !!e.kind;
   let html = isPerson
-    ? `<div class="portrait-heading">${characterPortrait(e)}<div><div class="eyebrow">${e.alive ? "MEET A NEIGHBOR" : "A REMEMBERED LIFE"}</div><h2>${esc(e.name)}</h2><span class="muted-badge">${esc(e.role)}${e.alive ? "" : ` · remembered since day ${e.diedAt}`}</span></div></div>`
+    ? `<div class="portrait-heading">${portrait(e)}<div><div class="eyebrow">${e.alive ? "MEET A NEIGHBOR" : "A REMEMBERED LIFE"}</div><h2>${esc(e.name)}</h2><span class="muted-badge">${esc(e.role)}${e.alive ? "" : ` · remembered since day ${e.diedAt}`}</span></div></div>`
     : `<div class="eyebrow">${isSettlement ? "A PLACE THAT REMEMBERS" : isStructure ? "A PLACE WITH A STORY" : "PART OF THE STORY"}</div><h2>${esc(e.name || label(id, w))}</h2>`;
   if (isPerson) html += `<p class="character-hook">${esc(personHook(e))}</p>`;
   else if (isSettlement)
@@ -341,6 +350,12 @@ function inspectEntity(id, move = true) {
   html += `<div class="inspect-actions"><button data-follow="${esc(id)}">${history.followed.includes(id) ? "✓ Following" : "+ Follow"}</button><button class="primary" data-visit="${esc(id)}">${isPerson ? (e.alive ? "Walk with them" : "Visit their place") : "Explore streets"} ↗</button>${s && viewTick === null ? `<button data-possibilities="${esc(s.id)}">Lend a hand</button>` : ""}</div>`;
   if (isPerson)
     html += `<button class="text-button" data-person-stats="${esc(id)}">Traits & memories ↗</button>`;
+  if (viewTick === null && isPerson) {
+    html += `<div class="personal-actions"><button data-style-person="${esc(id)}">Choose a look</button>${e.homeId ? `<button data-style-home="${esc(e.homeId)}">Make their home cozy</button>` : ""}</div>`;
+    if (move) markGuide("meet");
+  }
+  if (viewTick === null && isStructure && e.kind === "home")
+    html += `<button data-style-home="${esc(id)}">Make this home cozy</button>`;
   if (isSettlement && w.tier > 1) {
     html += '<details class="story-details"><summary>Who lives here?</summary>';
     if (e.population)
@@ -506,7 +521,7 @@ function intro() {
   scale = "neighborhood";
   renderScale();
   openInspector(
-    `<div class="portrait-heading">${characterPortrait(nera)}<div><div class="eyebrow">WELCOME TO HEARTH</div><h2>Come meet Nera.</h2></div></div><p class="character-hook">She counts plates before people. She also has a problem: her seed room is getting wet.</p><p>Across a blocked path, Oren may know how to help.</p><div class="inspect-actions"><button class="primary" data-entity="c-nera">Meet Nera ↗</button><button data-action="dismiss-intro">Look around</button></div><p class="tiny">Time is paused. Explore as long as you like. Press <b>Next moment</b> when you’re ready.</p>`,
+    `<div class="portrait-heading">${portrait(nera)}<div><div class="eyebrow">WELCOME TO HEARTH</div><h2>Come meet Nera.</h2></div></div><p class="character-hook">She counts plates before people. She also has a problem: her seed room is getting wet.</p><p>Across a blocked path, Oren may know how to help.</p><div class="inspect-actions"><button class="primary" data-entity="c-nera">Meet Nera ↗</button><button data-action="guide">Show me around</button><button data-action="guide-dismiss">Explore on my own</button></div><p class="tiny">Time is paused. Your guide takes one small step at a time. You can leave and come back whenever you like.</p>`,
   );
 }
 function pause() {
@@ -516,7 +531,7 @@ function pause() {
   timer = null;
   $("play").textContent = "▶";
   $("play").setAttribute("aria-label", "Play time");
-  $("run-state").textContent = "Paused";
+  $("run-state").textContent = viewTick === null ? "Paused" : "In history";
 }
 function step(auto = false) {
   if (viewTick !== null) return false;
@@ -530,6 +545,7 @@ function step(auto = false) {
   }
   const w = currentWorld(history),
     newEvents = w.events.slice(before.events.length);
+  if (w.events.some((e) => e.kind === "seed-decision")) markGuide("watch", false);
   const stop = selectAttentionEvent(
     newEvents,
     history.followed,
@@ -595,9 +611,128 @@ function modal(html) {
   $("modal-content").innerHTML = html;
   if (!$("modal").open) $("modal").showModal();
 }
+function portrait(person) {
+  return characterPortrait(person, history.personalization?.people?.[person.id]);
+}
+function markGuide(id, save = true) {
+  if (history.guide?.completed.includes(id)) return;
+  history = setGuideProgress(history, {
+    completed: [...(history.guide?.completed || []), id],
+    dismissed: history.guide?.dismissed || false,
+  });
+  if (save) persist();
+  renderGuide();
+}
+function nextGuideStep() {
+  return getGuideStep(world(), {
+    ...history.guide,
+    dismissed: false,
+    context: {
+      historical: viewTick !== null,
+      branchLimitReached: history.branches.length >= HISTORY_LIMITS.branches,
+    },
+  });
+}
+function guideCard(inModal = false) {
+  const card = nextGuideStep();
+  if (!card) {
+    const prompt = getCuriosityPrompt(world());
+    return `<div class="eyebrow">THE WORLD IS YOURS TO EXPLORE</div><h3>What catches your eye?</h3><p>${esc(prompt?.text || "Visit someone you remember. See how their place is changing.")}</p>${prompt?.targetId ? `<button data-guide-visit="${esc(prompt.targetId)}">Take a look ↗</button>` : ""}`;
+  }
+  return `<div class="eyebrow">${esc(card.chapter)}</div><h3>${esc(card.title)}</h3><p>${esc(card.text)}</p><button class="primary" data-action="guide-next">${esc(card.label)}</button>${inModal ? '<button class="text-button" data-action="guide-dismiss">I’ll explore on my own</button>' : '<button class="text-button" data-action="guide">Open guide ↗</button>'}`;
+}
+function renderGuide() {
+  const panel = $("guide-card");
+  if (!panel) return;
+  panel.hidden = Boolean(history.guide?.dismissed);
+  panel.innerHTML = panel.hidden ? "" : guideCard();
+}
+function useGuide() {
+  const card = nextGuideStep();
+  if (!card) return;
+  $("modal").close();
+  if (history.guide?.dismissed) {
+    history = setGuideProgress(history, { completed: history.guide.completed, dismissed: false });
+    persist();
+  }
+  if (card.action === "inspect") inspectEntity(card.targetId);
+  if (card.action === "style") showStyle(card.targetId, "person");
+  if (card.action === "advance") {
+    pause();
+    step();
+    const moment = world().events.find((e) => e.kind === "seed-decision");
+    if (moment) showEvent(moment.id);
+    else toast("A day passes. Take another small step when you’re ready.");
+  }
+  if (card.action === "event") {
+    showEvent(card.eventId);
+    if (card.id === "watch") markGuide("watch");
+    if (card.id === "possibility") markGuide("possibility");
+    if (card.id === "why") {
+      $("inspector").querySelector("[data-event-explanation]")?.setAttribute("open", "");
+      markGuide("why");
+    }
+  }
+  if (card.action === "possibilities") showPossibilities(card.settlementId || settlementOf(card.targetId)?.id);
+  if (card.action === "timeline") {
+    timeTravel(card.tick ?? Math.min(2, currentWorld(history).tick));
+    toast(card.comparisonOnly
+      ? history.branches.length >= HISTORY_LIMITS.branches
+        ? "This archive has eight futures. You can still look back and compare them."
+        : "This is the first recorded day. Return to the present to continue exploring."
+      : "You’re visiting an earlier day. Choose Branch here to keep another future. Lend a hand shows what you can change there.");
+  }
+  renderGuide();
+}
+function showStyle(id, kind) {
+  if (viewTick !== null) {
+    toast("Return to the present to choose a look.");
+    return;
+  }
+  const target = entity(id);
+  if (!target || (kind === "home" && target.kind !== "home")) return;
+  const person = kind === "person";
+  if (person && !world().characters.some((c) => c.id === id)) return;
+  const style = history.personalization?.[person ? "people" : "homes"]?.[id] || {};
+  const residents = person ? [] : world().characters.filter((c) => c.homeId === id && c.alive);
+  renderer.focus(id, "neighborhood");
+  const colors = [{ id: "original", label: "Original", coat: "#748984" }, ...STYLE_COLORS];
+  modal(`<div class="eyebrow">${person ? "A LOOK OF THEIR OWN" : "A COZIER CORNER"}</div><h2>${esc(target.name)}</h2><div class="style-preview">${person ? portrait(target) : homeStylePreview(target, style)}</div>${residents.length ? `<p class="tiny">Home to ${residents.map((c) => esc(c.name)).join(", ")}. Shared homes share their decorations.</p>` : ""}<p>${person ? "Pick a coat color. Their familiar face and favorite things stay with them." : "Choose a trim color and something for the doorstep."}</p><div class="color-grid" role="group" aria-label="${person ? "Coat" : "Home trim"} color">${colors.map((color) => `<button class="color-choice" data-style-id="${esc(id)}" data-style-kind="${kind}" data-style-color="${color.id}" aria-pressed="${(style.color || "original") === color.id}"><span class="color-dot ${color.id === "original" ? "original-color" : ""}" style="--swatch:${color.coat}"></span>${esc(color.label)}</button>`).join("")}</div>${!person ? `<div class="decoration-grid" role="group" aria-label="Doorstep decoration">${HOME_DECORATIONS.map((decoration) => `<button data-style-id="${esc(id)}" data-style-kind="home" data-decoration="${decoration.id}" aria-pressed="${(style.decoration || "none") === decoration.id}">${esc(decoration.label)}</button>`).join("")}</div>` : ""}<p class="tiny">This look stays with your saved world, across all its tellings and earlier days.</p><div class="modal-actions"><button class="primary" data-action="style-done">Done</button>${person && target.homeId ? `<button data-style-home="${esc(target.homeId)}">Make their home cozy →</button>` : ""}</div>`);
+}
+function changeStyle(data) {
+  if (viewTick !== null) return;
+  try {
+    if (data.styleKind === "person") history = setPersonStyle(history, data.styleId, data.styleColor);
+    else {
+      const prior = history.personalization?.homes?.[data.styleId] || {};
+      history = setHomeStyle(history, data.styleId, {
+        color: data.styleColor ?? prior.color ?? "original",
+        decoration: data.decoration ?? prior.decoration ?? "none",
+      });
+    }
+    markGuide("style", false);
+    persist();
+    render();
+    showStyle(data.styleId, data.styleKind);
+    const control = data.styleColor !== undefined ? `[data-style-color="${data.styleColor}"]` : `[data-decoration="${data.decoration}"]`;
+    $("modal-content").querySelector(control)?.focus();
+  } catch (error) {
+    toast(error.message);
+  }
+}
+function showPossibilities(id) {
+  const w = world(), place = w.settlements.find((s) => s.id === id);
+  if (!place || viewTick !== null) return;
+  const options = getInterventions(w).map(friendlyIntervention).filter((i) =>
+    i.targetId === place.id || place.structures.some((b) => b.id === i.targetId) ||
+    w.routes.some((r) => r.id === i.targetId && (r.from === place.id || r.to === place.id)),
+  );
+  const curiosity = getCuriosityPrompt(w);
+  modal(`<div class="eyebrow">LEND A HAND</div><h2>${esc(place.name)}</h2><p>You can open a way forward. The neighbors decide what happens next.</p>${curiosity ? `<p class="curiosity-note">${esc(curiosity.text)}</p>` : ""}${options.map((i) => `<div class="intervention"><h3>${esc(i.title)}</h3><p>${esc(i.description)}</p><div class="reason">${esc(i.reason)}</div><button data-intervention="${esc(i.id)}" ${i.available ? "" : "disabled"}>${i.available ? "Try this" : "Not available"}</button></div>`).join("")}`);
+}
 function showHelp() {
   modal(
-    `<div class="eyebrow">YOUR FIRST FEW MINUTES</div><h2>Follow someone.<br>See what happens.</h2><div class="guide-grid"><div><b>1 · Meet a neighbor</b><p>Tap Nera, then Walk with them. Drag to look around. Tap a building to find its story.</p></div><div><b>2 · Watch, or lend a hand</b><p>Open a path or uncover an old place. People choose what to do next. You can also just watch.</p></div><div><b>3 · See what happens</b><p>Press Next moment. Time stops when someone you follow has an important moment.</p></div><div><b>4 · Follow your curiosity</b><p>Ask Why did this happen? Or visit an earlier day and Branch here to try another future. Both are kept.</p></div></div><p>Meet the neighbors: <b>Emberkin</b> are people, <b>Vessels</b> are machine people, and <b>Chorus</b> live through connected root rooms.</p><details class="story-details"><summary>Camera & keyboard tips</summary><p>Drag or use arrow keys to move. Pinch or use + / − to zoom. The overview button brings the whole basin back.</p><p>Space pauses or plays; Escape closes a panel. Nothing happens while you’re away.</p></details><div class="modal-actions"><button class="primary" data-action="close-modal">Let’s explore</button><button data-action="report">Report a problem</button></div>`,
+    `<div class="eyebrow">A LITTLE COMPANY ON THE WAY</div><h2>Your next small adventure.</h2><div class="guide-modal">${guideCard(true)}</div><details class="story-details"><summary>Where the guide goes</summary><div class="guide-grid"><div><b>1 · Meet the neighbors</b><p>Find a familiar face. Pick a color. Make a home feel cozy.</p></div><div><b>2 · Notice what changes</b><p>Let a little time pass. Discover a choice and what led to it.</p></div><div><b>3 · Try another possibility</b><p>Lend a hand, then look back and try a different future. Both are kept.</p></div></div><p>Watching is a complete way to play. Every part of the guide is optional.</p></details><details class="story-details"><summary>Moving around & controlling time</summary><p>Drag or use arrow keys to explore. Pinch or use + / − to zoom. Tap a person or building to look closer.</p><p><b>+1 day</b> takes one small step. <b>Next moment</b> moves ahead and pauses for someone you follow. Nothing happens while you’re away.</p><p>Use <b>Look back</b> to visit an earlier day. <b>Branch here</b> keeps a separate future. Space pauses or plays; Escape closes a panel.</p></details><div class="modal-actions"><button data-action="close-modal">Back to the world</button><button data-action="guide-restart">Start the guide again</button><button data-action="report">Report a problem</button></div>`,
   );
 }
 
@@ -626,7 +761,7 @@ function showStats(personId = null) {
     "person.ageDays": "Age in days",
     "person.alive": "Alive",
     "motive.duty": "Sense of duty",
-    "power.materialResponses": "Times the Undersong answered",
+    "power.materialResponses": snapshot.power ? "Times the Undersong answered" : "Strange currents recorded",
   };
   const highlights = new Set(
     person
@@ -696,7 +831,7 @@ function showStats(personId = null) {
         ],
       ];
   modal(
-    `<div class="eyebrow">${person ? "TRAITS & MEMORIES" : "YOUR WORLD IN NUMBERS"} · DAY ${snapshot.tick}</div>${person ? `<div class="portrait-heading">${characterPortrait(person)}<h2>${esc(person.name)}</h2></div><p>These traits help shape their choices. Their memories grow as life happens.</p>` : "<h2>A world with a history.</h2><p>A closer look at the people, places, and changes in this telling.</p>"}${grid(report.stats.filter((stat) => highlights.has(stat.id)))}${groups
+    `<div class="eyebrow">${person ? "TRAITS & MEMORIES" : "YOUR WORLD IN NUMBERS"} · DAY ${snapshot.tick}</div>${person ? `<div class="portrait-heading">${portrait(person)}<h2>${esc(person.name)}</h2></div><p>These traits help shape their choices. Their memories grow as life happens.</p>` : "<h2>A world with a history.</h2><p>A closer look at the people, places, and changes in this telling.</p>"}${grid(report.stats.filter((stat) => highlights.has(stat.id)))}${groups
       .filter(([, items]) => items.length)
       .map(
         ([name, items]) =>
@@ -738,7 +873,7 @@ function exportProblemReport() {
     `worldweaver-report-day-${world().tick}.json`,
     JSON.stringify(report, null, 2),
   );
-  toast("Report downloaded. Share it when you’re ready.");
+  toast("Your report is ready to save. Share the file when you’re ready.");
 }
 function downloadFile(filename, contents) {
   const url = URL.createObjectURL(
@@ -747,7 +882,9 @@ function downloadFile(filename, contents) {
   const link = document.createElement("a");
   link.href = url;
   link.download = filename;
+  document.body.append(link);
   link.click();
+  link.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
@@ -765,6 +902,7 @@ function branchNow() {
       tick,
       `Telling ${history.branches.length + 1} · day ${tick}`,
     );
+    markGuide("branch", false);
     resetSession();
     viewTick = null;
     selectedId = null;
@@ -781,16 +919,8 @@ function branchNow() {
   }
 }
 function exportSave() {
-  const blob = new Blob([serializeHistory(history)], {
-      type: "application/json",
-    }),
-    url = URL.createObjectURL(blob),
-    a = document.createElement("a");
-  a.href = url;
-  a.download = `worldweaver-day-${currentWorld(history).tick}.json`;
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-  toast("History exported. Keep this file to carry your world elsewhere.");
+  downloadFile(`worldweaver-day-${currentWorld(history).tick}.json`, serializeHistory(history));
+  toast("Your history file is ready to save. Keep a copy to carry this world elsewhere.");
 }
 function newWorldForm() {
   modal(
@@ -798,6 +928,8 @@ function newWorldForm() {
   );
 }
 document.addEventListener("click", (event) => {
+  const explanation = event.target.closest("[data-event-explanation] summary");
+  if (explanation && !explanation.parentElement.hasAttribute("open")) markGuide("why");
   const b = event.target.closest("button");
   if (!b) return;
   const d = b.dataset;
@@ -807,6 +939,10 @@ document.addEventListener("click", (event) => {
   }
   if (d.entity) inspectEntity(d.entity);
   if (d.personStats) showStats(d.personStats);
+  if (d.stylePerson) showStyle(d.stylePerson, "person");
+  if (d.styleHome) showStyle(d.styleHome, "home");
+  if (d.styleId) changeStyle(d);
+  if (d.guideVisit) { $("modal").close(); inspectEntity(d.guideVisit); }
   if (d.visit) {
     selectedId = null;
     inspectedEvent = null;
@@ -819,27 +955,7 @@ document.addEventListener("click", (event) => {
     $("location-note").textContent =
       `${s?.name || label(d.visit)} · select a person or a surviving trace`;
   }
-  if (d.possibilities) {
-    const w = world(),
-      place = w.settlements.find((s) => s.id === d.possibilities);
-    if (place && viewTick === null) {
-      const options = getInterventions(w)
-        .map(friendlyIntervention)
-        .filter(
-          (i) =>
-            i.targetId === place.id ||
-            place.structures.some((b) => b.id === i.targetId) ||
-            w.routes.some(
-              (r) =>
-                r.id === i.targetId &&
-                (r.from === place.id || r.to === place.id),
-            ),
-        );
-      modal(
-        `<div class="eyebrow">LEND A HAND</div><h2>${esc(place.name)}</h2><p>You can open a way forward. The neighbors decide what happens next.</p>${options.map((i) => `<div class="intervention"><h3>${esc(i.title)}</h3><p>${esc(i.description)}</p><div class="reason">${esc(i.reason)}</div><button data-intervention="${esc(i.id)}" ${i.available ? "" : "disabled"}>${i.available ? "Try this" : "Not available"}</button></div>`).join("")}`,
-      );
-    }
-  }
+  if (d.possibilities) showPossibilities(d.possibilities);
   if (d.follow) {
     const exists = history.followed.includes(d.follow);
     if (!exists && history.followed.length >= 12) {
@@ -882,6 +998,7 @@ document.addEventListener("click", (event) => {
           type: "intervene",
           intervention: { kind: i.kind, targetId: i.targetId },
         });
+        markGuide("possibility", false);
         persist();
         render();
         const e = world().events.at(-1);
@@ -922,6 +1039,30 @@ document.addEventListener("click", (event) => {
     render();
   }
   const action = d.action;
+  if (action === "guide") showHelp();
+  if (action === "guide-next") useGuide();
+  if (action === "guide-dismiss") {
+    history = setGuideProgress(history, { completed: history.guide?.completed || [], dismissed: true });
+    persist();
+    renderGuide();
+    $("modal").close();
+    $("inspector").hidden = true;
+    selectedId = null;
+    inspectedEvent = null;
+    toast("Explore at your own pace. The Guide button will be here whenever you want it.");
+  }
+  if (action === "guide-restart") {
+    history = setGuideProgress(history, { completed: [], dismissed: false });
+    persist();
+    renderGuide();
+    showHelp();
+  }
+  if (action === "style-done") {
+    markGuide("style", false);
+    const result = persist();
+    $("modal").close();
+    if (result.ok) toast("Your look is kept. Visit the guide when you’re ready for the next little adventure.");
+  }
   if (action === "close-inspector" || action === "dismiss-intro") {
     $("inspector").hidden = true;
     selectedId = null;

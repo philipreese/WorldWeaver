@@ -160,8 +160,8 @@ test('history inspection supports numeric settlement knowledge and every real en
   }
 });
 
-test('following a real power or diverged culture reaches recorded events without rewriting their interpretation layers', () => {
-  const world = advance(intervene(createWorld({ seed: 8417, tier: 2 }), { kind: 'open-route', targetId: 'r-hearth-lattice' }), 60);
+test('legacy v1: following a real power or diverged culture reaches recorded events without rewriting their interpretation layers', () => {
+  const world = advance(intervene(createWorld({ seed: 8417, tier: 2, engineVersion: '1.0.0' }), { kind: 'open-route', targetId: 'r-hearth-lattice' }), 60);
   const powerEvent = world.events.find(record => record.kind === 'power-emerged');
   const cultureEvent = world.events.find(record => record.kind === 'culture-diverged');
   assert.ok(powerEvent && cultureEvent);
@@ -177,8 +177,8 @@ test('following a real power or diverged culture reaches recorded events without
   assert.equal(digest.threads.some(thread => thread.id === 't-authority'), false);
 });
 
-test('day 42 surfaces institutional collapse above its same-day redistribution', () => {
-  const prior = advance(intervene(createWorld({ seed: 8417, tier: 2 }), { kind: 'open-route', targetId: 'r-hearth-lattice' }), 41);
+test('legacy v1: day 42 surfaces institutional collapse above its same-day redistribution', () => {
+  const prior = advance(intervene(createWorld({ seed: 8417, tier: 2, engineVersion: '1.0.0' }), { kind: 'open-route', targetId: 'r-hearth-lattice' }), 41);
   const world = advance(prior, 1);
   const newEvents = world.events.slice(prior.events.length);
   assert.ok(newEvents.some(record => record.kind === 'power-redistribution' && record.severity === 2));
@@ -186,4 +186,36 @@ test('day 42 surfaces institutional collapse above its same-day redistribution',
   assert.equal(selected.kind, 'channel-authority-ended');
   assert.equal(selected.severity, 3);
   assert.equal(selected.tick, 42);
+});
+
+
+test('v2 generated settlements and migration routes lead back to the actual decision and material evidence', () => {
+  const beginning = createWorld({ tier: 2, seed: 8417 });
+  const world = advance(beginning, 300);
+  const newPlace = world.settlements.find(place => !beginning.settlements.some(original => original.id === place.id));
+  assert.ok(newPlace, 'The scenario must have a place created by household needs.');
+  const founding = world.events.find(record => record.id === newPlace.eventId);
+  assert.equal(founding.kind, 'settlement-founded');
+  const atFounding = advance(beginning, founding.tick);
+  assert.equal(shouldStop(founding, [newPlace.id]), true);
+  const digest = makeDigest(atFounding, [newPlace.id], founding.tick - 1);
+  const presented = digest.events.find(record => record.id === founding.id);
+  assert.ok(presented);
+  assert.deepEqual(presented.evidence, founding.evidence);
+  assert.deepEqual(presented.decision, founding.decision);
+  assert.ok(relatedEvents(world, newPlace.id).includes(founding));
+  for (const structure of newPlace.structures.filter(item => item.eventId === founding.id)) {
+    assert.ok(relatedEvents(world, structure.id).includes(founding));
+  }
+  const migration = world.events.find(record => record.kind === 'households-migrated');
+  assert.ok(migration);
+  const chosen = migration.decision.alternatives.find(option => option.id === migration.decision.chosen);
+  assert.ok(chosen.available);
+  for (const id of [migration.settlementId, chosen.destinationId, ...chosen.routes]) {
+    assert.ok(relatedEvents(world, id).includes(migration));
+  }
+  for (const id of [...founding.causes, ...migration.causes]) assert.ok(world.events.some(record => record.id === id));
+  const beforeFounding = advance(beginning, founding.tick - 1);
+  assert.equal(relatedEvents(beforeFounding, newPlace.id).length, 0);
+  assert.ok(makeDigest(beforeFounding, [newPlace.id], 0).events.every(record => record.tick < founding.tick));
 });

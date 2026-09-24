@@ -6,16 +6,17 @@ import { getWorldStats, getPersonStats } from '../src/stats.js';
 
 const values = dto => Object.fromEntries(dto.stats.map(stat => [stat.id, stat.value]));
 const move = (history, days) => applyCommand(history, { type: 'advance', days });
-function developedHistory() {
-  let history = createHistory({ tier: 2 });
+function developedHistory(legacy = false) {
+  let history = createHistory({ tier: 2 }, legacy ? '1.0.0' : '2.0.0');
   history = applyCommand(history, { type: 'intervene', intervention: { kind: 'open-route', targetId: 'r-hearth-lattice' } });
+  if (!legacy) return move(history, 300);
   history = move(history, 4);
   history = applyCommand(history, { type: 'intervene', intervention: { kind: 'offer-refuge', targetId: 's-hearth' } });
   return move(history, 56);
 }
 
-test('world statistics count actual forms, construction, culture, institution and material-response records', () => {
-  const history = developedHistory();
+test('legacy v1: world statistics count actual forms, construction, culture, institution and material-response records', () => {
+  const history = developedHistory(true);
   const world = currentWorld(history);
   const dto = getWorldStats(world, history);
   const stats = values(dto);
@@ -39,8 +40,8 @@ test('world statistics count actual forms, construction, culture, institution an
   assert.equal(stats['events.total'], stats['events.personal'] + stats['events.cultural'] + stats['events.infrastructural'] + stats['events.civilizational']);
 });
 
-test('a historical snapshot never reads later populations, structures, culture, power or actions from the history head', () => {
-  const history = developedHistory();
+test('legacy v1: a historical snapshot never reads later populations, structures, culture, power or actions from the history head', () => {
+  const history = developedHistory(true);
   const early = values(getWorldStats(worldAt(history, 3), history));
   const later = values(getWorldStats(currentWorld(history), history));
   assert.equal(early['time.days'], 3);
@@ -108,8 +109,8 @@ test('person statistics preserve actual motives, age, known records and directed
   assert.equal(getPersonStats(laterWorld, 'not-a-person'), null);
 });
 
-test('age stops at a recorded death while inherited people and memories remain queryable', () => {
-  const world = advance(createWorld({ tier: 2 }), 5000);
+test('legacy v1: age stops at a recorded death while inherited people and memories remain queryable', () => {
+  const world = advance(createWorld({ tier: 2, engineVersion: '1.0.0' }), 5000);
   const ivo = world.characters.find(person => person.id === 'c-ivo');
   assert.equal(ivo.alive, false);
   const dto = getPersonStats(world, ivo.id);
@@ -134,7 +135,7 @@ test('statistics leave worlds, replay bytes and preferences unchanged; returned 
   summary.stats.push({ id: 'consumer.example', label: 'Local display data', value: 42 });
   assert.equal(JSON.stringify(world), beforeWorld);
   assert.equal(serializeHistory(history), beforeHistory);
-  assert.equal(values(getWorldStats(world))['time.days'], 60);
+  assert.equal(values(getWorldStats(world))['time.days'], world.tick);
   assert.notEqual(values(getPersonStats(world, 'c-nera'))['person.ageYears'], 999);
 });
 
@@ -155,4 +156,38 @@ test('stat IDs are unique and values finite; corrupt numeric inputs fail visibly
   const brokenMotive = structuredClone(world);
   brokenMotive.characters[0].motives.care = Infinity;
   assert.throws(() => getPersonStats(brokenMotive, brokenMotive.characters[0].id), /not a finite number/);
+});
+
+
+test('v2 new places and their buildings appear in stats only from their recorded founding onward', () => {
+  const history = move(createHistory({ tier: 2, seed: 8417 }), 300);
+  const present = currentWorld(history);
+  const founding = present.events.find(event => event.kind === 'settlement-founded');
+  assert.ok(founding, 'The scenario must contain a real founding before comparing historical totals.');
+  const before = worldAt(history, founding.tick - 1);
+  const after = worldAt(history, founding.tick);
+  const priorStats = values(getWorldStats(before, history));
+  const afterStats = values(getWorldStats(after, history));
+  const newPlaces = after.settlements.filter(place => !before.settlements.some(old => old.id === place.id));
+  assert.ok(newPlaces.length > 0);
+  assert.equal(afterStats['settlements.total'] - priorStats['settlements.total'], newPlaces.length);
+  assert.equal(priorStats['settlements.founded'], 0);
+  assert.equal(afterStats['settlements.founded'], newPlaces.length);
+  assert.ok(values(getWorldStats(present))['households.moves'] > 0);
+  const foundingBuildings = newPlaces.flatMap(place => place.structures).filter(structure => structure.eventId === founding.id);
+  assert.ok(foundingBuildings.length >= 2, 'Founding leaves a home and its growing ground.');
+  assert.ok(afterStats['structures.built'] - priorStats['structures.built'] >= foundingBuildings.length);
+  const withoutArchive = values(getWorldStats(before));
+  for (const [id, value] of Object.entries(withoutArchive)) assert.equal(priorStats[id], value, id);
+  assert.equal(priorStats['history.daysAdvanced'], before.tick);
+  assert.equal(priorStats['history.interventions'], 0);
+  assert.ok(priorStats['settlements.total'] < values(getWorldStats(present, history))['settlements.total']);
+});
+
+test('history statistics reject matching settings from a different simulation engine', () => {
+  for (const [version, other] of [['1.0.0', '2.0.0'], ['2.0.0', '1.0.0']]) {
+    const snapshot = advance(createWorld({ tier: 2, engineVersion: version }), 20);
+    const history = move(createHistory({ tier: 2 }, other), 30);
+    assert.ok(!getWorldStats(snapshot, history).stats.some(stat => stat.id.startsWith('history.')));
+  }
 });

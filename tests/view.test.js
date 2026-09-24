@@ -68,8 +68,8 @@ test('historical snapshot replacement removes future selectable structures',()=>
   assert.ok(!view.index.has('future-structure'));assert.ok(view.hits.every(h=>h.id!=='future-structure'));view.destroy();
 });
 
-test('Tier 2 projection preserves history and anchors the power to its recorded structure',()=>{
-  const {view}=setup();let world=createWorld({tier:2});
+test('legacy v1: Tier 2 projection preserves history and anchors the power to its recorded structure',()=>{
+  const {view}=setup();let world=createWorld({tier:2,engineVersion:'1.0.0'});
   world=intervene(world,{kind:'open-route',targetId:'r-hearth-lattice'});world=advance(world,42);freeze(world);
   assert.ok(world.power);const before=JSON.stringify(world);view.setWorld(world);view.focus(world.power.id,'neighborhood');view.drawFrame();
   const arch=view.index.get('k-choir-answer'),power=view.index.get(world.power.id);
@@ -108,4 +108,28 @@ test('style previews share safe colors, preserve identity, and accept only house
   assert.notEqual(preview,homeStylePreview(home,{color:'sky',decoration:'none'}));
   assert.equal(homeStylePreview({...home,kind:'archive'},{color:'sky',decoration:'planter'}),'');
   assert.equal(homeStylePreview(home,{color:'not-a-color',decoration:'<script>'}),homeStylePreview(home));
+});
+
+
+test('v2 founded places and homes can be inspected, then disappear when viewing a day before they existed',()=>{
+  const initial=freeze(createWorld({tier:2,seed:8417}));
+  const world=freeze(advance(initial,300)),before=JSON.stringify(world);
+  const place=world.settlements.find(item=>!initial.settlements.some(old=>old.id===item.id));
+  assert.ok(place,'A generated place must exist in this scenario.');
+  const home=place.structures.find(item=>item.kind==='home');assert.ok(home);
+  const selected=[],{canvas,view}=setup(id=>selected.push(id));
+  view.setWorld(world);view.focus(place.id,'settlement');view.drawFrame();
+  const placeHit=view.hits.find(hit=>hit.id===place.id);assert.ok(placeHit);
+  pointer(canvas,'pointerdown',1,placeHit.x,placeHit.y);pointer(canvas,'pointerup',1,placeHit.x,placeHit.y);
+  assert.equal(selected.at(-1),place.id);
+  view.focus(home.id,'neighborhood');view.drawFrame();
+  const homeHit=view.hits.find(hit=>hit.id===home.id);assert.ok(homeHit);
+  pointer(canvas,'pointerdown',2,homeHit.x,homeHit.y);pointer(canvas,'pointerup',2,homeHit.x,homeHit.y);
+  assert.equal(selected.at(-1),home.id);
+  const routes=world.routes.filter(route=>route.from===place.id||route.to===place.id);
+  assert.ok(routes.length>0);for(const route of routes)assert.ok(view.index.has(route.id));
+  assert.equal(JSON.stringify(world),before);
+  const past=freeze(advance(initial,place.foundedAt-1));view.setWorld(past);view.overview(true);view.drawFrame();
+  assert.equal(view.selectedId,null);assert.ok(!view.index.has(place.id));assert.ok(!view.index.has(home.id));
+  assert.ok(view.hits.every(hit=>hit.id!==place.id&&hit.id!==home.id));view.destroy();
 });

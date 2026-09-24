@@ -6,9 +6,9 @@ import { createWorld, advance, intervene, getInterventions, getEntity } from '..
 import { createHistory, applyCommand, currentWorld, worldAt, forkHistory } from '../src/persistence/history.js';
 
 const doneBefore = step => ({ version: 1, dismissed: false, completed: GUIDE_STEP_IDS.slice(0, GUIDE_STEP_IDS.indexOf(step)) });
-const opening = () => advance(createWorld({ seed: 8417, tier: 2 }), 2);
+const opening = (engineVersion = '2.0.0') => advance(createWorld({ seed: 8417, tier: 2, engineVersion }), 2);
 
-test('old saves start with a small optional meeting, without changing world or progress', () => {
+test('an unfinished guide starts with a small optional meeting, without changing world or progress', () => {
   const world = opening();
   const guide = { version: 1, dismissed: false, completed: [] };
   const before = structuredClone({ world, guide });
@@ -127,8 +127,8 @@ test('the suggested earlier day precedes a path opened on day one or two', () =>
   }
 });
 
-test('curiosity prompts come from existing records and never spoil a future power', () => {
-  const world = opening();
+test('legacy v1: curiosity prompts come from existing records and never spoil a future power', () => {
+  const world = opening('1.0.0');
   const lesson = getCuriosityPrompt(world);
   assert.match(lesson.text, /bent nail/);
   assert.equal(world.events.find(event => event.id === lesson.eventId).kind, 'mending-lesson');
@@ -146,12 +146,42 @@ test('curiosity prompts come from existing records and never spoil a future powe
   assert.deepEqual(getCuriosityPrompt(pastWithFutureRecord), lesson);
 });
 
-test('mixed-neighbor curiosity requires actual different forms at the same place', () => {
-  let world = advance(intervene(opening(), { kind: 'open-route', targetId: 'r-hearth-lattice' }), 2);
+test('legacy v1: mixed-neighbor curiosity requires actual different forms at the same place', () => {
+  let world = advance(intervene(opening('1.0.0'), { kind: 'open-route', targetId: 'r-hearth-lattice' }), 2);
   world = intervene(world, { kind: 'offer-refuge', targetId: 's-hearth' });
   world = advance(world, 1);
   const prompt = getCuriosityPrompt(world);
   assert.equal(prompt.text, 'Can neighbors need different things?');
   assert.equal(prompt.targetId, 's-hearth');
   assert.equal(world.events.find(event => event.id === prompt.eventId).kind, 'mixed-refuge-settled');
+});
+
+
+test('v2 guidance follows actual availability and recorded changes across climates and later worlds', () => {
+  for (const climate of ['temperate', 'dry', 'wet']) {
+    const beginning = createWorld({ tier: 2, seed: 8417, climate });
+    for (const day of [0, 30, 300]) {
+      const world = advance(beginning, day);
+      const before = JSON.stringify(world);
+      const guide = getGuideStep(world, doneBefore('possibility'));
+      if (guide.action === 'possibilities') {
+        const option = getInterventions(world).find(item => item.id === guide.interventionId);
+        assert.ok(option?.available, `${climate}, day ${day}: only feasible help can be offered.`);
+        assert.equal(option.targetId, guide.targetId);
+        assert.ok(getEntity(world, guide.targetId));
+      } else if (guide.action === 'event') {
+        assert.ok(world.events.some(event => event.id === guide.eventId && event.tick <= world.tick));
+      } else assert.ok(getEntity(world, guide.targetId));
+      if (!getInterventions(world).some(item => item.kind === 'offer-refuge' && item.available)) {
+        assert.notEqual(guide.interventionKind, 'offer-refuge');
+      }
+      const curiosity = getCuriosityPrompt(world);
+      if (curiosity) {
+        assert.ok(getEntity(world, curiosity.targetId));
+        assert.ok(world.events.some(event => event.id === curiosity.eventId && event.tick <= world.tick));
+        if (!world.power) assert.notEqual(curiosity.targetId, 'p-undersong');
+      }
+      assert.equal(JSON.stringify(world), before);
+    }
+  }
 });

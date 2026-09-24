@@ -1,0 +1,2157 @@
+{
+  "kind": "Supplementary descriptive engine observations; no quality pass or human-play claim.",
+  "source": {
+    "label": "engine-2.0.0-candidate",
+    "engineVersionOption": "2.0.0",
+    "localModuleHashes": {
+      "ecology.js": "d84f0940bd4c445f403b0be765c7756ebd72c864fdf8f950d16e7e720c18fb60",
+      "legacy/life.js": "a8fc16090436b955bef12ecbb260988951b0fd87b9e454ce6aed4da17b91bf1f",
+      "legacy/world.js": "3c257c4818b20522401fbca8617aa8ab5bf585eb2f394d58daf16e36b20c7f57",
+      "life.js": "f959518f2684937ebce3226f67bb51784f0ee575f068db55b4a25432c658bf4f",
+      "world-v2.js": "70f6c3ad4ece6990062983a7e60dcb591793f44306a55fd85c6862413a1af71b",
+      "world.js": "5d8f5315c139a41252fe9aaadc0b53a9d0efaeda24df2b0090e0bb511fd514ae"
+    }
+  },
+  "method": {
+    "relationshipToPrimaryAudit": "Requested after the primary metric freeze. These slices are additional diagnostics; no primary metric or acceptance threshold was changed.",
+    "options": {
+      "tier": 2,
+      "density": "balanced",
+      "temperament": "careful",
+      "seeds": "1–20",
+      "climates": [
+        "temperate",
+        "dry",
+        "wet"
+      ],
+      "observationsOnly": true
+    },
+    "days": "Advance one day at a time through day 300. Event windows include both endpoints.",
+    "foodShortage": "At least one settlement with organic population >0 and food <=0 after that day’s update. Synthetic-only or collective-only occupancy does not count.",
+    "foodDuration": "World-days, not settlement-days. A continuous world streak can involve different settlements.",
+    "physicalHouseholdOutcomeKinds": [
+      "settlement-adapted",
+      "households-migrated",
+      "settlement-founded",
+      "household-birth"
+    ],
+    "nonBirthHouseholdOutcomeKinds": [
+      "settlement-adapted",
+      "households-migrated",
+      "settlement-founded"
+    ],
+    "exclusions": "Non-birth household outcomes exclude synthetic replication, collective expansion, surveys, pressure/recovery notices, births and power redistribution. Their full counts remain visible; excluding them is not a claim that they have no physical effects.",
+    "thresholds": null
+  },
+  "summary": {
+    "kinds200to300": {
+      "collective-expansion": 51,
+      "household-birth": 215,
+      "households-migrated": 1,
+      "power-redistribution": 322,
+      "provisioning-pressure": 1,
+      "provisioning-recovered": 5,
+      "settlement-adapted": 11,
+      "settlement-founded": 5,
+      "site-surveyed": 5,
+      "synthetic-replication": 45
+    },
+    "foundingRuns": [
+      {
+        "seed": 8,
+        "climate": "temperate",
+        "founding": [
+          {
+            "day": 236,
+            "source": "s-hearth",
+            "destinations": [
+              "s-grown-site-8"
+            ]
+          },
+          {
+            "day": 259,
+            "source": "s-hearth",
+            "destinations": [
+              "s-grown-site-9"
+            ]
+          }
+        ]
+      },
+      {
+        "seed": 8,
+        "climate": "dry",
+        "founding": [
+          {
+            "day": 196,
+            "source": "s-hearth",
+            "destinations": [
+              "s-grown-site-8"
+            ]
+          },
+          {
+            "day": 248,
+            "source": "s-hearth",
+            "destinations": [
+              "s-grown-site-9"
+            ]
+          }
+        ]
+      },
+      {
+        "seed": 11,
+        "climate": "dry",
+        "founding": [
+          {
+            "day": 252,
+            "source": "s-hearth",
+            "destinations": [
+              "s-grown-site-5"
+            ]
+          }
+        ]
+      },
+      {
+        "seed": 17,
+        "climate": "temperate",
+        "founding": [
+          {
+            "day": 180,
+            "source": "s-hearth",
+            "destinations": [
+              "s-grown-site-5"
+            ]
+          }
+        ]
+      },
+      {
+        "seed": 17,
+        "climate": "dry",
+        "founding": [
+          {
+            "day": 212,
+            "source": "s-hearth",
+            "destinations": [
+              "s-grown-site-5"
+            ]
+          }
+        ]
+      },
+      {
+        "seed": 17,
+        "climate": "wet",
+        "founding": [
+          {
+            "day": 88,
+            "source": "s-hearth",
+            "destinations": [
+              "s-grown-site-5"
+            ]
+          },
+          {
+            "day": 161,
+            "source": "s-hearth",
+            "destinations": [
+              "s-grown-site-10"
+            ]
+          }
+        ]
+      },
+      {
+        "seed": 20,
+        "climate": "wet",
+        "founding": [
+          {
+            "day": 183,
+            "source": "s-hearth",
+            "destinations": [
+              "s-grown-site-8"
+            ]
+          }
+        ]
+      }
+    ],
+    "worldsWithOrganicZeroFoodAt300": 1,
+    "worldsEverOrganicZeroFood": 4,
+    "worldsWithoutNonBirthHouseholdOutcomes200to300": 54,
+    "zeroFoodRuns": [
+      {
+        "seed": 17,
+        "climate": "dry",
+        "kinds61to300": {
+          "power-redistribution": 24,
+          "settlement-adapted": 3,
+          "settlement-founded": 1,
+          "site-surveyed": 2
+        },
+        "kinds200to300": {
+          "power-redistribution": 10,
+          "settlement-adapted": 1,
+          "settlement-founded": 1
+        },
+        "physicalHouseholdOutcomes61to300": 4,
+        "physicalHouseholdOutcomes200to300": 2,
+        "nonBirthHouseholdOutcomes200to300": [
+          {
+            "day": 212,
+            "kind": "settlement-founded",
+            "project": null
+          },
+          {
+            "day": 273,
+            "kind": "settlement-adapted",
+            "project": "house"
+          }
+        ],
+        "founding": [
+          {
+            "day": 212,
+            "source": "s-hearth",
+            "destinations": [
+              "s-grown-site-5"
+            ]
+          }
+        ],
+        "organicZeroFoodAt300": [],
+        "zeroFoodWorldDays": 42,
+        "firstZeroFoodDay": 40,
+        "longestZeroFoodStreak": 28,
+        "unmetFood": 9.483
+      },
+      {
+        "seed": 20,
+        "climate": "temperate",
+        "kinds61to300": {
+          "collective-expansion": 1,
+          "household-birth": 6,
+          "power-redistribution": 11,
+          "settlement-adapted": 2,
+          "synthetic-replication": 4
+        },
+        "kinds200to300": {
+          "household-birth": 3,
+          "power-redistribution": 1,
+          "synthetic-replication": 4
+        },
+        "physicalHouseholdOutcomes61to300": 8,
+        "physicalHouseholdOutcomes200to300": 3,
+        "nonBirthHouseholdOutcomes200to300": [],
+        "founding": [],
+        "organicZeroFoodAt300": [],
+        "zeroFoodWorldDays": 134,
+        "firstZeroFoodDay": 86,
+        "longestZeroFoodStreak": 68,
+        "unmetFood": 55.178
+      },
+      {
+        "seed": 20,
+        "climate": "dry",
+        "kinds61to300": {
+          "collective-expansion": 1,
+          "power-redistribution": 24
+        },
+        "kinds200to300": {
+          "collective-expansion": 1,
+          "power-redistribution": 10
+        },
+        "physicalHouseholdOutcomes61to300": 0,
+        "physicalHouseholdOutcomes200to300": 0,
+        "nonBirthHouseholdOutcomes200to300": [],
+        "founding": [],
+        "organicZeroFoodAt300": [
+          {
+            "settlementId": "s-hearth",
+            "population": 44,
+            "food": 0
+          }
+        ],
+        "zeroFoodWorldDays": 255,
+        "firstZeroFoodDay": 46,
+        "longestZeroFoodStreak": 255,
+        "unmetFood": 118.357
+      },
+      {
+        "seed": 20,
+        "climate": "wet",
+        "kinds61to300": {
+          "channel-authority-ended": 1,
+          "household-birth": 7,
+          "power-redistribution": 8,
+          "provisioning-recovered": 1,
+          "settlement-adapted": 3,
+          "settlement-founded": 1
+        },
+        "kinds200to300": {
+          "household-birth": 4,
+          "power-redistribution": 2,
+          "provisioning-recovered": 1
+        },
+        "physicalHouseholdOutcomes61to300": 11,
+        "physicalHouseholdOutcomes200to300": 4,
+        "nonBirthHouseholdOutcomes200to300": [],
+        "founding": [
+          {
+            "day": 183,
+            "source": "s-hearth",
+            "destinations": [
+              "s-grown-site-8"
+            ]
+          }
+        ],
+        "organicZeroFoodAt300": [],
+        "zeroFoodWorldDays": 9,
+        "firstZeroFoodDay": 122,
+        "longestZeroFoodStreak": 9,
+        "unmetFood": 0.745
+      }
+    ],
+    "quietestByHouseholdOutcomes": [
+      {
+        "seed": 20,
+        "climate": "dry",
+        "kinds61to300": {
+          "collective-expansion": 1,
+          "power-redistribution": 24
+        },
+        "kinds200to300": {
+          "collective-expansion": 1,
+          "power-redistribution": 10
+        },
+        "physicalHouseholdOutcomes61to300": 0,
+        "physicalHouseholdOutcomes200to300": 0,
+        "nonBirthHouseholdOutcomes200to300": [],
+        "founding": [],
+        "organicZeroFoodAt300": [
+          {
+            "settlementId": "s-hearth",
+            "population": 44,
+            "food": 0
+          }
+        ],
+        "zeroFoodWorldDays": 255,
+        "firstZeroFoodDay": 46,
+        "longestZeroFoodStreak": 255,
+        "unmetFood": 118.357
+      },
+      {
+        "seed": 17,
+        "climate": "dry",
+        "kinds61to300": {
+          "power-redistribution": 24,
+          "settlement-adapted": 3,
+          "settlement-founded": 1,
+          "site-surveyed": 2
+        },
+        "kinds200to300": {
+          "power-redistribution": 10,
+          "settlement-adapted": 1,
+          "settlement-founded": 1
+        },
+        "physicalHouseholdOutcomes61to300": 4,
+        "physicalHouseholdOutcomes200to300": 2,
+        "nonBirthHouseholdOutcomes200to300": [
+          {
+            "day": 212,
+            "kind": "settlement-founded",
+            "project": null
+          },
+          {
+            "day": 273,
+            "kind": "settlement-adapted",
+            "project": "house"
+          }
+        ],
+        "founding": [
+          {
+            "day": 212,
+            "source": "s-hearth",
+            "destinations": [
+              "s-grown-site-5"
+            ]
+          }
+        ],
+        "organicZeroFoodAt300": [],
+        "zeroFoodWorldDays": 42,
+        "firstZeroFoodDay": 40,
+        "longestZeroFoodStreak": 28,
+        "unmetFood": 9.483
+      },
+      {
+        "seed": 8,
+        "climate": "dry",
+        "kinds61to300": {
+          "collective-expansion": 3,
+          "power-redistribution": 24,
+          "provisioning-pressure": 2,
+          "provisioning-recovered": 2,
+          "settlement-adapted": 4,
+          "settlement-founded": 2,
+          "site-surveyed": 4
+        },
+        "kinds200to300": {
+          "collective-expansion": 3,
+          "power-redistribution": 10,
+          "provisioning-recovered": 1,
+          "settlement-adapted": 2,
+          "settlement-founded": 1
+        },
+        "physicalHouseholdOutcomes61to300": 6,
+        "physicalHouseholdOutcomes200to300": 3,
+        "nonBirthHouseholdOutcomes200to300": [
+          {
+            "day": 248,
+            "kind": "settlement-founded",
+            "project": null
+          },
+          {
+            "day": 257,
+            "kind": "settlement-adapted",
+            "project": "house"
+          },
+          {
+            "day": 258,
+            "kind": "settlement-adapted",
+            "project": "house"
+          }
+        ],
+        "founding": [
+          {
+            "day": 196,
+            "source": "s-hearth",
+            "destinations": [
+              "s-grown-site-8"
+            ]
+          },
+          {
+            "day": 248,
+            "source": "s-hearth",
+            "destinations": [
+              "s-grown-site-9"
+            ]
+          }
+        ],
+        "organicZeroFoodAt300": [],
+        "zeroFoodWorldDays": 0,
+        "firstZeroFoodDay": null,
+        "longestZeroFoodStreak": 0,
+        "unmetFood": 0
+      },
+      {
+        "seed": 8,
+        "climate": "wet",
+        "kinds61to300": {
+          "channel-authority-ended": 1,
+          "collective-expansion": 1,
+          "household-birth": 6,
+          "power-redistribution": 9
+        },
+        "kinds200to300": {
+          "household-birth": 3,
+          "power-redistribution": 3
+        },
+        "physicalHouseholdOutcomes61to300": 6,
+        "physicalHouseholdOutcomes200to300": 3,
+        "nonBirthHouseholdOutcomes200to300": [],
+        "founding": [],
+        "organicZeroFoodAt300": [],
+        "zeroFoodWorldDays": 0,
+        "firstZeroFoodDay": null,
+        "longestZeroFoodStreak": 0,
+        "unmetFood": 0
+      },
+      {
+        "seed": 10,
+        "climate": "dry",
+        "kinds61to300": {
+          "collective-expansion": 1,
+          "household-birth": 3,
+          "households-migrated": 1,
+          "power-redistribution": 24,
+          "provisioning-pressure": 1,
+          "provisioning-recovered": 1,
+          "settlement-adapted": 2,
+          "site-surveyed": 4
+        },
+        "kinds200to300": {
+          "collective-expansion": 1,
+          "household-birth": 1,
+          "power-redistribution": 10
+        },
+        "physicalHouseholdOutcomes61to300": 6,
+        "physicalHouseholdOutcomes200to300": 1,
+        "nonBirthHouseholdOutcomes200to300": [],
+        "founding": [],
+        "organicZeroFoodAt300": [],
+        "zeroFoodWorldDays": 0,
+        "firstZeroFoodDay": null,
+        "longestZeroFoodStreak": 0,
+        "unmetFood": 0
+      },
+      {
+        "seed": 1,
+        "climate": "dry",
+        "kinds61to300": {
+          "collective-expansion": 6,
+          "household-birth": 7,
+          "power-redistribution": 23
+        },
+        "kinds200to300": {
+          "collective-expansion": 4,
+          "household-birth": 3,
+          "power-redistribution": 9
+        },
+        "physicalHouseholdOutcomes61to300": 7,
+        "physicalHouseholdOutcomes200to300": 3,
+        "nonBirthHouseholdOutcomes200to300": [],
+        "founding": [],
+        "organicZeroFoodAt300": [],
+        "zeroFoodWorldDays": 0,
+        "firstZeroFoodDay": null,
+        "longestZeroFoodStreak": 0,
+        "unmetFood": 0
+      }
+    ]
+  },
+  "rows": [
+    {
+      "seed": 1,
+      "climate": "temperate",
+      "kinds61to300": {
+        "collective-expansion": 1,
+        "household-birth": 9,
+        "power-redistribution": 14,
+        "synthetic-replication": 2
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 4,
+        "synthetic-replication": 2
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 1,
+      "climate": "dry",
+      "kinds61to300": {
+        "collective-expansion": 6,
+        "household-birth": 7,
+        "power-redistribution": 23
+      },
+      "kinds200to300": {
+        "collective-expansion": 4,
+        "household-birth": 3,
+        "power-redistribution": 9
+      },
+      "physicalHouseholdOutcomes61to300": 7,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 1,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "collective-expansion": 1,
+        "household-birth": 9,
+        "power-redistribution": 8
+      },
+      "kinds200to300": {
+        "collective-expansion": 1,
+        "household-birth": 3,
+        "power-redistribution": 2
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 2,
+      "climate": "temperate",
+      "kinds61to300": {
+        "collective-expansion": 1,
+        "household-birth": 7,
+        "power-redistribution": 13,
+        "synthetic-replication": 3
+      },
+      "kinds200to300": {
+        "household-birth": 2,
+        "power-redistribution": 2,
+        "synthetic-replication": 3
+      },
+      "physicalHouseholdOutcomes61to300": 7,
+      "physicalHouseholdOutcomes200to300": 2,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 2,
+      "climate": "dry",
+      "kinds61to300": {
+        "collective-expansion": 1,
+        "household-birth": 7,
+        "power-redistribution": 24
+      },
+      "kinds200to300": {
+        "collective-expansion": 1,
+        "household-birth": 2,
+        "power-redistribution": 10
+      },
+      "physicalHouseholdOutcomes61to300": 7,
+      "physicalHouseholdOutcomes200to300": 2,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 2,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "household-birth": 9,
+        "power-redistribution": 9
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 3
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 3,
+      "climate": "temperate",
+      "kinds61to300": {
+        "collective-expansion": 3,
+        "household-birth": 9,
+        "power-redistribution": 13,
+        "synthetic-replication": 3
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 3,
+        "synthetic-replication": 3
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 3,
+      "climate": "dry",
+      "kinds61to300": {
+        "collective-expansion": 4,
+        "household-birth": 9,
+        "power-redistribution": 24,
+        "provisioning-recovered": 1
+      },
+      "kinds200to300": {
+        "collective-expansion": 4,
+        "household-birth": 3,
+        "power-redistribution": 10
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 3,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "household-birth": 9,
+        "power-redistribution": 9
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 3
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 4,
+      "climate": "temperate",
+      "kinds61to300": {
+        "collective-expansion": 2,
+        "household-birth": 9,
+        "power-redistribution": 16,
+        "synthetic-replication": 2
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 5,
+        "synthetic-replication": 2
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 4,
+      "climate": "dry",
+      "kinds61to300": {
+        "collective-expansion": 3,
+        "household-birth": 7,
+        "power-redistribution": 24
+      },
+      "kinds200to300": {
+        "collective-expansion": 3,
+        "household-birth": 2,
+        "power-redistribution": 10
+      },
+      "physicalHouseholdOutcomes61to300": 7,
+      "physicalHouseholdOutcomes200to300": 2,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 4,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "collective-expansion": 1,
+        "household-birth": 9,
+        "power-redistribution": 9
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 3
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 5,
+      "climate": "temperate",
+      "kinds61to300": {
+        "household-birth": 14,
+        "power-redistribution": 14,
+        "settlement-adapted": 1,
+        "shared-home": 1,
+        "synthetic-replication": 3
+      },
+      "kinds200to300": {
+        "household-birth": 7,
+        "power-redistribution": 3,
+        "synthetic-replication": 3
+      },
+      "physicalHouseholdOutcomes61to300": 15,
+      "physicalHouseholdOutcomes200to300": 7,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 5,
+      "climate": "dry",
+      "kinds61to300": {
+        "collective-expansion": 3,
+        "household-birth": 7,
+        "power-redistribution": 24
+      },
+      "kinds200to300": {
+        "collective-expansion": 3,
+        "household-birth": 2,
+        "power-redistribution": 10
+      },
+      "physicalHouseholdOutcomes61to300": 7,
+      "physicalHouseholdOutcomes200to300": 2,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 5,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "household-birth": 14,
+        "power-redistribution": 9,
+        "settlement-adapted": 1,
+        "shared-home": 1
+      },
+      "kinds200to300": {
+        "household-birth": 7,
+        "power-redistribution": 3
+      },
+      "physicalHouseholdOutcomes61to300": 15,
+      "physicalHouseholdOutcomes200to300": 7,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 6,
+      "climate": "temperate",
+      "kinds61to300": {
+        "household-birth": 9,
+        "power-redistribution": 15,
+        "synthetic-replication": 1
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 4,
+        "synthetic-replication": 1
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 6,
+      "climate": "dry",
+      "kinds61to300": {
+        "collective-expansion": 6,
+        "household-birth": 7,
+        "power-redistribution": 23
+      },
+      "kinds200to300": {
+        "collective-expansion": 4,
+        "household-birth": 2,
+        "power-redistribution": 9
+      },
+      "physicalHouseholdOutcomes61to300": 7,
+      "physicalHouseholdOutcomes200to300": 2,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 6,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "household-birth": 9,
+        "power-redistribution": 8
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 2
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 7,
+      "climate": "temperate",
+      "kinds61to300": {
+        "collective-expansion": 4,
+        "household-birth": 12,
+        "power-redistribution": 13,
+        "settlement-adapted": 1,
+        "shared-home": 1,
+        "synthetic-replication": 3
+      },
+      "kinds200to300": {
+        "household-birth": 6,
+        "power-redistribution": 3,
+        "synthetic-replication": 3
+      },
+      "physicalHouseholdOutcomes61to300": 13,
+      "physicalHouseholdOutcomes200to300": 6,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 7,
+      "climate": "dry",
+      "kinds61to300": {
+        "collective-expansion": 1,
+        "household-birth": 12,
+        "power-redistribution": 24,
+        "settlement-adapted": 1,
+        "shared-home": 1
+      },
+      "kinds200to300": {
+        "collective-expansion": 1,
+        "household-birth": 6,
+        "power-redistribution": 10
+      },
+      "physicalHouseholdOutcomes61to300": 13,
+      "physicalHouseholdOutcomes200to300": 6,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 7,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "collective-expansion": 3,
+        "household-birth": 14,
+        "power-redistribution": 9,
+        "settlement-adapted": 1,
+        "shared-home": 1
+      },
+      "kinds200to300": {
+        "household-birth": 7,
+        "power-redistribution": 3
+      },
+      "physicalHouseholdOutcomes61to300": 15,
+      "physicalHouseholdOutcomes200to300": 7,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 8,
+      "climate": "temperate",
+      "kinds61to300": {
+        "collective-expansion": 2,
+        "household-birth": 3,
+        "households-migrated": 1,
+        "power-redistribution": 15,
+        "provisioning-pressure": 1,
+        "settlement-adapted": 4,
+        "settlement-founded": 2,
+        "site-surveyed": 4,
+        "synthetic-replication": 2
+      },
+      "kinds200to300": {
+        "household-birth": 1,
+        "households-migrated": 1,
+        "power-redistribution": 4,
+        "settlement-adapted": 4,
+        "settlement-founded": 2,
+        "site-surveyed": 4,
+        "synthetic-replication": 2
+      },
+      "physicalHouseholdOutcomes61to300": 10,
+      "physicalHouseholdOutcomes200to300": 8,
+      "nonBirthHouseholdOutcomes200to300": [
+        {
+          "day": 200,
+          "kind": "households-migrated",
+          "project": null
+        },
+        {
+          "day": 208,
+          "kind": "settlement-adapted",
+          "project": "irrigate"
+        },
+        {
+          "day": 217,
+          "kind": "settlement-adapted",
+          "project": "irrigate"
+        },
+        {
+          "day": 224,
+          "kind": "settlement-adapted",
+          "project": "house"
+        },
+        {
+          "day": 236,
+          "kind": "settlement-founded",
+          "project": null
+        },
+        {
+          "day": 259,
+          "kind": "settlement-founded",
+          "project": null
+        },
+        {
+          "day": 297,
+          "kind": "settlement-adapted",
+          "project": "house"
+        }
+      ],
+      "founding": [
+        {
+          "day": 236,
+          "source": "s-hearth",
+          "destinations": [
+            "s-grown-site-8"
+          ]
+        },
+        {
+          "day": 259,
+          "source": "s-hearth",
+          "destinations": [
+            "s-grown-site-9"
+          ]
+        }
+      ],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 8,
+      "climate": "dry",
+      "kinds61to300": {
+        "collective-expansion": 3,
+        "power-redistribution": 24,
+        "provisioning-pressure": 2,
+        "provisioning-recovered": 2,
+        "settlement-adapted": 4,
+        "settlement-founded": 2,
+        "site-surveyed": 4
+      },
+      "kinds200to300": {
+        "collective-expansion": 3,
+        "power-redistribution": 10,
+        "provisioning-recovered": 1,
+        "settlement-adapted": 2,
+        "settlement-founded": 1
+      },
+      "physicalHouseholdOutcomes61to300": 6,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [
+        {
+          "day": 248,
+          "kind": "settlement-founded",
+          "project": null
+        },
+        {
+          "day": 257,
+          "kind": "settlement-adapted",
+          "project": "house"
+        },
+        {
+          "day": 258,
+          "kind": "settlement-adapted",
+          "project": "house"
+        }
+      ],
+      "founding": [
+        {
+          "day": 196,
+          "source": "s-hearth",
+          "destinations": [
+            "s-grown-site-8"
+          ]
+        },
+        {
+          "day": 248,
+          "source": "s-hearth",
+          "destinations": [
+            "s-grown-site-9"
+          ]
+        }
+      ],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 8,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "collective-expansion": 1,
+        "household-birth": 6,
+        "power-redistribution": 9
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 3
+      },
+      "physicalHouseholdOutcomes61to300": 6,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 9,
+      "climate": "temperate",
+      "kinds61to300": {
+        "collective-expansion": 4,
+        "household-birth": 9,
+        "power-redistribution": 15,
+        "synthetic-replication": 2
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 4,
+        "synthetic-replication": 2
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 9,
+      "climate": "dry",
+      "kinds61to300": {
+        "collective-expansion": 4,
+        "household-birth": 9,
+        "power-redistribution": 24
+      },
+      "kinds200to300": {
+        "collective-expansion": 4,
+        "household-birth": 3,
+        "power-redistribution": 10
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 9,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "collective-expansion": 3,
+        "household-birth": 9,
+        "power-redistribution": 9
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 3
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 10,
+      "climate": "temperate",
+      "kinds61to300": {
+        "collective-expansion": 3,
+        "household-birth": 7,
+        "power-redistribution": 16,
+        "synthetic-replication": 2
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 5,
+        "synthetic-replication": 2
+      },
+      "physicalHouseholdOutcomes61to300": 7,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 10,
+      "climate": "dry",
+      "kinds61to300": {
+        "collective-expansion": 1,
+        "household-birth": 3,
+        "households-migrated": 1,
+        "power-redistribution": 24,
+        "provisioning-pressure": 1,
+        "provisioning-recovered": 1,
+        "settlement-adapted": 2,
+        "site-surveyed": 4
+      },
+      "kinds200to300": {
+        "collective-expansion": 1,
+        "household-birth": 1,
+        "power-redistribution": 10
+      },
+      "physicalHouseholdOutcomes61to300": 6,
+      "physicalHouseholdOutcomes200to300": 1,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 10,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "collective-expansion": 1,
+        "household-birth": 9,
+        "power-redistribution": 9
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 3
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 11,
+      "climate": "temperate",
+      "kinds61to300": {
+        "collective-expansion": 1,
+        "household-birth": 14,
+        "power-redistribution": 16,
+        "settlement-adapted": 1,
+        "shared-home": 1,
+        "synthetic-replication": 1
+      },
+      "kinds200to300": {
+        "household-birth": 7,
+        "power-redistribution": 5,
+        "synthetic-replication": 1
+      },
+      "physicalHouseholdOutcomes61to300": 15,
+      "physicalHouseholdOutcomes200to300": 7,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 11,
+      "climate": "dry",
+      "kinds61to300": {
+        "collective-expansion": 5,
+        "household-birth": 6,
+        "power-redistribution": 23,
+        "provisioning-pressure": 1,
+        "provisioning-recovered": 1,
+        "settlement-adapted": 2,
+        "settlement-founded": 1,
+        "site-surveyed": 1
+      },
+      "kinds200to300": {
+        "collective-expansion": 3,
+        "household-birth": 4,
+        "power-redistribution": 9,
+        "provisioning-pressure": 1,
+        "provisioning-recovered": 1,
+        "settlement-adapted": 2,
+        "settlement-founded": 1,
+        "site-surveyed": 1
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 7,
+      "nonBirthHouseholdOutcomes200to300": [
+        {
+          "day": 232,
+          "kind": "settlement-adapted",
+          "project": "cultivate"
+        },
+        {
+          "day": 240,
+          "kind": "settlement-adapted",
+          "project": "cultivate"
+        },
+        {
+          "day": 252,
+          "kind": "settlement-founded",
+          "project": null
+        }
+      ],
+      "founding": [
+        {
+          "day": 252,
+          "source": "s-hearth",
+          "destinations": [
+            "s-grown-site-5"
+          ]
+        }
+      ],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 11,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "household-birth": 14,
+        "power-redistribution": 8,
+        "settlement-adapted": 1,
+        "shared-home": 1
+      },
+      "kinds200to300": {
+        "household-birth": 7,
+        "power-redistribution": 3
+      },
+      "physicalHouseholdOutcomes61to300": 15,
+      "physicalHouseholdOutcomes200to300": 7,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 12,
+      "climate": "temperate",
+      "kinds61to300": {
+        "collective-expansion": 1,
+        "household-birth": 9,
+        "power-redistribution": 14,
+        "settlement-adapted": 1,
+        "shared-home": 1,
+        "synthetic-replication": 3
+      },
+      "kinds200to300": {
+        "household-birth": 4,
+        "power-redistribution": 3,
+        "synthetic-replication": 3
+      },
+      "physicalHouseholdOutcomes61to300": 10,
+      "physicalHouseholdOutcomes200to300": 4,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 12,
+      "climate": "dry",
+      "kinds61to300": {
+        "collective-expansion": 5,
+        "household-birth": 10,
+        "power-redistribution": 24,
+        "provisioning-recovered": 1,
+        "settlement-adapted": 3,
+        "site-surveyed": 3
+      },
+      "kinds200to300": {
+        "collective-expansion": 4,
+        "household-birth": 6,
+        "power-redistribution": 10
+      },
+      "physicalHouseholdOutcomes61to300": 13,
+      "physicalHouseholdOutcomes200to300": 6,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 12,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "household-birth": 11,
+        "power-redistribution": 10,
+        "settlement-adapted": 1,
+        "shared-home": 1
+      },
+      "kinds200to300": {
+        "household-birth": 4,
+        "power-redistribution": 4
+      },
+      "physicalHouseholdOutcomes61to300": 12,
+      "physicalHouseholdOutcomes200to300": 4,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 13,
+      "climate": "temperate",
+      "kinds61to300": {
+        "collective-expansion": 2,
+        "household-birth": 9,
+        "power-redistribution": 14,
+        "synthetic-replication": 2
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 4,
+        "synthetic-replication": 2
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 13,
+      "climate": "dry",
+      "kinds61to300": {
+        "collective-expansion": 3,
+        "household-birth": 9,
+        "power-redistribution": 23
+      },
+      "kinds200to300": {
+        "collective-expansion": 3,
+        "household-birth": 3,
+        "power-redistribution": 9
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 13,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "household-birth": 9,
+        "power-redistribution": 8
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 2
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 14,
+      "climate": "temperate",
+      "kinds61to300": {
+        "household-birth": 8,
+        "power-redistribution": 16,
+        "synthetic-replication": 1
+      },
+      "kinds200to300": {
+        "household-birth": 2,
+        "power-redistribution": 5,
+        "synthetic-replication": 1
+      },
+      "physicalHouseholdOutcomes61to300": 8,
+      "physicalHouseholdOutcomes200to300": 2,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 14,
+      "climate": "dry",
+      "kinds61to300": {
+        "collective-expansion": 4,
+        "household-birth": 7,
+        "power-redistribution": 23
+      },
+      "kinds200to300": {
+        "collective-expansion": 4,
+        "household-birth": 2,
+        "power-redistribution": 9
+      },
+      "physicalHouseholdOutcomes61to300": 7,
+      "physicalHouseholdOutcomes200to300": 2,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 14,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "household-birth": 9,
+        "power-redistribution": 8
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 2
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 15,
+      "climate": "temperate",
+      "kinds61to300": {
+        "collective-expansion": 3,
+        "household-birth": 9,
+        "power-redistribution": 14,
+        "synthetic-replication": 2
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 4,
+        "synthetic-replication": 2
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 15,
+      "climate": "dry",
+      "kinds61to300": {
+        "collective-expansion": 1,
+        "household-birth": 9,
+        "power-redistribution": 23
+      },
+      "kinds200to300": {
+        "collective-expansion": 1,
+        "household-birth": 3,
+        "power-redistribution": 9
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 15,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "collective-expansion": 2,
+        "household-birth": 9,
+        "power-redistribution": 8
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 3
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 16,
+      "climate": "temperate",
+      "kinds61to300": {
+        "collective-expansion": 4,
+        "household-birth": 9,
+        "power-redistribution": 16,
+        "synthetic-replication": 2
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 5,
+        "synthetic-replication": 2
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 16,
+      "climate": "dry",
+      "kinds61to300": {
+        "collective-expansion": 1,
+        "household-birth": 7,
+        "power-redistribution": 24
+      },
+      "kinds200to300": {
+        "collective-expansion": 1,
+        "household-birth": 2,
+        "power-redistribution": 10
+      },
+      "physicalHouseholdOutcomes61to300": 7,
+      "physicalHouseholdOutcomes200to300": 2,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 16,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "collective-expansion": 3,
+        "household-birth": 9,
+        "power-redistribution": 9
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 3
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 17,
+      "climate": "temperate",
+      "kinds61to300": {
+        "collective-expansion": 1,
+        "household-birth": 5,
+        "power-redistribution": 12,
+        "provisioning-pressure": 1,
+        "provisioning-recovered": 2,
+        "settlement-adapted": 3,
+        "settlement-founded": 1,
+        "synthetic-replication": 3
+      },
+      "kinds200to300": {
+        "household-birth": 2,
+        "power-redistribution": 1,
+        "provisioning-recovered": 1,
+        "settlement-adapted": 1,
+        "synthetic-replication": 3
+      },
+      "physicalHouseholdOutcomes61to300": 9,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [
+        {
+          "day": 241,
+          "kind": "settlement-adapted",
+          "project": "house"
+        }
+      ],
+      "founding": [
+        {
+          "day": 180,
+          "source": "s-hearth",
+          "destinations": [
+            "s-grown-site-5"
+          ]
+        }
+      ],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 17,
+      "climate": "dry",
+      "kinds61to300": {
+        "power-redistribution": 24,
+        "settlement-adapted": 3,
+        "settlement-founded": 1,
+        "site-surveyed": 2
+      },
+      "kinds200to300": {
+        "power-redistribution": 10,
+        "settlement-adapted": 1,
+        "settlement-founded": 1
+      },
+      "physicalHouseholdOutcomes61to300": 4,
+      "physicalHouseholdOutcomes200to300": 2,
+      "nonBirthHouseholdOutcomes200to300": [
+        {
+          "day": 212,
+          "kind": "settlement-founded",
+          "project": null
+        },
+        {
+          "day": 273,
+          "kind": "settlement-adapted",
+          "project": "house"
+        }
+      ],
+      "founding": [
+        {
+          "day": 212,
+          "source": "s-hearth",
+          "destinations": [
+            "s-grown-site-5"
+          ]
+        }
+      ],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 42,
+      "firstZeroFoodDay": 40,
+      "longestZeroFoodStreak": 28,
+      "unmetFood": 9.483
+    },
+    {
+      "seed": 17,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "household-birth": 6,
+        "power-redistribution": 9,
+        "provisioning-pressure": 1,
+        "provisioning-recovered": 2,
+        "settlement-adapted": 2,
+        "settlement-founded": 2
+      },
+      "kinds200to300": {
+        "household-birth": 4,
+        "power-redistribution": 3,
+        "provisioning-recovered": 1,
+        "settlement-adapted": 1
+      },
+      "physicalHouseholdOutcomes61to300": 10,
+      "physicalHouseholdOutcomes200to300": 5,
+      "nonBirthHouseholdOutcomes200to300": [
+        {
+          "day": 222,
+          "kind": "settlement-adapted",
+          "project": "house"
+        }
+      ],
+      "founding": [
+        {
+          "day": 88,
+          "source": "s-hearth",
+          "destinations": [
+            "s-grown-site-5"
+          ]
+        },
+        {
+          "day": 161,
+          "source": "s-hearth",
+          "destinations": [
+            "s-grown-site-10"
+          ]
+        }
+      ],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 18,
+      "climate": "temperate",
+      "kinds61to300": {
+        "collective-expansion": 1,
+        "household-birth": 14,
+        "power-redistribution": 14,
+        "settlement-adapted": 1,
+        "shared-home": 1,
+        "synthetic-replication": 3
+      },
+      "kinds200to300": {
+        "household-birth": 7,
+        "power-redistribution": 4,
+        "synthetic-replication": 2
+      },
+      "physicalHouseholdOutcomes61to300": 15,
+      "physicalHouseholdOutcomes200to300": 7,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 18,
+      "climate": "dry",
+      "kinds61to300": {
+        "collective-expansion": 1,
+        "household-birth": 14,
+        "power-redistribution": 24,
+        "settlement-adapted": 1,
+        "shared-home": 1
+      },
+      "kinds200to300": {
+        "collective-expansion": 1,
+        "household-birth": 7,
+        "power-redistribution": 10
+      },
+      "physicalHouseholdOutcomes61to300": 15,
+      "physicalHouseholdOutcomes200to300": 7,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 18,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "household-birth": 14,
+        "power-redistribution": 10,
+        "settlement-adapted": 1,
+        "shared-home": 1
+      },
+      "kinds200to300": {
+        "household-birth": 7,
+        "power-redistribution": 3
+      },
+      "physicalHouseholdOutcomes61to300": 15,
+      "physicalHouseholdOutcomes200to300": 7,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 19,
+      "climate": "temperate",
+      "kinds61to300": {
+        "collective-expansion": 1,
+        "household-birth": 14,
+        "power-redistribution": 13,
+        "settlement-adapted": 1,
+        "shared-home": 1,
+        "synthetic-replication": 2
+      },
+      "kinds200to300": {
+        "household-birth": 7,
+        "power-redistribution": 4,
+        "synthetic-replication": 2
+      },
+      "physicalHouseholdOutcomes61to300": 15,
+      "physicalHouseholdOutcomes200to300": 7,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 19,
+      "climate": "dry",
+      "kinds61to300": {
+        "collective-expansion": 6,
+        "household-birth": 12,
+        "power-redistribution": 24,
+        "settlement-adapted": 1,
+        "shared-home": 1
+      },
+      "kinds200to300": {
+        "collective-expansion": 4,
+        "household-birth": 6,
+        "power-redistribution": 10
+      },
+      "physicalHouseholdOutcomes61to300": 13,
+      "physicalHouseholdOutcomes200to300": 6,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 19,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "household-birth": 14,
+        "power-redistribution": 8,
+        "settlement-adapted": 1,
+        "shared-home": 1
+      },
+      "kinds200to300": {
+        "household-birth": 7,
+        "power-redistribution": 2
+      },
+      "physicalHouseholdOutcomes61to300": 15,
+      "physicalHouseholdOutcomes200to300": 7,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 0,
+      "firstZeroFoodDay": null,
+      "longestZeroFoodStreak": 0,
+      "unmetFood": 0
+    },
+    {
+      "seed": 20,
+      "climate": "temperate",
+      "kinds61to300": {
+        "collective-expansion": 1,
+        "household-birth": 6,
+        "power-redistribution": 11,
+        "settlement-adapted": 2,
+        "synthetic-replication": 4
+      },
+      "kinds200to300": {
+        "household-birth": 3,
+        "power-redistribution": 1,
+        "synthetic-replication": 4
+      },
+      "physicalHouseholdOutcomes61to300": 8,
+      "physicalHouseholdOutcomes200to300": 3,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 134,
+      "firstZeroFoodDay": 86,
+      "longestZeroFoodStreak": 68,
+      "unmetFood": 55.178
+    },
+    {
+      "seed": 20,
+      "climate": "dry",
+      "kinds61to300": {
+        "collective-expansion": 1,
+        "power-redistribution": 24
+      },
+      "kinds200to300": {
+        "collective-expansion": 1,
+        "power-redistribution": 10
+      },
+      "physicalHouseholdOutcomes61to300": 0,
+      "physicalHouseholdOutcomes200to300": 0,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [],
+      "organicZeroFoodAt300": [
+        {
+          "settlementId": "s-hearth",
+          "population": 44,
+          "food": 0
+        }
+      ],
+      "zeroFoodWorldDays": 255,
+      "firstZeroFoodDay": 46,
+      "longestZeroFoodStreak": 255,
+      "unmetFood": 118.357
+    },
+    {
+      "seed": 20,
+      "climate": "wet",
+      "kinds61to300": {
+        "channel-authority-ended": 1,
+        "household-birth": 7,
+        "power-redistribution": 8,
+        "provisioning-recovered": 1,
+        "settlement-adapted": 3,
+        "settlement-founded": 1
+      },
+      "kinds200to300": {
+        "household-birth": 4,
+        "power-redistribution": 2,
+        "provisioning-recovered": 1
+      },
+      "physicalHouseholdOutcomes61to300": 11,
+      "physicalHouseholdOutcomes200to300": 4,
+      "nonBirthHouseholdOutcomes200to300": [],
+      "founding": [
+        {
+          "day": 183,
+          "source": "s-hearth",
+          "destinations": [
+            "s-grown-site-8"
+          ]
+        }
+      ],
+      "organicZeroFoodAt300": [],
+      "zeroFoodWorldDays": 9,
+      "firstZeroFoodDay": 122,
+      "longestZeroFoodStreak": 9,
+      "unmetFood": 0.745
+    }
+  ]
+}

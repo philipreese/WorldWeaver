@@ -107,7 +107,8 @@ function choiceNormalizer(world) {
   const entities = [
     ...world.settlements, ...world.characters, ...world.routes, ...world.institutions,
     ...world.cultures, ...world.regions, ...world.settlements.flatMap(s => s.structures),
-    ...(world.sites || []), ...(world.power ? [world.power] : []),
+    ...(world.sites || []), ...(world.ecology?.sites || []).map(site => ({ entityType: 'site', ...site })),
+    ...(world.power ? [world.power] : []),
   ];
   const replacements = entities.flatMap(e => [e.id, e.name].filter(Boolean).map(token => [token, `<${e.entityType || 'entity'}>`])).sort((a, b) => b[0].length - a[0].length);
   return value => {
@@ -121,7 +122,9 @@ function decisionSignature(world) {
   const normalize = choiceNormalizer(world);
   return world.events.filter(e => e.decision).map(e => ({
     kind: e.kind,
-    alternatives: e.decision.alternatives.map(a => ({ id: normalize(a.id), available: !!a.available })).sort((a, b) => a.id.localeCompare(b.id)),
+    // Once target IDs are stripped, equal action kinds are an unordered multiset.
+    // Availability must also sort so target-array order cannot inflate diversity.
+    alternatives: e.decision.alternatives.map(a => ({ id: normalize(a.id), available: !!a.available })).sort((a, b) => a.id.localeCompare(b.id) || Number(a.available) - Number(b.available)),
     chosen: normalize(e.decision.chosen),
   }));
 }

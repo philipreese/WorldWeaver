@@ -51,9 +51,9 @@ Import one of the files in [public/worlds](public/worlds) through **World settin
 
 `npm run examples` regenerates these files and the causal/pacing report. Production builds include them under `worlds/`. The [verification record](docs/VERIFICATION.md) explains optional Node UI checks and static rendering, and lists the remaining release work.
 
-![Hearth with all three forms of life on day 42, rendered directly from simulation state](evidence/render-tier2-day42-hearth.webp)
+![Nera in her chosen Lilac coat beside the Seed Archive, with the optional guide](evidence/browser-guide-streets-3e018c1.jpg)
 
-Static Canvas frame from the actual renderer. This is not a browser screenshot or interaction recording.
+Live browser screenshot from the published preview, using mouse and keyboard. The guide and cosmetic choices are saved; real phone and human playtesting remain release work.
 
 ## Built alongside the game
 

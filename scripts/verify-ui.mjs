@@ -339,6 +339,12 @@ click('[data-action="style-done"]');
 assert.equal(slots.get("worldweaver.save.current"), lastGoodSave);
 assert.match($("#save-state").textContent, /Save failed/);
 assert.doesNotMatch($("#toast").textContent, /Your look is kept/);
+click("#settings");
+const settingsNavigation = new window.Event("click", { bubbles: true, cancelable: true });
+$("[data-courtyard-test]").dispatchEvent(settingsNavigation);
+assert.equal(settingsNavigation.defaultPrevented, true, "Settings must preserve unsaved changes when switching renderers");
+assert.match($("#toast").textContent, /before switching views/);
+dialog.close();
 failStorage = false;
 click('[data-style-person="c-nera"]');
 click('[data-action="style-done"]');
@@ -432,6 +438,46 @@ assert.equal($("#inspector").hidden, true);
 // journal, and compare booleans so a failure cannot format LinkeDOM's whole tree.
 assert.equal(Boolean(document.querySelector(`#journal [data-entity="${place.id}"]`)), false);
 cases.push("Observation grows a selectable settlement and buildings; its real decision is inspectable and rewinding hides the future place");
+// The alternative view receives the same projection contract. These checks
+// exercise failure and navigation safety; they do not simulate a WebGL GPU.
+const { NeighborhoodUI } = await import("../src/neighborhood-ui.js");
+const testContainer = document.createElement("section");
+document.body.append(testContainer);
+let receivedAssets, cameraResets = 0, failedCanvas;
+class ComparisonView {
+  constructor(canvas, options) { receivedAssets = options.assets; }
+  setState() {}
+  setVisible() {}
+  resetCamera() { cameraResets++; }
+  destroy() {}
+}
+const sampleAssets = Object.freeze({ schemaVersion: 1 });
+const comparison = new NeighborhoodUI(testContainer, {}, {
+  ViewClass: ComparisonView, viewOptions: { assets: sampleAssets }, comparisonEnabled: true, rendererName: "3D test",
+});
+comparison.show();
+assert.equal(receivedAssets, sampleAssets);
+assert.equal(testContainer.dataset.renderer, "three");
+testContainer.querySelector('[data-nh-action="reset-view"]').click();
+assert.equal(cameraResets, 1);
+comparison.update({ saveOk: false });
+const switchEvent = new window.Event("click", { bubbles: true, cancelable: true });
+testContainer.querySelector('[data-nh-renderer="canvas"]').dispatchEvent(switchEvent);
+assert.equal(switchEvent.defaultPrevented, true);
+assert.match(testContainer.querySelector(".nh-status").textContent, /Save or export/);
+comparison.destroy();
+cases.push("Renderer comparison injects scene assets, resets the camera, and blocks navigation while changes are unsaved");
+class UnavailableView {
+  constructor(canvas) { failedCanvas = canvas; throw new Error("WebGL unavailable in this test"); }
+}
+const fallback = new NeighborhoodUI(testContainer, {}, { ViewClass: UnavailableView, comparisonEnabled: true });
+fallback.show();
+assert.notEqual(fallback.canvas, failedCanvas);
+assert.equal(testContainer.dataset.renderer, "canvas");
+assert.match(testContainer.querySelector(".nh-test-fallback").textContent, /illustrated courtyard is ready/);
+fallback.destroy();
+testContainer.remove();
+cases.push("Unavailable 3D rendering creates a fresh Canvas2D element and explains the playable fallback");
 await mkdir("evidence", { recursive: true });
 await writeFile(
   "evidence/ui-integration.json",

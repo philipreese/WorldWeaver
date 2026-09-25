@@ -334,6 +334,21 @@ export function drawCharacter(ctx,character,x,y,selected=false,clock=0,moving=fa
   }
   if(p.shape==='knot'){ellipse(ctx,2.9,-10.5,.65,.85,p.accent);ctx.beginPath();ctx.moveTo(-1.9,-14.6);ctx.lineTo(.5,-14.7);ctx.strokeStyle=p.accent;ctx.lineWidth=.45;ctx.stroke();}
 
+  // Optional player styling follows the resident's real, modeled location.
+  if(style?.accessory==='cap'){
+    ctx.beginPath();ctx.moveTo(-3.4,-14.1);ctx.quadraticCurveTo(-3.7,-18,0,-18.2);ctx.quadraticCurveTo(3.4,-18.1,3.4,-14.1);ctx.closePath();ctx.fillStyle=p.accent;ctx.fill();ctx.strokeStyle=p.shade;ctx.lineWidth=.5;ctx.stroke();
+    ellipse(ctx,.6,-14.2,4.5,.8,p.coat,'#ead9af88',.4);ellipse(ctx,0,-18.3,.7,.55,p.coat);
+  }
+  if(style?.accessory==='scarf'){
+    ctx.beginPath();ctx.moveTo(-2.8,-9);ctx.quadraticCurveTo(0,-7.2,3,-9);ctx.strokeStyle=p.accent;ctx.lineWidth=1.9;ctx.stroke();
+    polygon(ctx,[[-2.8,-9],[-.9,-8.1],[-2.2,-3.8],[-4,-4.6]],p.accent,p.shade,.35);
+    ctx.beginPath();ctx.moveTo(-3.3,-5.1);ctx.lineTo(-2.2,-4.8);ctx.strokeStyle=p.coat;ctx.lineWidth=.4;ctx.stroke();
+  }
+  if(style?.accessory==='flower'){
+    for(let i=0;i<5;i++)ellipse(ctx,3+Math.cos(i*TAU/5)*1.1,-14.1+Math.sin(i*TAU/5)*1.1,.85,.85,'#efcca8');
+    ellipse(ctx,3,-14.1,.6,.6,'#c59959');polygon(ctx,[[2.7,-13.3],[4.9,-12.7],[4,-14.1]],'#96b782');
+  }
+
   // Tools communicate a job at a glance; they do not invent a modeled action.
   if(character.role==='gardener'){
     ctx.beginPath();ctx.moveTo(4.7,-6.5);ctx.lineTo(6.8,-1.6);ctx.strokeStyle='#dcc795';ctx.lineWidth=.85;ctx.stroke();

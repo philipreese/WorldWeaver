@@ -9,6 +9,13 @@ export const STYLE_COLORS = Object.freeze([
 ].map(color => Object.freeze(color)));
 
 export const STYLE_COLOR_IDS = Object.freeze(STYLE_COLORS.map(color => color.id));
+export const PERSON_ACCESSORIES = Object.freeze([
+  { id: 'none', label: 'None' },
+  { id: 'cap', label: 'Soft cap' },
+  { id: 'scarf', label: 'Woven scarf' },
+  { id: 'flower', label: 'Wildflower' },
+].map(accessory => Object.freeze(accessory)));
+export const PERSON_ACCESSORY_IDS = Object.freeze(PERSON_ACCESSORIES.map(accessory => accessory.id));
 export const HOME_DECORATIONS = Object.freeze([
   { id: 'none', label: 'None' },
   { id: 'planter', label: 'Planter' },

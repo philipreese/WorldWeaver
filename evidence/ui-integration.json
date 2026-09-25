@@ -1,15 +1,19 @@
 {
   "kind": "Node DOM + Canvas integration; not browser execution, layout, performance, touch or human playtesting.",
   "simulationVersion": "2.0.0",
-  "passed": 18,
+  "passed": 23,
   "cases": [
     "Tier 2 opening initializes paused on day 2 with saved development",
+    "Courtyard furniture can be placed, turned, moved and put away using semantic controls",
+    "Named, colored and accessorized companion can play repeatedly without advancing or rewriting the world",
+    "Channel preview follows actual connectivity, blocks an incomplete path, and waits for an explicit world intervention",
     "Character and shared-home styling survives saved reload without changing time, events or decisions",
     "Meet Nera reaches a conditional intervention and recorded history",
     "Walking with a person does not reopen the panel on advancement",
     "The guide progresses through real actions and opens the recorded decision explanation",
     "Closed-route choice reaches its separate explanation layers",
     "Historical controls are read-only; branch changes a decision and preserves source future",
+    "Opening the spring records a real habitat intervention; its record is reachable, prior days and source future remain unchanged",
     "Possibilities opens conditional refuge; arrivals expose distinct needs in inspection",
     "Structure-targeted discovery intervention is reachable",
     "Surveyed ancient trace distinguishes lore from recorded history",
@@ -18,6 +22,7 @@
     "Optional world and character statistics expose recorded data without advancing time",
     "Guide dismissal, reopening and restart preserve the existing world and recorded styles",
     "A failed style save preserves the last good file and never claims the new look is saved",
+    "Failed courtyard saving preserves the prior archive; recovery and successful import clear stale warnings without losing valid choices",
     "Problem report downloads a reproducible saved world and the player's note",
     "Background handler pauses and preserves exact world state",
     "Observation grows a selectable settlement and buildings; its real decision is inspectable and rewinding hides the future place"

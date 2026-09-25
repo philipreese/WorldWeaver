@@ -1,15 +1,15 @@
 /** Node DOM integration checks, NOT a browser/layout/touch test.
- * Optional dev tools: linkedom and skia-canvas (module directories may be passed
- * via LINKEDOM_MODULE and SKIA_CANVAS_MODULE). Core game/test suite needs neither.
+ * Optional dev tools: linkedom and skia-canvas or @napi-rs/canvas (module directories
+ * via LINKEDOM_MODULE and CANVAS_MODULE/SKIA_CANVAS_MODULE). Core game needs neither.
  */
 import assert from "node:assert/strict";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { createRequire } from "node:module";
-import { parseHistory, currentWorld } from "../src/persistence/history.js";
+import { parseHistory, currentWorld, worldAt } from "../src/persistence/history.js";
 import { getInterventions } from "../src/sim/world.js";
 const require = createRequire(import.meta.url);
 const { parseHTML } = require(process.env.LINKEDOM_MODULE || "linkedom");
-const { Canvas } = require(process.env.SKIA_CANVAS_MODULE || "skia-canvas");
+const { Canvas } = require(process.env.CANVAS_MODULE || process.env.SKIA_CANVAS_MODULE || "skia-canvas");
 const { window, document } = parseHTML(await readFile("index.html", "utf8"));
 const slots = new Map();
 let failStorage = false;
@@ -22,22 +22,29 @@ const storage = {
   removeItem: (key) => slots.delete(key),
 };
 const makeCanvas = () => new Canvas(1440, 760);
-const createElement = document.createElement.bind(document);
-document.createElement = (tag) =>
-  tag === "canvas" ? makeCanvas() : createElement(tag);
-const canvas = document.getElementById("world"),
-  backing = makeCanvas();
-canvas.getContext = () => backing.getContext("2d");
-canvas.getBoundingClientRect = () => ({
+const backings = new WeakMap();
+const backingFor = (element) => {
+  if (!backings.has(element)) {
+    const canvas = makeCanvas();
+    const context = canvas.getContext("2d");
+    const drawImage = context.drawImage.bind(context);
+    context.drawImage = (source, ...args) => drawImage(backings.get(source) || source, ...args);
+    backings.set(element, canvas);
+  }
+  return backings.get(element);
+};
+const canvasPrototype = Object.getPrototypeOf(document.getElementById("world"));
+canvasPrototype.getContext = function () { return backingFor(this).getContext("2d"); };
+canvasPrototype.getBoundingClientRect = () => ({
   left: 0,
   top: 77,
   width: 1440,
   height: 760,
 });
 for (const prop of ["width", "height"])
-  Object.defineProperty(canvas, prop, {
-    get: () => backing[prop],
-    set: (value) => (backing[prop] = value),
+  Object.defineProperty(canvasPrototype, prop, {
+    get() { return backingFor(this)[prop]; },
+    set(value) { backingFor(this)[prop] = value; },
   });
 const dialog = document.getElementById("modal");
 dialog.showModal = () => {
@@ -97,6 +104,53 @@ assert.equal($("#clock").textContent, "Day 2");
 assert.equal($("#run-state").textContent, "Paused");
 assert.equal(currentWorld(saved()).tier, 2);
 cases.push("Tier 2 opening initializes paused on day 2 with saved development");
+const beforeCourtyard = JSON.stringify(currentWorld(saved()));
+assert.equal($("#neighborhood").hidden, false);
+assert.match($(".nh-panel").textContent, /visitor in Hearth/);
+assert.equal($(".timebar").inert, true);
+const chooseSpot = (value) => {
+  const select = $("[data-nh-slot-picker]");
+  for (const option of select.querySelectorAll("option")) option.removeAttribute("selected");
+  select.querySelector(`option[value="${value}"]`).selected = true;
+  select.dispatchEvent(new window.Event("change", { bubbles: true }));
+};
+click('.nh-activities [data-nh-mode="decorate"]');
+click('[data-nh-item="bench"]');
+chooseSpot("porch-left");
+click('[data-nh-action="rotate"]');
+click('[data-nh-action="move"]');
+chooseSpot("lawn-right");
+assert.deepEqual(saved().neighborhood.items, { "lawn-right": { itemId: "bench", rotation: 1 } });
+click('[data-nh-item="lantern"]');
+chooseSpot("garden-right");
+click('[data-nh-action="remove"]');
+assert.equal(saved().neighborhood.items["garden-right"], undefined);
+cases.push("Courtyard furniture can be placed, turned, moved and put away using semantic controls");
+click('.nh-activities [data-nh-mode="companion"]');
+$("[name=companion-name]").value = "Aster";
+$("[data-nh-name-form]").dispatchEvent(new window.Event("submit", { bubbles: true, cancelable: true }));
+click('[data-nh-color="moss"]');
+click('[data-nh-accessory="scarf"]');
+click('[data-nh-action="toss"]');
+click('[data-nh-action="toss"]');
+assert.equal(saved().neighborhood.companion.name, "Aster");
+assert.equal(saved().neighborhood.companion.color, "moss");
+assert.equal(saved().neighborhood.companion.accessory, "scarf");
+assert.equal(saved().neighborhood.companion.tosses, 2);
+assert.equal(JSON.stringify(currentWorld(saved())), beforeCourtyard);
+cases.push("Named, colored and accessorized companion can play repeatedly without advancing or rewriting the world");
+click('.nh-activities [data-nh-mode="water"]');
+assert.equal($('[data-nh-action="restore"]').disabled, true);
+click('[data-nh-action="restore"]');
+click('[data-nh-channel="3"]');
+click('[data-nh-channel="1"]');
+assert.equal($('[data-nh-action="restore"]').disabled, false);
+assert.match($(".nh-flow-state").textContent, /clear path/);
+assert.equal(JSON.stringify(currentWorld(saved())), beforeCourtyard);
+click('[data-nh-action="exit"]');
+assert.equal($("#neighborhood").hidden, true);
+assert.equal($(".timebar").inert, false);
+cases.push("Channel preview follows actual connectivity, blocks an incomplete path, and waits for an explicit world intervention");
 click('[data-action="stats"]');
 assert.doesNotMatch($("#modal-content").textContent, /Undersong/);
 dialog.close();
@@ -107,7 +161,10 @@ assert.deepEqual(saved().guide.completed, ["meet"]);
 const beforeStyle = JSON.stringify(currentWorld(saved()));
 click('[data-style-person="c-nera"]');
 click('[data-style-color="jade"]');
+click('[data-person-accessory="cap"]');
 assert.equal(saved().personalization.people["c-nera"].color, "jade");
+assert.equal(saved().personalization.people["c-nera"].accessory, "cap");
+assert.ok(document.querySelector('#modal-content [data-portrait-accessory="cap"]'));
 assert.equal($("[data-style-color='jade']").getAttribute("aria-pressed"), "true");
 const neraHome = currentWorld(saved()).characters.find((c) => c.id === "c-nera").homeId;
 click(`#modal-content [data-style-home="${neraHome}"]`);
@@ -157,6 +214,9 @@ range.value = "2";
 range.dispatchEvent(new window.Event("input", { bubbles: true }));
 assert.equal($("#step").disabled, true);
 assert.equal($("#historic-banner").hidden, false);
+assert.equal($("#courtyard").disabled, true);
+click("#courtyard");
+assert.equal($("#neighborhood").hidden, true);
 click('[data-entity="c-nera"]');
 assert.equal(document.querySelector('[data-style-person="c-nera"]'), null);
 assert.match($("#journal-content").textContent, /No|Day|recorded|development/i);
@@ -172,10 +232,29 @@ assert.equal(currentWorld(fork).flags.archiveResolved, "exchange");
 assert.equal(fork.branches[0].head.flags.archiveResolved, "raise");
 assert.equal(fork.branches[0].head.tick, 4);
 assert.equal(fork.personalization.people["c-nera"].color, "jade");
+assert.equal(fork.neighborhood.companion.name, "Aster");
+assert.deepEqual(fork.neighborhood.items, { "lawn-right": { itemId: "bench", rotation: 1 } });
 assert.deepEqual(new Set(fork.guide.completed), new Set(["meet", "style", "watch", "why", "branch", "possibility"]));
 cases.push(
   "Historical controls are read-only; branch changes a decision and preserves source future",
 );
+const sourceBeforeSpring = JSON.stringify(saved().branches[0]);
+const pastBeforeSpring = JSON.stringify(worldAt(saved(), 3));
+const habitatBeforeSpring = currentWorld(saved()).settlements.find(place => place.id === "s-hearth").habitat;
+click("#courtyard");
+click('.nh-activities [data-nh-mode="water"]');
+click('[data-nh-action="restore"]');
+assert.equal(currentWorld(saved()).flags.habitatRestored, true);
+assert.equal(currentWorld(saved()).tick, 4);
+assert.ok(currentWorld(saved()).settlements.find(place => place.id === "s-hearth").habitat > habitatBeforeSpring);
+assert.ok(currentWorld(saved()).events.some(event => event.kind === "spring-restored"));
+assert.equal(JSON.stringify(saved().branches[0]), sourceBeforeSpring);
+assert.equal(JSON.stringify(worldAt(saved(), 3)), pastBeforeSpring);
+assert.equal(document.querySelector('[data-nh-action="restore"]'), null);
+click('[data-nh-action="inspect"]');
+assert.match($("#inspector").textContent, /spring|water/i);
+assert.equal($("#neighborhood").hidden, true);
+cases.push("Opening the spring records a real habitat intervention; its record is reachable, prior days and source future remain unchanged");
 click('[data-entity="s-hearth"]');
 // The new resource economy does not promise a refuge on a scripted day.
 while (currentWorld(saved()).tick < 400 && !getInterventions(currentWorld(saved())).find(item => item.id === "offer-refuge").available) click("#step");
@@ -265,6 +344,30 @@ click('[data-style-person="c-nera"]');
 click('[data-action="style-done"]');
 assert.equal(saved().personalization.people["c-nera"].color, "lilac");
 cases.push("A failed style save preserves the last good file and never claims the new look is saved");
+click("#courtyard");
+click('.nh-activities [data-nh-mode="companion"]');
+const priorCompanionSave = slots.get("worldweaver.save.current");
+failStorage = true;
+click('[data-nh-color="frost"]');
+assert.equal(slots.get("worldweaver.save.current"), priorCompanionSave);
+assert.equal($(".nh-save-warning").hidden, false);
+assert.match($(".nh-status").textContent, /save|storage|export/i);
+failStorage = false;
+click('[data-nh-action="toss"]');
+assert.equal(saved().neighborhood.companion.color, "frost");
+assert.equal($(".nh-save-warning").hidden, true);
+const recoveredSave = slots.get("worldweaver.save.current");
+failStorage = true;
+click('[data-nh-color="plum"]');
+assert.equal($(".nh-save-warning").hidden, false);
+failStorage = false;
+await $("#import-file").onchange({ target: { value: "", files: [{ size: recoveredSave.length, text: async () => recoveredSave }] } });
+click("#courtyard");
+assert.equal($(".nh-save-warning").hidden, true);
+assert.match($("#save-state").textContent, /All changes saved/);
+assert.equal(saved().neighborhood.companion.color, "frost");
+click('[data-nh-action="exit"]');
+cases.push("Failed courtyard saving preserves the prior archive; recovery and successful import clear stale warnings without losing valid choices");
 click("#settings");
 assert.equal(dialog.open, true);
 assert.ok($("#horizon"));

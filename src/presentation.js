@@ -78,7 +78,7 @@ export function characterPortrait(person, style) {
           `<circle cx="${x}" cy="${22 + (i % 2) * 3}" r="9" fill="${p.hair}"/>`,
       )
       .join("");
-  if (id === "c-senn")
+  if (id === "c-senn" && style?.accessory !== 'cap')
     hair +=
       '<path d="M25 26L33 11H62L72 26" fill="#d8be7a"/><ellipse cx="48" cy="28" rx="37" ry="7" fill="#ead49a"/><path d="M28 23H68" stroke="#799568" stroke-width="4"/>';
   const glasses =
@@ -89,9 +89,14 @@ export function characterPortrait(person, style) {
     id === "c-ivo"
       ? '<path d="M30 48Q34 68 48 70Q62 67 66 48L57 53L48 50L38 53Z" fill="#d8dcc8"/>'
       : "";
-  const scarf = ["c-ves", "c-daro", "c-mira"].includes(id)
+  const scarf = ["c-ves", "c-daro", "c-mira"].includes(id) || style?.accessory === 'scarf'
     ? `<path d="M30 67Q48 80 67 67L64 80L51 77L61 96H48L39 77L32 79Z" fill="${color?.accent || (id === "c-ves" ? "#56699a" : id === "c-daro" ? "#e7bd75" : "#d4dfc1")}"/>`
     : "";
+  const accessory = style?.accessory === 'cap'
+    ? '<g data-portrait-accessory="cap"><path d="M24 29Q27 9 48 9Q69 9 72 29Z" fill="#6fa89b" stroke="#ccdcba" stroke-width="1.5"/><path d="M23 27Q49 33 78 26L80 32Q51 41 23 33Z" fill="#42796d" stroke="#a9c9a0" stroke-width="1.5"/><path d="M49 11V27" stroke="#a9c9a0" stroke-width="1.3"/></g>'
+    : style?.accessory === 'flower'
+      ? '<g data-portrait-accessory="flower"><path d="M65 29Q80 27 77 16" fill="none" stroke="#b2ce94" stroke-width="3"/><ellipse cx="77" cy="28" rx="8" ry="3.5" fill="#83b395" transform="rotate(-32 77 28)"/><g fill="#e6aac3" stroke="#f7d6c6" stroke-width="1"><ellipse cx="69" cy="16" rx="4" ry="8"/><ellipse cx="69" cy="16" rx="8" ry="4" transform="rotate(35 69 16)"/><ellipse cx="69" cy="16" rx="8" ry="4" transform="rotate(-35 69 16)"/></g><circle cx="69" cy="16" r="3.5" fill="#ffe0a0"/></g>'
+      : '';
   let prop = "";
   if (id === "c-senn" || id === "c-nera")
     prop =
@@ -102,7 +107,7 @@ export function characterPortrait(person, style) {
   if (id === "c-ivo" || id === "c-ves" || id === "c-lio")
     prop =
       '<path d="M77 91V75M70 73H86L85 67H72Z" stroke="#e7dfc2" fill="#8da5a3" stroke-width="3" stroke-linejoin="round"/>';
-  return `<svg class="character-portrait" viewBox="0 0 96 100" aria-hidden="true" focusable="false"><circle cx="48" cy="48" r="45" fill="#294549"/><circle cx="48" cy="48" r="43" fill="none" stroke="${p.coat}" stroke-opacity=".4"/><path d="M14 99Q14 68 37 65H59Q83 67 84 99Z" fill="${p.coat}"/><path d="M41 57H56V70Q49 78 41 70Z" fill="${p.skin}"/><ellipse cx="28" cy="44" rx="4" ry="6" fill="${p.skin}"/><ellipse cx="68" cy="44" rx="4" ry="6" fill="${p.skin}"/><ellipse cx="48" cy="43" rx="21" ry="25" fill="${p.skin}"/>${hair}<path d="M33 36Q39 33 43 36M53 36Q58 33 63 36" fill="none" stroke="${p.hair}" stroke-width="2" stroke-linecap="round"/><ellipse cx="39" cy="44" rx="2.2" ry="3" fill="#283139"/><ellipse cx="58" cy="44" rx="2.2" ry="3" fill="#283139"/><path d="M48 44L46 51H50" fill="none" stroke="#87594e" stroke-width="1.6" stroke-linecap="round"/>${beard}<path d="M41 56Q49 ${id === "c-oren" ? 58 : 64} 57 56" fill="none" stroke="#614542" stroke-width="2" stroke-linecap="round"/>${glasses}${scarf}${prop}</svg>`;
+  return `<svg class="character-portrait" viewBox="0 0 96 100" aria-hidden="true" focusable="false"><circle cx="48" cy="48" r="45" fill="#294549"/><circle cx="48" cy="48" r="43" fill="none" stroke="${p.coat}" stroke-opacity=".4"/><path d="M14 99Q14 68 37 65H59Q83 67 84 99Z" fill="${p.coat}"/><path d="M41 57H56V70Q49 78 41 70Z" fill="${p.skin}"/><ellipse cx="28" cy="44" rx="4" ry="6" fill="${p.skin}"/><ellipse cx="68" cy="44" rx="4" ry="6" fill="${p.skin}"/><ellipse cx="48" cy="43" rx="21" ry="25" fill="${p.skin}"/>${hair}${accessory}<path d="M33 36Q39 33 43 36M53 36Q58 33 63 36" fill="none" stroke="${p.hair}" stroke-width="2" stroke-linecap="round"/><ellipse cx="39" cy="44" rx="2.2" ry="3" fill="#283139"/><ellipse cx="58" cy="44" rx="2.2" ry="3" fill="#283139"/><path d="M48 44L46 51H50" fill="none" stroke="#87594e" stroke-width="1.6" stroke-linecap="round"/>${beard}<path d="M41 56Q49 ${id === "c-oren" ? 58 : 64} 57 56" fill="none" stroke="#614542" stroke-width="2" stroke-linecap="round"/>${glasses}${scarf}${prop}</svg>`;
 }
 
 /** A safe, compact preview of the same optional woodwork and doorstep cosmetics

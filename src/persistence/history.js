@@ -1,5 +1,6 @@
 import { createWorld, advance, intervene, getEntity, DEFAULT_ENGINE_VERSION, SUPPORTED_ENGINE_VERSIONS } from '../sim/world.js';
-import { STYLE_COLOR_IDS, HOME_DECORATION_IDS, GUIDE_STEP_IDS, PERSONALIZATION_LIMITS } from '../customization.js';
+import { STYLE_COLOR_IDS, PERSON_ACCESSORY_IDS, HOME_DECORATION_IDS, GUIDE_STEP_IDS, PERSONALIZATION_LIMITS } from '../customization.js';
+import { defaultNeighborhood, validateNeighborhood, reduceNeighborhood } from '../neighborhood.js';
 
 export const HISTORY_LIMITS = Object.freeze({ ticks: 6000, commands: 1200, branches: 8, followed: 24, exportBytes: 4 * 1024 * 1024 });
 export const SAVE_KEYS = Object.freeze({ current: 'worldweaver.save.current', previous: 'worldweaver.save.previous', staging: 'worldweaver.save.staging' });
@@ -224,8 +225,13 @@ function validatePersonalization(value, history) {
   const people = {}, homes = {};
   for (const id of styleMap(value.people, PERSONALIZATION_LIMITS.people, 'Person styles')) {
     if (!archiveHasPerson(history, id)) fail(`Person style refers to unknown character “${id}”.`);
-    record(value.people[id], ['color'], 'Person style');
-    people[id] = { color: choice(value.people[id].color, STYLE_COLOR_IDS, 'Person color') };
+    const style = value.people[id];
+    record(style, [], 'Person style', ['color', 'accessory']);
+    if (!Object.keys(style).length) fail('Person style must choose a color or accessory.');
+    people[id] = {
+      ...(Object.hasOwn(style, 'color') ? { color: choice(style.color, STYLE_COLOR_IDS, 'Person color') } : {}),
+      ...(Object.hasOwn(style, 'accessory') ? { accessory: choice(style.accessory, PERSON_ACCESSORY_IDS, 'Person accessory') } : {}),
+    };
   }
   for (const id of styleMap(value.homes, PERSONALIZATION_LIMITS.homes, 'Home styles')) {
     if (!archiveHasHome(history, id)) fail(`Home style refers to an unknown home “${id}”.`);
@@ -250,12 +256,14 @@ function presentationMetadata(history) {
   return {
     ...(Object.hasOwn(history, 'personalization') ? { personalization: validatePersonalization(history.personalization, history) } : {}),
     ...(Object.hasOwn(history, 'guide') ? { guide: validateGuide(history.guide) } : {}),
+    ...(Object.hasOwn(history, 'neighborhood') ? { neighborhood: validateNeighborhood(history.neighborhood) } : {}),
   };
 }
 
-// Protected invariant: cosmetic choices and guide progress are archive-wide
-// presentation metadata, shared across branches and timeline views. They never
-// enter snapshots, command logs, fingerprints, decision context, or events.
+// Protected invariant: cosmetic choices, guide progress and courtyard activities
+// are player-wide presentation metadata, shared across branches and timeline
+// views. They never enter snapshots, command logs, fingerprints, decision context,
+// or events. A solved channel preview cannot itself restore simulated habitat.
 // Absence remains absence so older uncustomized exports stay byte-identical.
 function withPersonalization(history, personalization) {
   const result = { ...history, ...presentationMetadata(history) };
@@ -271,8 +279,25 @@ export function setPersonStyle(history, id, color) {
   const metadata = presentationMetadata(history);
   const existing = metadata.personalization ?? { version: 1, people: {}, homes: {} };
   const people = { ...existing.people };
-  if (color === 'original') delete people[id];
-  else people[id] = { color };
+  const style = { ...people[id] };
+  if (color === 'original') delete style.color;
+  else style.color = color;
+  if (Object.keys(style).length) people[id] = style;
+  else delete people[id];
+  return withPersonalization(history, { ...existing, people });
+}
+
+/** 'none' removes only the accessory; the character's color remains unchanged. */
+export function setPersonAccessory(history, id, accessory) {
+  if (typeof id !== 'string' || !archiveHasPerson(history, id)) fail('Choose an existing character before changing their accessories.');
+  choice(accessory, PERSON_ACCESSORY_IDS, 'Person accessory');
+  const metadata = presentationMetadata(history);
+  const existing = metadata.personalization ?? { version: 1, people: {}, homes: {} };
+  const people = { ...existing.people }, style = { ...people[id] };
+  if (accessory === 'none') delete style.accessory;
+  else style.accessory = accessory;
+  if (Object.keys(style).length) people[id] = style;
+  else delete people[id];
   return withPersonalization(history, { ...existing, people });
 }
 
@@ -295,6 +320,18 @@ export function setGuideProgress(history, progress) {
   record(progress, ['completed', 'dismissed'], 'Guide progress update');
   const guide = validateGuide({ version: 1, completed: progress.completed, dismissed: progress.dismissed });
   return complete({ ...history, ...presentationMetadata(history), guide });
+}
+
+/** Looking at an untouched courtyard must not modify a legacy export. */
+export function getNeighborhood(history) {
+  return Object.hasOwn(history, 'neighborhood') ? validateNeighborhood(history.neighborhood) : defaultNeighborhood();
+}
+
+/** Player activities belong to the whole archive; callers separately enforce live-view interaction. */
+export function setNeighborhood(history, action) {
+  const current = presentationMetadata(history);
+  const neighborhood = reduceNeighborhood(current.neighborhood ?? defaultNeighborhood(), action);
+  return complete({ ...history, ...current, neighborhood });
 }
 
 function metadata(history) {
@@ -372,7 +409,7 @@ export function parseHistory(text) {
   let data;
   try { data = JSON.parse(text); } catch { fail('The save is not valid JSON. Your current world has not been changed.'); }
   validateTree(data);
-  record(data, ['format', 'saveVersion', 'simulationVersion', 'initialConfig', 'activeBranchId', 'nextBranchId', 'branches', 'followed', 'attention', 'session'], 'Save', ['personalization', 'guide']);
+  record(data, ['format', 'saveVersion', 'simulationVersion', 'initialConfig', 'activeBranchId', 'nextBranchId', 'branches', 'followed', 'attention', 'session'], 'Save', ['personalization', 'guide', 'neighborhood']);
   if (data.format !== FORMAT || data.saveVersion !== SAVE_VERSION) fail('This save is incompatible with save format 1.');
   const version = simulationVersion(data.simulationVersion);
   record(data.initialConfig, ['seed', 'tier', 'climate', 'temperament', 'density'], 'Initial world settings');
@@ -417,6 +454,7 @@ export function parseHistory(text) {
   const history = { format: FORMAT, saveVersion: SAVE_VERSION, simulationVersion: version, initialConfig: settings, activeBranchId: data.activeBranchId, nextBranchId: data.nextBranchId, branches, followed: data.followed, attention: data.attention, session: data.session };
   if (Object.hasOwn(data, 'personalization')) history.personalization = validatePersonalization(data.personalization, history);
   if (Object.hasOwn(data, 'guide')) history.guide = validateGuide(data.guide);
+  if (Object.hasOwn(data, 'neighborhood')) history.neighborhood = validateNeighborhood(data.neighborhood);
   metadata(history);
   return complete(history);
 }

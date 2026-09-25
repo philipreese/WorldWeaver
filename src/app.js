@@ -12,6 +12,9 @@ import {
   setPersonStyle,
   setHomeStyle,
   setGuideProgress,
+  getNeighborhood,
+  setNeighborhood,
+  setPersonAccessory,
   HISTORY_LIMITS,
 } from "./persistence/history.js";
 import { getInterventions, entityLabel } from "./sim/world.js";
@@ -30,8 +33,10 @@ import {
   friendlyIntervention,
   homeStylePreview,
 } from "./presentation.js";
-import { STYLE_COLORS, HOME_DECORATIONS } from "./customization.js";
+import { STYLE_COLORS, HOME_DECORATIONS, PERSON_ACCESSORIES } from "./customization.js";
 import { getGuideStep, getCuriosityPrompt } from "./guide.js";
+import { NeighborhoodUI } from "./neighborhood-ui.js";
+import { channelFlow } from "./neighborhood.js";
 const DEFAULT_TIER = 2;
 const $ = (id) => document.getElementById(id);
 const escape = (value) =>
@@ -71,6 +76,9 @@ let horizon = 14;
 const sound = new Soundscape();
 let buildInfo = { commit: "development", branch: "local" };
 let lastNotice = "";
+let lastSaveOk = !loaded.error;
+let reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let neighborhoodUI = null;
 fetch(new URL("../build-info.json", import.meta.url))
   .then((response) => (response.ok ? response.json() : null))
   .then((info) => {
@@ -90,9 +98,116 @@ const renderer = new WorldView($("world"), {
     renderScale();
   },
 });
-renderer.setReducedMotion(
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-);
+renderer.setReducedMotion(reducedMotion);
+neighborhoodUI = new NeighborhoodUI($("neighborhood"), {
+  onAction: changeNeighborhood,
+  onRestore: restoreNeighborhoodWater,
+  onExit: leaveNeighborhood,
+  onPersonStyle: () => {
+    const person = world().characters.find((item) => item.id === "c-nera" && item.alive)
+      || world().characters.find((item) => item.alive);
+    if (person) showStyle(person.id, "person");
+  },
+  onAdvance: () => {
+    pause();
+    const changed = step();
+    if (changed && lastSaveOk) return { ok: true };
+    return { ok: false, error: changed ? "This change is not saved yet. Export your history before leaving." : "The day could not advance." };
+  },
+  onInspect: () => {
+    leaveNeighborhood();
+    const event = world().events.findLast((item) => item.kind === "spring-restored");
+    if (event) showEvent(event.id);
+    else inspectEntity("k-hearth-garden");
+  },
+});
+
+function updateNeighborhood() {
+  neighborhoodUI?.update({
+    world: world(), neighborhood: getNeighborhood(history), historical: viewTick !== null,
+    restoration: getInterventions(world()).find((item) => item.kind === "restore-habitat" && item.targetId === "s-hearth"),
+    saveOk: lastSaveOk, reducedMotion, personalization: history.personalization,
+  });
+  $("courtyard").disabled = viewTick !== null;
+}
+
+function neighborhoodVisibility(visible) {
+  document.body.classList.toggle("neighborhood-open", visible);
+  $("courtyard").setAttribute("aria-pressed", String(visible));
+  for (const child of $("world-shell").children) {
+    if (child.id === "neighborhood" || child.id === "toast") continue;
+    child.inert = visible;
+    if (visible) child.setAttribute("aria-hidden", "true");
+    else child.removeAttribute("aria-hidden");
+  }
+  const timebar = document.querySelector(".timebar");
+  timebar.inert = visible;
+  if (visible) timebar.setAttribute("aria-hidden", "true");
+  else timebar.removeAttribute("aria-hidden");
+  renderer.setVisible?.(!visible);
+}
+
+function enterNeighborhood(mode = "welcome") {
+  if (viewTick !== null) {
+    toast("Return to the present to play in the courtyard.");
+    return;
+  }
+  pause();
+  selectedId = null;
+  inspectedEvent = null;
+  $("inspector").hidden = true;
+  $("journal").classList.remove("mobile-open");
+  if (!getNeighborhood(history).visited) {
+    history = setNeighborhood(history, { type: "visit" });
+    persist();
+  }
+  neighborhoodVisibility(true);
+  updateNeighborhood();
+  neighborhoodUI.show(mode);
+}
+
+function leaveNeighborhood() {
+  if (!neighborhoodUI?.isVisible()) return;
+  neighborhoodUI.hide();
+  neighborhoodVisibility(false);
+  renderer.focus("s-hearth", "neighborhood");
+  $("courtyard").focus();
+}
+
+function changeNeighborhood(action) {
+  if (viewTick !== null) return { ok: false, error: "Earlier days are read-only. Return to the present first." };
+  try {
+    history = setNeighborhood(history, action);
+    const result = persist();
+    updateNeighborhood();
+    return result;
+  } catch (error) {
+    toast(error.message);
+    return { ok: false, error: error.message };
+  }
+}
+
+function restoreNeighborhoodWater() {
+  if (viewTick !== null) return { ok: false, error: "Earlier days are read-only." };
+  const option = getInterventions(world()).find((item) => item.kind === "restore-habitat" && item.targetId === "s-hearth");
+  // Protected invariant: previewing channel tiles cannot change habitat. Only a
+  // connected plan plus an available recorded intervention restores real water.
+  if (!option?.available) return { ok: false, error: option?.reason || "The spring cannot be restored here." };
+  if (!channelFlow(getNeighborhood(history).channelTurns).connected) return { ok: false, error: "Connect the spring to the garden before opening the water." };
+  pause();
+  try {
+    history = applyCommand(history, { type: "intervene", intervention: { kind: option.kind, targetId: option.targetId } });
+    markGuide("possibility", false);
+    const result = persist();
+    render();
+    sound.chime(2);
+    if (result.ok) toast("Water reaches the garden. Let a day unfold when you want to see what the neighbors do next.");
+    return result;
+  } catch (error) {
+    toast(error.message);
+    return { ok: false, error: error.message };
+  }
+}
 function openingWorld(config = {}) {
   let h = createHistory({ seed: 8417, tier: DEFAULT_TIER, ...config });
   return applyCommand(h, { type: "advance", days: 2 });
@@ -142,8 +257,16 @@ function resetSession() {
   );
   sessionStart = w.tick;
 }
+function displaySaveResult(result) {
+  lastSaveOk = result.ok;
+  $("save-state").textContent = result.ok
+    ? "All changes saved"
+    : "Save failed · export now";
+  $("save-state").classList.toggle("save-error", !result.ok);
+}
 function persist() {
   if (recoveryProtected) {
+    lastSaveOk = false;
     $("save-state").textContent = "Recovery needed · unsaved";
     $("save-state").classList.add("save-error");
     return {
@@ -162,10 +285,7 @@ function persist() {
   const result = storage
     ? saveHistory(storage, history)
     : { ok: false, error: "Browser storage unavailable" };
-  $("save-state").textContent = result.ok
-    ? "All changes saved"
-    : "Save failed · export now";
-  $("save-state").classList.toggle("save-error", !result.ok);
+  displaySaveResult(result);
   if (!result.ok)
     toast(
       `${result.error}. Your last valid save is preserved; export this history now.`,
@@ -198,6 +318,7 @@ function render() {
   renderMarkers();
   renderScale();
   renderGuide();
+  updateNeighborhood();
   if (inspectedEvent) showEvent(inspectedEvent, false);
   else if (selectedId) inspectEntity(selectedId, false);
 }
@@ -288,7 +409,7 @@ function renderJournal() {
 function entityRow(id, w) {
   const e = entity(id, w);
   const person = w.characters.some((c) => c.id === id);
-  return `<div class="entity-row">${person ? characterPortrait(e) : `<span class="entity-symbol">${esc((e?.name || "?").slice(0, 1))}</span>`}<button data-entity="${esc(id)}"><strong>${esc(label(id, w))}</strong><small>${esc(person ? personHook(e) : e?.practice || e?.activity || (e?.population !== undefined ? "A place to visit" : "Part of this world's story"))}</small></button></div>`;
+  return `<div class="entity-row">${person ? portrait(e) : `<span class="entity-symbol">${esc((e?.name || "?").slice(0, 1))}</span>`}<button data-entity="${esc(id)}"><strong>${esc(label(id, w))}</strong><small>${esc(person ? personHook(e) : e?.practice || e?.activity || (e?.population !== undefined ? "A place to visit" : "Part of this world's story"))}</small></button></div>`;
 }
 function eventButton(e) {
   return `<button class="event-link" data-event="${esc(e.id)}"><small>DAY ${e.tick} · ${esc(e.category.toUpperCase())}</small>${esc(e.title)} <span class="badged">↗</span></button>`;
@@ -301,6 +422,7 @@ function openInspector(html) {
   $("inspector").scrollTop = scroll;
 }
 function inspectEntity(id, move = true) {
+  if (move) leaveNeighborhood();
   const w = world(),
     e = entity(id, w);
   if (!e) return;
@@ -461,6 +583,7 @@ function inspectEntity(id, move = true) {
   openInspector(html);
 }
 function showEvent(id, move = true) {
+  if (move) leaveNeighborhood();
   const w = world(),
     e = w.events.find((e) => e.id === id);
   if (!e) return;
@@ -515,14 +638,7 @@ function showEvent(id, move = true) {
   openInspector(html);
 }
 function intro() {
-  const nera = world().characters.find((c) => c.id === "c-nera");
-  renderer.focus(nera.id, "neighborhood");
-  renderer.select(nera.id);
-  scale = "neighborhood";
-  renderScale();
-  openInspector(
-    `<div class="portrait-heading">${portrait(nera)}<div><div class="eyebrow">WELCOME TO HEARTH</div><h2>Come meet Nera.</h2></div></div><p class="character-hook">She counts plates before people. She also has a problem: her seed room is getting wet.</p><p>Across a blocked path, Oren may know how to help.</p><div class="inspect-actions"><button class="primary" data-entity="c-nera">Meet Nera ↗</button><button data-action="guide">Show me around</button><button data-action="guide-dismiss">Explore on my own</button></div><p class="tiny">Time is paused. Your guide takes one small step at a time. You can leave and come back whenever you like.</p>`,
-  );
+  enterNeighborhood();
 }
 function pause() {
   playing = false;
@@ -586,6 +702,7 @@ function schedule() {
 }
 function start(fast = false) {
   if (viewTick !== null) return;
+  leaveNeighborhood();
   if (playing) {
     pause();
     return;
@@ -598,6 +715,7 @@ function start(fast = false) {
   schedule();
 }
 function timeTravel(tick) {
+  leaveNeighborhood();
   pause();
   viewTick = Math.max(0, Math.min(currentWorld(history).tick, Number(tick)));
   selectedId = null;
@@ -697,12 +815,17 @@ function showStyle(id, kind) {
   const residents = person ? [] : world().characters.filter((c) => c.homeId === id && c.alive);
   renderer.focus(id, "neighborhood");
   const colors = [{ id: "original", label: "Original", coat: "#748984" }, ...STYLE_COLORS];
-  modal(`<div class="eyebrow">${person ? "A LOOK OF THEIR OWN" : "A COZIER CORNER"}</div><h2>${esc(target.name)}</h2><div class="style-preview">${person ? portrait(target) : homeStylePreview(target, style)}</div>${residents.length ? `<p class="tiny">Home to ${residents.map((c) => esc(c.name)).join(", ")}. Shared homes share their decorations.</p>` : ""}<p>${person ? "Pick a coat color. Their familiar face and favorite things stay with them." : "Choose a trim color and something for the doorstep."}</p><div class="color-grid" role="group" aria-label="${person ? "Coat" : "Home trim"} color">${colors.map((color) => `<button class="color-choice" data-style-id="${esc(id)}" data-style-kind="${kind}" data-style-color="${color.id}" aria-pressed="${(style.color || "original") === color.id}"><span class="color-dot ${color.id === "original" ? "original-color" : ""}" style="--swatch:${color.coat}"></span>${esc(color.label)}</button>`).join("")}</div>${!person ? `<div class="decoration-grid" role="group" aria-label="Doorstep decoration">${HOME_DECORATIONS.map((decoration) => `<button data-style-id="${esc(id)}" data-style-kind="home" data-decoration="${decoration.id}" aria-pressed="${(style.decoration || "none") === decoration.id}">${esc(decoration.label)}</button>`).join("")}</div>` : ""}<p class="tiny">This look stays with your saved world, across all its tellings and earlier days.</p><div class="modal-actions"><button class="primary" data-action="style-done">Done</button>${person && target.homeId ? `<button data-style-home="${esc(target.homeId)}">Make their home cozy →</button>` : ""}</div>`);
+  const accessories = person
+    ? `<div class="decoration-grid" role="group" aria-label="Character accessory">${PERSON_ACCESSORIES.map((item) => `<button data-style-id="${esc(id)}" data-style-kind="person" data-person-accessory="${item.id}" aria-pressed="${(style.accessory || "none") === item.id}">${esc(item.label)}</button>`).join("")}</div>`
+    : `<button class="text-button" data-action="courtyard-decorate">Arrange Hearth’s courtyard →</button>`;
+  modal(`<div class="eyebrow">${person ? "A LOOK OF THEIR OWN" : "A COZIER CORNER"}</div><h2>${esc(target.name)}</h2><div class="style-preview">${person ? portrait(target) : homeStylePreview(target, style)}</div>${residents.length ? `<p class="tiny">Home to ${residents.map((c) => esc(c.name)).join(", ")}. Shared homes share their decorations.</p>` : ""}<p>${person ? "Try a coat color and an accessory. Their familiar face and favorite things stay with them." : "Choose a trim color and something for the doorstep."}</p><div class="color-grid" role="group" aria-label="${person ? "Coat" : "Home trim"} color">${colors.map((color) => `<button class="color-choice" data-style-id="${esc(id)}" data-style-kind="${kind}" data-style-color="${color.id}" aria-pressed="${(style.color || "original") === color.id}"><span class="color-dot ${color.id === "original" ? "original-color" : ""}" style="--swatch:${color.coat}"></span>${esc(color.label)}</button>`).join("")}</div>${!person ? `<div class="decoration-grid" role="group" aria-label="Doorstep decoration">${HOME_DECORATIONS.map((decoration) => `<button data-style-id="${esc(id)}" data-style-kind="home" data-decoration="${decoration.id}" aria-pressed="${(style.decoration || "none") === decoration.id}">${esc(decoration.label)}</button>`).join("")}</div>` : ""}${accessories}<p class="tiny">This look stays with your saved world, across all its tellings and earlier days.</p><div class="modal-actions"><button class="primary" data-action="style-done">Done</button>${person && target.homeId ? `<button data-style-home="${esc(target.homeId)}">Make their home cozy →</button>` : ""}</div>`);
 }
 function changeStyle(data) {
   if (viewTick !== null) return;
   try {
-    if (data.styleKind === "person") history = setPersonStyle(history, data.styleId, data.styleColor);
+    if (data.styleKind === "person") history = data.personAccessory !== undefined
+      ? setPersonAccessory(history, data.styleId, data.personAccessory)
+      : setPersonStyle(history, data.styleId, data.styleColor);
     else {
       const prior = history.personalization?.homes?.[data.styleId] || {};
       history = setHomeStyle(history, data.styleId, {
@@ -714,7 +837,8 @@ function changeStyle(data) {
     persist();
     render();
     showStyle(data.styleId, data.styleKind);
-    const control = data.styleColor !== undefined ? `[data-style-color="${data.styleColor}"]` : `[data-decoration="${data.decoration}"]`;
+    const control = data.personAccessory !== undefined ? `[data-person-accessory="${data.personAccessory}"]`
+      : data.styleColor !== undefined ? `[data-style-color="${data.styleColor}"]` : `[data-decoration="${data.decoration}"]`;
     $("modal-content").querySelector(control)?.focus();
   } catch (error) {
     toast(error.message);
@@ -731,6 +855,10 @@ function showPossibilities(id) {
   modal(`<div class="eyebrow">LEND A HAND</div><h2>${esc(place.name)}</h2><p>You can open a way forward. The neighbors decide what happens next.</p>${curiosity ? `<p class="curiosity-note">${esc(curiosity.text)}</p>` : ""}${options.map((i) => `<div class="intervention"><h3>${esc(i.title)}</h3><p>${esc(i.description)}</p><div class="reason">${esc(i.reason)}</div><button data-intervention="${esc(i.id)}" ${i.available ? "" : "disabled"}>${i.available ? "Try this" : "Not available"}</button></div>`).join("")}`);
 }
 function showHelp() {
+  if (neighborhoodUI?.isVisible()) {
+    modal(`<div class="eyebrow">A LITTLE PLACE IN A BIG WORLD</div><h2>Make yourself at home.</h2><p>This is Hearth, a village in the Quiet Basin. Its people live their own lives. You can make their surroundings more welcoming, open new possibilities, and discover what happens.</p><div class="guide-grid"><div><b>Make a cozy corner</b><p>Pick an object, then tap a place in the courtyard. Move it, turn it, or try another combination.</p></div><div><b>Meet your companion</b><p>Give your glimmerfox a name and a look. Tap the lawn to toss a toy. There are no feeding chores.</p></div><div><b>Bring back the water</b><p>Turn the old channel pieces into a path from spring to garden, then open the water. The village will decide how to use it.</p></div></div><p>Your companion and decorations travel with you between different tellings. The garden's water belongs to this world's history.</p><p>Nothing advances while you're away. When you're curious about the wider world, choose <b>Explore the basin</b>.</p><div class="modal-actions"><button class="primary" data-action="close-modal">Back to the courtyard</button><button data-action="courtyard-world">Explore the basin</button></div>`);
+    return;
+  }
   modal(
     `<div class="eyebrow">A LITTLE COMPANY ON THE WAY</div><h2>Your next small adventure.</h2><div class="guide-modal">${guideCard(true)}</div><details class="story-details"><summary>Where the guide goes</summary><div class="guide-grid"><div><b>1 · Meet the neighbors</b><p>Find a familiar face. Pick a color. Make a home feel cozy.</p></div><div><b>2 · Notice what changes</b><p>Let a little time pass. Discover a choice and what led to it.</p></div><div><b>3 · Try another possibility</b><p>Lend a hand, then look back and try a different future. Both are kept.</p></div></div><p>Watching is a complete way to play. Every part of the guide is optional.</p></details><details class="story-details"><summary>Moving around & controlling time</summary><p>Drag or use arrow keys to explore. Pinch or use + / − to zoom. Tap a person or building to look closer.</p><p><b>+1 day</b> takes one small step. <b>Next moment</b> moves ahead and pauses for someone you follow. Nothing happens while you’re away.</p><p>Use <b>Look back</b> to visit an earlier day. <b>Branch here</b> keeps a separate future. Space pauses or plays; Escape closes a panel.</p></details><div class="modal-actions"><button data-action="close-modal">Back to the world</button><button data-action="guide-restart">Start the guide again</button><button data-action="report">Report a problem</button></div>`,
   );
@@ -928,6 +1056,7 @@ function newWorldForm() {
   );
 }
 document.addEventListener("click", (event) => {
+  if (event.target.closest("#neighborhood")) return;
   const explanation = event.target.closest("[data-event-explanation] summary");
   if (explanation && !explanation.parentElement.hasAttribute("open")) markGuide("why");
   const b = event.target.closest("button");
@@ -1028,6 +1157,7 @@ document.addEventListener("click", (event) => {
     }
   }
   if (d.branch) {
+    leaveNeighborhood();
     history = selectBranch(history, d.branch);
     resetSession();
     viewTick = null;
@@ -1039,6 +1169,14 @@ document.addEventListener("click", (event) => {
     render();
   }
   const action = d.action;
+  if (action === "courtyard" || action === "courtyard-decorate") {
+    $("modal").close();
+    enterNeighborhood(action === "courtyard-decorate" ? "decorate" : "welcome");
+  }
+  if (action === "courtyard-world") {
+    $("modal").close();
+    leaveNeighborhood();
+  }
   if (action === "guide") showHelp();
   if (action === "guide-next") useGuide();
   if (action === "guide-dismiss") {
@@ -1131,6 +1269,7 @@ $("return-present").onclick = () => {
 $("branch-here").onclick = branchNow;
 $("branches").onclick = showBranches;
 $("help").onclick = showHelp;
+$("courtyard").onclick = () => enterNeighborhood();
 $("settings").onclick = showSettings;
 $("zoom-in").onclick = () => renderer.zoomBy(1.4);
 $("zoom-out").onclick = () => renderer.zoomBy(1 / 1.4);
@@ -1169,8 +1308,11 @@ $("modal-content").addEventListener("change", (e) => {
       `Advance up to ${horizon} days, stopping for followed events`;
   }
   if (e.target.id === "quality") renderer.setQuality(e.target.value);
-  if (e.target.id === "reduced-motion")
-    renderer.setReducedMotion(e.target.checked);
+  if (e.target.id === "reduced-motion") {
+    reducedMotion = e.target.checked;
+    renderer.setReducedMotion(reducedMotion);
+    updateNeighborhood();
+  }
   if (e.target.id === "volume") sound.setVolume(Number(e.target.value) / 100);
 });
 $("import-file").onchange = async (e) => {
@@ -1187,6 +1329,7 @@ $("import-file").onchange = async (e) => {
       : { ok: false, error: "Storage unavailable" };
     if (!result.ok) throw new Error(result.error);
     history = candidate;
+    displaySaveResult(result);
     recoveryProtected = false;
     resetSession();
     viewTick = null;
@@ -1194,6 +1337,7 @@ $("import-file").onchange = async (e) => {
     inspectedEvent = null;
     $("modal").close();
     $("inspector").hidden = true;
+    leaveNeighborhood();
     render();
     renderer.overview();
     toast("History validated and restored. Time is paused.");
@@ -1220,6 +1364,7 @@ document.addEventListener("keydown", (e) => {
     $("modal").open
   )
     return;
+  if (neighborhoodUI?.isVisible()) return;
   if (e.code === "Space") {
     e.preventDefault();
     start();
@@ -1246,10 +1391,9 @@ document.addEventListener("keydown", (e) => {
 });
 render();
 persist();
-if (!loaded.history) intro();
-else toast(history.simulationVersion === "1.0.0"
-  ? "Your earlier world is preserved. World settings explains how to try a new beginning with the growing-world rules."
-  : "Welcome back. Your world has waited, unchanged.");
+intro();
+if (loaded.history && history.simulationVersion === "1.0.0")
+  toast("Your earlier world is preserved. World settings explains how to try a new beginning with the growing-world rules.");
 if (loaded.error) toast(loaded.error);
 if ("serviceWorker" in navigator)
   window.addEventListener("load", () =>

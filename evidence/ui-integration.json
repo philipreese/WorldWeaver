@@ -1,7 +1,7 @@
 {
   "kind": "Node DOM + Canvas integration; not browser execution, layout, performance, touch or human playtesting.",
   "simulationVersion": "2.0.0",
-  "passed": 25,
+  "passed": 26,
   "cases": [
     "Tier 2 opening initializes paused on day 2 with saved development",
     "Courtyard furniture can be placed, turned, moved and put away using semantic controls",
@@ -27,6 +27,7 @@
     "Background handler pauses and preserves exact world state",
     "Observation grows a selectable settlement and buildings; its real decision is inspectable and rewinding hides the future place",
     "Renderer comparison injects scene assets, resets the camera, and blocks navigation while changes are unsaved",
-    "Unavailable 3D rendering creates a fresh Canvas2D element and explains the playable fallback"
+    "Unavailable 3D rendering creates a fresh Canvas2D element and explains the playable fallback",
+    "First-frame or later GPU failure replaces the canvas once and preserves current activity, choices and unsaved-state warning"
   ]
 }

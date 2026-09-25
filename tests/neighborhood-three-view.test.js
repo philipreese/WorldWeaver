@@ -89,3 +89,71 @@ test('raycasts distinguish all nine tiles and GPU-independent resources dispose 
   model.dispose(); model.dispose();
   assert.equal(geometryDisposals, 1); assert.equal(materialDisposals, 1);
 });
+
+function drawableView(onError) {
+  const view = headlessView();
+  view.canvas = { dataset: {} }; view.onError = onError;
+  view.failed = false; view.hasRendered = false; view.frameCosts = []; view.dpr = 1.25;
+  view.controls = { update() {}, enabled: true }; view.resize = () => {};
+  view.renderer = {
+    shadowMap: {}, info: { render: { calls: 12, triangles: 240 } },
+    getContext: () => ({ isContextLost: () => false, drawingBufferWidth: 390, drawingBufferHeight: 320, readPixels: (_x, _y, _w, _h, _format, _type, pixels) => pixels.set([36, 62, 48, 255]) }), render() {},
+  };
+  return view;
+}
+
+test('first visible frame failure reports once and stops without waiting for an animation frame', async () => {
+  const failures = [], view = drawableView(error => failures.push(error.message));
+  const savedBefore = JSON.stringify(view.state.neighborhood); let attempts = 0;
+  view.renderer.render = () => { attempts++; throw new Error('GPU draw failed'); };
+  view.setVisible(true);
+  assert.equal(attempts, 1, 'show must attempt an actual frame immediately');
+  assert.equal(view.hasRendered, false); assert.equal(view.canvas.dataset.renderStatus, 'failed');
+  assert.equal(view.controls.enabled, false); assert.equal(view.frameId, null);
+  view._frame(40); view._fail(new Error('Duplicate failure'));
+  await Promise.resolve();
+  assert.deepEqual(failures, ['GPU draw failed']); assert.equal(attempts, 1);
+  assert.equal(JSON.stringify(view.state.neighborhood), savedBefore); view.model.dispose();
+});
+
+test('losing the context after a good frame triggers recovery instead of leaving 3D selected', async () => {
+  const failures = [], view = drawableView(error => failures.push(error.message));
+  view.setVisible(true); assert.equal(view.hasRendered, true);
+  assert.equal(view.canvas.dataset.renderStatus, 'ready');
+  let prevented = false;
+  view._contextLost({ preventDefault() { prevented = true; } });
+  await Promise.resolve();
+  assert.equal(prevented, true); assert.equal(view.failed, true);
+  assert.equal(view.canvas.dataset.renderStatus, 'failed'); assert.equal(failures.length, 1);
+  assert.match(failures[0], /graphics context/); view.model.dispose();
+});
+
+test('silent shader and empty-frame failures cannot report a ready 3D scene', async () => {
+  for (const kind of ['shader', 'empty', 'lost', 'black', 'white']) {
+    const failures = [], view = drawableView(error => failures.push(error.message));
+    if (kind === 'shader') view.shaderError = new Error('Materials failed');
+    if (kind === 'empty') view.renderer.info.render.calls = 0;
+    if (kind === 'lost') view.renderer.getContext = () => ({ isContextLost: () => true });
+    if (kind === 'black' || kind === 'white') {
+      const context = view.renderer.getContext();
+      context.readPixels = (_x, _y, _w, _h, _format, _type, pixels) => pixels.fill(kind === 'black' ? 0 : 255);
+      view.renderer.getContext = () => context;
+    }
+    view.setVisible(true); await Promise.resolve();
+    assert.equal(view.hasRendered, false, kind); assert.equal(failures.length, 1, kind);
+    assert.equal(view.canvas.dataset.renderStatus, 'failed', kind); view.model.dispose();
+  }
+});
+
+test('hidden and repeated resize notifications do not allocate desktop buffers on a phone', t => {
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'devicePixelRatio');
+  Object.defineProperty(globalThis, 'devicePixelRatio', { value: 3, configurable: true });
+  t.after(() => descriptor ? Object.defineProperty(globalThis, 'devicePixelRatio', descriptor) : delete globalThis.devicePixelRatio);
+  const view = Object.create(NeighborhoodThreeView.prototype), allocations = [];
+  let rect = { width: 0, height: 0 };
+  Object.assign(view, { compact: true, canvas: { getBoundingClientRect: () => rect }, renderer: { setDrawingBufferSize: (...size) => allocations.push(size) }, camera: new THREE.PerspectiveCamera(), invalidate() {} });
+  view.resize(); view.resize();
+  rect = { width: 390, height: 320 }; view.resize(); view.resize();
+  assert.deepEqual(allocations, [[1, 1, 1.25], [390, 320, 1.25]]);
+  assert.equal(view.camera.aspect, 390 / 320);
+});

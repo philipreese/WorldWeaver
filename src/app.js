@@ -1011,6 +1011,7 @@ function exportProblemReport() {
       day: world().tick,
       historicalDay: viewTick,
       camera: renderer.getViewState(),
+      courtyard: neighborhoodUI?.getDiagnostics(),
     },
     saveStatus: $("save-state").textContent,
     lastNotice,

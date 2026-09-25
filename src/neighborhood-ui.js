@@ -143,23 +143,15 @@ export class NeighborhoodUI {
     this.stageTip = container.querySelector(".nh-scene-tip");
     this.status = container.querySelector(".nh-status");
     this.saveWarning = container.querySelector(".nh-save-warning");
+    const canvas = this.canvas;
     const onSelect = (selection) => this._selectScene(selection);
     try {
-      this.view = new ViewClass(this.canvas, { ...viewOptions, onSelect });
+      this.view = new ViewClass(canvas, { ...viewOptions, onSelect, onError: (error) => {
+        if (this.canvas === canvas && this.isThree) this._useIllustratedFallback(error);
+      } });
     } catch (error) {
       if (ViewClass === NeighborhoodView) throw error;
-      // A canvas that has acquired WebGL cannot later acquire a 2D context.
-      // A new DOM canvas also drops the failed view's canvas-bound handlers.
-      const cleanCanvas = this.canvas.cloneNode(false);
-      cleanCanvas.removeAttribute("style");
-      this.canvas.replaceWith(cleanCanvas);
-      this.canvas = cleanCanvas;
-      this.view = new NeighborhoodView(this.canvas, { onSelect });
-      this.isThree = false;
-      this.rendererName = "Illustrated fallback";
-      this.rendererFallback = "The 3D view couldn’t start here. The illustrated courtyard is ready to play.";
-      this.rendererError = error;
-      this.comparisonEnabled = true;
+      this._useIllustratedFallback(error);
     }
     this.view.setVisible(false);
     this._renderComparison();
@@ -196,6 +188,36 @@ export class NeighborhoodUI {
 
   isVisible() {
     return this.visible;
+  }
+
+  getDiagnostics() {
+    return {
+      renderer: this.isThree ? "three" : "illustrated",
+      mode: this.mode,
+      status: this.canvas.dataset.renderStatus || (this.isThree ? "starting" : "ready"),
+      error: this.rendererError ? String(this.rendererError.message || this.rendererError).slice(0, 300) : null,
+    };
+  }
+
+  _useIllustratedFallback(error) {
+    if (!this.isThree) return;
+    this.isThree = false;
+    try { this.view?.destroy(); } catch { /* Recovery must survive a broken GPU. */ }
+    // Context type is permanent for a canvas. Discard WebGL dimensions,
+    // diagnostics and event handlers while keeping the activity and save state.
+    const cleanCanvas = this.container.ownerDocument.createElement("canvas");
+    cleanCanvas.id = this.canvas.id;
+    cleanCanvas.tabIndex = 0;
+    this.canvas.replaceWith(cleanCanvas);
+    this.canvas = cleanCanvas;
+    this.view = new NeighborhoodView(cleanCanvas, { onSelect: selection => this._selectScene(selection) });
+    this.rendererName = "Illustrated fallback";
+    this.rendererFallback = "The 3D view couldn’t draw here. The illustrated courtyard is ready to play. Your choices are kept.";
+    this.rendererError = error;
+    this.comparisonEnabled = true;
+    this._renderComparison();
+    this._render();
+    this.view.setVisible(this.visible);
   }
 
   _renderComparison() {

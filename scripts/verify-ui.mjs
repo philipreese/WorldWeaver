@@ -476,8 +476,31 @@ assert.notEqual(fallback.canvas, failedCanvas);
 assert.equal(testContainer.dataset.renderer, "canvas");
 assert.match(testContainer.querySelector(".nh-test-fallback").textContent, /illustrated courtyard is ready/);
 fallback.destroy();
-testContainer.remove();
 cases.push("Unavailable 3D rendering creates a fresh Canvas2D element and explains the playable fallback");
+let lateFailure, disposed = 0;
+class LateFailureView extends ComparisonView {
+  constructor(canvas, options) { super(canvas, options); lateFailure = options.onError; }
+  destroy() { disposed++; throw new Error("Disposing a lost context also failed"); }
+}
+const recovering = new NeighborhoodUI(testContainer, {}, { ViewClass: LateFailureView, comparisonEnabled: true });
+recovering.update({ neighborhood: saved().neighborhood, saveOk: false, reducedMotion: true });
+recovering.show("companion");
+const failedFrameCanvas = recovering.canvas, choicesBeforeFailure = JSON.stringify(recovering.state.neighborhood);
+lateFailure(new Error("The first frame could not draw"));
+assert.notEqual(recovering.canvas, failedFrameCanvas);
+assert.equal(testContainer.dataset.renderer, "canvas");
+assert.equal(recovering.mode, "companion");
+assert.equal(recovering.view.visible, true);
+assert.equal(JSON.stringify(recovering.view.state.neighborhood), choicesBeforeFailure);
+assert.equal(recovering.saveWarning.hidden, false);
+assert.equal(recovering.getDiagnostics().error, "The first frame could not draw");
+assert.equal(testContainer.querySelector('[data-nh-action="reset-view"]'), null);
+assert.match(testContainer.querySelector(".nh-test-fallback").textContent, /Your choices are kept/);
+const replacementCanvas = recovering.canvas;
+lateFailure(new Error("A stale second notification"));
+assert.equal(recovering.canvas, replacementCanvas); assert.equal(disposed, 1);
+recovering.destroy(); testContainer.remove();
+cases.push("First-frame or later GPU failure replaces the canvas once and preserves current activity, choices and unsaved-state warning");
 await mkdir("evidence", { recursive: true });
 await writeFile(
   "evidence/ui-integration.json",

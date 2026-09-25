@@ -52,3 +52,7 @@ The current bounded catalogs are JavaScript exports. A future content pass can m
 ## Compatibility details
 
 The courtyard house projects the valid `k-hearth-table` home trim. A restored world with no matching connected preview board displays an installed working path without changing player metadata. Loading a prior throw displays its completed outcome rather than replaying the interaction. Both scene renderers stop scheduling animation while hidden.
+
+## Optional Three.js comparison
+
+The same `NeighborhoodUI` accepts an injected `ViewClass` and `viewOptions`. The optional 3D renderer receives validated JSON scene assets and the existing projection state. It implements the same selection events and visibility lifecycle, plus `resetCamera()`. A failed custom renderer gets a fresh canvas before the original 2D view is constructed. Comparison navigation uses the same tab and is blocked while choices are unsaved. See [the test guide](THREE_COURTYARD_TEST.md).

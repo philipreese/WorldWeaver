@@ -3,6 +3,7 @@ import { readFile, stat } from "node:fs/promises";
 import { resolve, extname, sep } from "node:path";
 const root = resolve(process.argv[2] || "."),
   port = Number(process.env.PORT || 4173);
+const development = !process.argv[2];
 const mime = {
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
@@ -22,6 +23,8 @@ http
       // Production can be exercised at /WorldWeaver/ with the same immutable files.
       if (pathname.startsWith("/WorldWeaver/"))
         pathname = pathname.slice("/WorldWeaver".length);
+      const labEntry = development && /^\/lab\/(?:index\.html)?$/.test(pathname);
+      if (development && pathname.startsWith("/lab/")) pathname = pathname.slice(4);
       let target = resolve(root, "." + pathname);
       if (target !== root && !target.startsWith(root + sep))
         throw new Error("Forbidden");
@@ -33,7 +36,11 @@ http
         entry = await stat(target);
       }
       if (entry.isDirectory()) target = resolve(target, "index.html");
-      const body = await readFile(target);
+      let body = await readFile(target);
+      if (labEntry) body = Buffer.from(body.toString("utf8")
+        .replace('data-site-base="./"', 'data-site-base="../" data-neighborhood-renderer="three"')
+        .replace('href="./icon.svg"', 'href="../icon.svg"')
+        .replace('href="./manifest.webmanifest"', 'href="../manifest.webmanifest"'));
       res.writeHead(200, {
         "Content-Type": mime[extname(target)] || "application/octet-stream",
         "Cache-Control": "no-cache",

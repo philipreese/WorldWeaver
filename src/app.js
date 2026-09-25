@@ -99,6 +99,26 @@ const renderer = new WorldView($("world"), {
   },
 });
 renderer.setReducedMotion(reducedMotion);
+const rendererQuery = new URLSearchParams(globalThis.location?.search || "").get("renderer");
+const labEntry = document.documentElement.dataset.neighborhoodRenderer === "three";
+const courtyardOptions = { comparisonEnabled: labEntry || rendererQuery !== null };
+let courtyardLoadError = "";
+if ((rendererQuery || (labEntry ? "three" : "canvas")) === "three") {
+  $("save-state").textContent = "Loading the 3D courtyard…";
+  try {
+    const [module, response] = await Promise.all([
+      import("./view/neighborhood-three-view.js"),
+      fetch(new URL("../assets/courtyard-three.json", import.meta.url)),
+    ]);
+    if (!response.ok) throw new Error("The 3D scene assets could not be loaded.");
+    courtyardOptions.ViewClass = module.NeighborhoodThreeView;
+    courtyardOptions.viewOptions = { assets: await response.json() };
+    courtyardOptions.rendererName = "3D test";
+  } catch (error) {
+    courtyardLoadError = "The 3D test could not load. The illustrated courtyard is ready to play; try the 3D link again when connected.";
+    courtyardOptions.rendererName = "Illustrated fallback";
+  }
+}
 neighborhoodUI = new NeighborhoodUI($("neighborhood"), {
   onAction: changeNeighborhood,
   onRestore: restoreNeighborhoodWater,
@@ -120,7 +140,7 @@ neighborhoodUI = new NeighborhoodUI($("neighborhood"), {
     if (event) showEvent(event.id);
     else inspectEntity("k-hearth-garden");
   },
-});
+}, courtyardOptions);
 
 function updateNeighborhood() {
   neighborhoodUI?.update({
@@ -866,7 +886,7 @@ function showHelp() {
 
 function showSettings() {
   modal(
-    `<div class="eyebrow">WORLD SETTINGS</div><h2>Your world, safely kept.</h2><p>Keep a copy of your world, or bring a saved one back. All its different futures come with it.</p>${history.simulationVersion === "1.0.0" ? '<p class="read-only-note">This world keeps the original prototype rules so its history stays true. Export a copy, then choose <b>Shape another beginning</b> to try the growing-world rules.</p>' : ""}<div class="modal-actions"><button data-action="export">Export history ↓</button><button data-action="import">Import history ↑</button><button data-action="branches">View branches</button><button data-action="stats">World stats</button></div><label class="field">Sound volume<input id="volume" type="range" min="0" max="60" value="${sound.volume * 100}"></label><details class="story-details"><summary>Time, motion & picture settings</summary><label class="field">When should time stop?<select id="attention"><option value="quiet" ${history.attention === "quiet" ? "selected" : ""}>Only turning points</option><option value="balanced" ${history.attention === "balanced" ? "selected" : ""}>Meaningful changes</option><option value="attentive" ${history.attention === "attentive" ? "selected" : ""}>Small moments too</option></select></label><label class="field">How far can Next moment go?<select id="horizon"><option value="7" ${horizon === 7 ? "selected" : ""}>Up to 7 days</option><option value="14" ${horizon === 14 ? "selected" : ""}>Up to 14 days</option><option value="30" ${horizon === 30 ? "selected" : ""}>Up to 30 days</option></select></label><label class="field">Picture detail<select id="quality"><option value="auto">Automatic</option><option value="low">Gentle on battery</option><option value="high">Full detail</option></select></label><label class="field">Reduce motion<input id="reduced-motion" type="checkbox" ${matchMedia("(prefers-reduced-motion: reduce)").matches ? "checked" : ""}></label></details><p class="tiny">Saves stay in this browser. Export a copy before clearing browser data or starting a new world.</p><button class="text-button" data-action="new-world">Shape another beginning →</button><div class="rule"></div><button data-action="report">Report a problem</button><p class="tiny">Build ${esc(buildInfo.commit.slice(0, 8))}</p>`,
+    `<div class="eyebrow">WORLD SETTINGS</div><h2>Your world, safely kept.</h2><p>Keep a copy of your world, or bring a saved one back. All its different futures come with it.</p>${history.simulationVersion === "1.0.0" ? '<p class="read-only-note">This world keeps the original prototype rules so its history stays true. Export a copy, then choose <b>Shape another beginning</b> to try the growing-world rules.</p>' : ""}<div class="modal-actions"><button data-action="export">Export history ↓</button><button data-action="import">Import history ↑</button><button data-action="branches">View branches</button><button data-action="stats">World stats</button></div><label class="field">Sound volume<input id="volume" type="range" min="0" max="60" value="${sound.volume * 100}"></label><details class="story-details"><summary>Time, motion & picture settings</summary><label class="field">When should time stop?<select id="attention"><option value="quiet" ${history.attention === "quiet" ? "selected" : ""}>Only turning points</option><option value="balanced" ${history.attention === "balanced" ? "selected" : ""}>Meaningful changes</option><option value="attentive" ${history.attention === "attentive" ? "selected" : ""}>Small moments too</option></select></label><label class="field">How far can Next moment go?<select id="horizon"><option value="7" ${horizon === 7 ? "selected" : ""}>Up to 7 days</option><option value="14" ${horizon === 14 ? "selected" : ""}>Up to 14 days</option><option value="30" ${horizon === 30 ? "selected" : ""}>Up to 30 days</option></select></label><label class="field">Picture detail<select id="quality"><option value="auto">Automatic</option><option value="low">Gentle on battery</option><option value="high">Full detail</option></select></label><label class="field">Reduce motion<input id="reduced-motion" type="checkbox" ${matchMedia("(prefers-reduced-motion: reduce)").matches ? "checked" : ""}></label></details><p class="tiny">Saves stay in this browser. Export a copy before clearing browser data or starting a new world.</p><button class="text-button" data-action="new-world">Shape another beginning →</button><div class="rule"></div><p><a data-courtyard-test href="${esc(document.documentElement.dataset.siteBase || "./")}lab/">Try the 3D courtyard →</a></p><button data-action="report">Report a problem</button><p class="tiny">Build ${esc(buildInfo.commit.slice(0, 8))}</p>`,
   );
 }
 function showStats(personId = null) {
@@ -1057,6 +1077,11 @@ function newWorldForm() {
 }
 document.addEventListener("click", (event) => {
   if (event.target.closest("#neighborhood")) return;
+  if (event.target.closest("[data-courtyard-test]") && !lastSaveOk) {
+    event.preventDefault();
+    toast("Save or export this world before switching views, so your changes stay with you.");
+    return;
+  }
   const explanation = event.target.closest("[data-event-explanation] summary");
   if (explanation && !explanation.parentElement.hasAttribute("open")) markGuide("why");
   const b = event.target.closest("button");
@@ -1392,14 +1417,15 @@ document.addEventListener("keydown", (e) => {
 render();
 persist();
 intro();
+if (courtyardLoadError) toast(courtyardLoadError);
 if (loaded.history && history.simulationVersion === "1.0.0")
   toast("Your earlier world is preserved. World settings explains how to try a new beginning with the growing-world rules.");
 if (loaded.error) toast(loaded.error);
-if ("serviceWorker" in navigator)
-  window.addEventListener("load", () =>
-    navigator.serviceWorker
-      .register(new URL("../sw.js", import.meta.url))
-      .catch(() => {
-        /* Development runs without a generated offline worker. */
-      }),
-  );
+if ("serviceWorker" in navigator) {
+  const registerOffline = () => {
+    const site = new URL(document.documentElement.dataset.siteBase || "./", document.baseURI);
+    navigator.serviceWorker.register(new URL("sw.js", site), { scope: site.pathname, updateViaCache: "none" }).catch(() => {});
+  };
+  if (document.readyState === "complete") registerOffline();
+  else window.addEventListener("load", registerOffline, { once: true });
+}

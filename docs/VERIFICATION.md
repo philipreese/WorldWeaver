@@ -6,9 +6,9 @@
 
 | Evidence | Verified scope | Limits |
 | --- | --- | --- |
-| `npm test` — 132 passing | Existing simulation/history suites plus optional courtyard metadata, real channel connectivity, furniture editing, companion choices and seven courtyard renderer checks | Node execution; renderer input tests use synthetic events |
-| [UI report](../evidence/ui-integration.json) — 23 passing | Courtyard placement/move/rotation/removal, named companion appearance and repeated play, gated spring preview/commit, historical branch isolation and import/save recovery; existing app handlers: opening, saved customization, guide progression/restart, failed-save messaging, exploration panel, decision layers, history/fork, refuge, relic discovery, power, institution, background pause, generated settlement/buildings/decision and rewind | LinkeDOM and native Canvas; no browser engine, CSS layout, real touch, accessibility audit, or device performance |
-| [Build report](../evidence/build-verification.json) | `/WorldWeaver/` HTTP path, 33 precached responses, worker activation, simulated offline cache reads | Worker evaluated in Node with a cache mock; actual browser offline reload and installation remain unverified |
+| `npm test` — 137 passing | Existing simulation/history suites plus optional courtyard metadata, real channel connectivity, furniture editing, companion choices and twelve illustrated/Three.js scene checks | Node execution; renderer input tests use synthetic events |
+| [UI report](../evidence/ui-integration.json) — 25 passing | Courtyard placement/move/rotation/removal, named companion appearance and repeated play, gated spring preview/commit, historical branch isolation and import/save recovery; existing app handlers: opening, saved customization, guide progression/restart, failed-save messaging, exploration panel, decision layers, history/fork, refuge, relic discovery, power, institution, background pause, generated settlement/buildings/decision and rewind | LinkeDOM and native Canvas; no browser engine, CSS layout, real touch, accessibility audit, or device performance |
+| [Build report](../evidence/build-verification.json) | `/WorldWeaver/` HTTP path, 36 core precached responses, immutable release graph, separate main/comparison offline entries, HTTP-cache revalidation and cache-quota recovery | Worker evaluated in Node with a cache mock; actual browser offline reload and installation remain unverified |
 | [Causal report](../evidence/causal-scenarios.json) | Preserved alternate futures, changed motives, exact decision context, director stops, three automated save-reload sequences | Agent-produced deterministic evidence; no human participants or qualitative session claims |
 | [Courtyard render report](../evidence/courtyard-static-render-report.json) | Six reproducible frames: first visit, furnishings, companion, preview and restored spring | Native Canvas only; phone dimensions are not a real phone test |
 | [Render report](../evidence/static-render-report.json) and `evidence/*.webp` | 10 retained engine 1.0.0 frames from the production renderer, including three life forms and surviving power/infrastructure | Static Canvas renders; `render-phone` describes dimensions only. Timings are single hosted Node renders, not sustained FPS |
@@ -29,11 +29,16 @@ The first #8 example is verified locally with the counts above. Independent revi
 
 Static scene renderings and synthetic phone-sized input coordinates do not establish actual phone layout, touch behavior or enjoyment. The short uncoached visit in #8 remains open, alongside the broader release work below.
 
+## Optional Three.js comparison
+
+The separate [courtyard comparison](THREE_COURTYARD_TEST.md) projects the same saved activities into a JSON-defined 3D scene. Five GPU-independent tests verify bounded assets, shared geometry, saved-state projection, fetch lifecycle, ray picking and disposal. Two additional DOM cases verify renderer injection, reset, save guards and a fresh-canvas fallback after WebGL failure. The build keeps one immutable module graph per page and loads Three.js only on request. Actual WebGL appearance and controls still require the published browser walkthrough; no real-device performance result is claimed.
+
 ## Reproduce
 
-Core verification requires Node 22 or later and no dependency installation:
+Core verification requires Node 22 or later and the pinned Three.js dependency:
 
 ```sh
+npm ci --ignore-scripts
 npm run check
 npm test
 npm run examples
@@ -52,7 +57,7 @@ npm run verify:ui
 npm run render:evidence
 ```
 
-`verify:ui` also accepts `CANVAS_MODULE` pointing to `@napi-rs/canvas`; that backend was used for the courtyard integration run. The native binary must support the machine used to run it. These optional commands do not launch a browser. The runtime game remains dependency-free.
+`verify:ui` also accepts `CANVAS_MODULE` pointing to `@napi-rs/canvas`; that backend was used for the courtyard integration run. The native binary must support the machine used to run it. These optional commands do not launch a browser. The ordinary illustrated view has no runtime library payload; the optional comparison loads the pinned Three.js modules from the same site.
 
 ## Causal and attention examples
 

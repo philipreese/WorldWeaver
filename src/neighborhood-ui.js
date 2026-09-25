@@ -72,9 +72,18 @@ function pipeIcon(ports) {
 }
 
 export class NeighborhoodUI {
-  constructor(container, callbacks = {}) {
+  constructor(container, callbacks = {}, {
+    ViewClass = NeighborhoodView,
+    viewOptions = {},
+    comparisonEnabled = false,
+    rendererName = "Illustrated",
+  } = {}) {
     this.container = container;
     this.callbacks = callbacks;
+    this.comparisonEnabled = Boolean(comparisonEnabled);
+    this.rendererName = rendererName;
+    this.isThree = ViewClass !== NeighborhoodView;
+    this.rendererFallback = "";
     this.mode = "welcome";
     this.visible = false;
     this.busy = false;
@@ -120,6 +129,7 @@ export class NeighborhoodUI {
       <div class="nh-main">
         <div class="nh-stage">
           <canvas id="neighborhood-canvas" tabindex="0" aria-label="Hearth courtyard. Activities also have keyboard controls in the adjacent panel."></canvas>
+          <div class="nh-test-controls" hidden aria-label="Compare courtyard views"></div>
           <p class="nh-scene-tip" id="nh-scene-tip"></p>
         </div>
         <aside class="nh-tools" aria-label="Courtyard activity controls"><div class="nh-panel"></div></aside>
@@ -133,10 +143,26 @@ export class NeighborhoodUI {
     this.stageTip = container.querySelector(".nh-scene-tip");
     this.status = container.querySelector(".nh-status");
     this.saveWarning = container.querySelector(".nh-save-warning");
-    this.view = new NeighborhoodView(this.canvas, {
-      onSelect: (selection) => this._selectScene(selection),
-    });
+    const onSelect = (selection) => this._selectScene(selection);
+    try {
+      this.view = new ViewClass(this.canvas, { ...viewOptions, onSelect });
+    } catch (error) {
+      if (ViewClass === NeighborhoodView) throw error;
+      // A canvas that has acquired WebGL cannot later acquire a 2D context.
+      // A new DOM canvas also drops the failed view's canvas-bound handlers.
+      const cleanCanvas = this.canvas.cloneNode(false);
+      cleanCanvas.removeAttribute("style");
+      this.canvas.replaceWith(cleanCanvas);
+      this.canvas = cleanCanvas;
+      this.view = new NeighborhoodView(this.canvas, { onSelect });
+      this.isThree = false;
+      this.rendererName = "Illustrated fallback";
+      this.rendererFallback = "The 3D view couldn’t start here. The illustrated courtyard is ready to play.";
+      this.rendererError = error;
+      this.comparisonEnabled = true;
+    }
     this.view.setVisible(false);
+    this._renderComparison();
     this.handlers = {
       click: (event) => this._click(event),
       change: (event) => this._change(event),
@@ -170,6 +196,29 @@ export class NeighborhoodUI {
 
   isVisible() {
     return this.visible;
+  }
+
+  _renderComparison() {
+    const controls = this.container.querySelector(".nh-test-controls");
+    this.container.dataset.renderer = this.isThree ? "three" : "canvas";
+    controls.hidden = !this.comparisonEnabled;
+    if (!this.comparisonEnabled) return;
+    const location = this.container.ownerDocument?.defaultView?.location || globalThis.location;
+    const hrefFor = (renderer) => {
+      const url = new URL(location?.href || "https://worldweaver.invalid/");
+      url.searchParams.set("renderer", renderer);
+      return `${url.pathname}${url.search}${url.hash}`;
+    };
+    controls.innerHTML = `<div class="nh-test-row">
+      <span class="nh-test-label">${escape(this.rendererName)}</span>
+      <nav class="nh-test-links" aria-label="Courtyard picture style">
+        <a href="${escape(hrefFor("canvas"))}" data-nh-renderer="canvas" ${!this.isThree ? 'aria-current="page"' : ""}>Illustrated</a>
+        <a href="${escape(hrefFor("three"))}" data-nh-renderer="three" ${this.isThree ? 'aria-current="page"' : ""}>3D test</a>
+      </nav>
+      ${this.isThree ? '<button type="button" data-nh-action="reset-view">Reset view</button>' : ""}
+    </div>
+    ${this.isThree ? '<p class="nh-test-hint">Drag to turn · pinch or scroll to zoom. Tap to play.</p>' : ""}
+    ${this.rendererFallback ? `<p class="nh-test-fallback" role="status">${escape(this.rendererFallback)}</p>` : ""}`;
   }
 
   destroy() {
@@ -289,6 +338,12 @@ export class NeighborhoodUI {
 
   _click(event) {
     if (!this.visible) return;
+    const comparisonLink = event.target.closest?.("[data-nh-renderer]");
+    if (comparisonLink && this.container.contains(comparisonLink) && this.state.saveOk === false) {
+      event.preventDefault();
+      this._announce("Save or export this world before switching views, so your changes stay with you.", true);
+      return;
+    }
     const button = event.target.closest?.("button");
     if (!button || !this.container.contains(button) || button.disabled) return;
     if (button.dataset.nhMode) {
@@ -317,6 +372,9 @@ export class NeighborhoodUI {
     switch (button.dataset.nhAction) {
       case "home":
         this._setMode("welcome");
+        break;
+      case "reset-view":
+        if (this.isThree) this.view.resetCamera?.();
         break;
       case "exit":
         this.callbacks.onExit?.();

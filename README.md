@@ -2,21 +2,22 @@
 
 [**Play the browser preview**](https://philipreese.github.io/WorldWeaver/) · [Phone testing](docs/MOBILE_TESTING.md)
 
-A finite, explorable science-fiction world whose people make their own choices and leave a history you can inspect. Browser-first, statically served, no accounts, services, runtime AI, or paid dependencies.
+A finite, explorable science-fiction world whose people make their own choices and leave a history you can inspect. Browser-first, statically served, no accounts, services, runtime AI, or paid dependencies. An optional [3D courtyard comparison](docs/THREE_COURTYARD_TEST.md) uses a pinned local Three.js dependency.
 
 **The preview now combines its authored opening with reusable household, migration, and settlement rules. The required Tier 2 release remains incomplete: general personal and institutional situations, persistent deprivation, and device/playtesting work remain.** See [implementation status](docs/IMPLEMENTATION_STATUS.md) and [verification](docs/VERIFICATION.md). The [v0.4 brief](docs/worldweaver-build-prompt-v0.4.md) and [owner follow-ups](docs/PRODUCT_DIRECTION.md) define the current direction.
 
 ## Run locally
 
-Requires **Node.js 22 or later**. No dependency installation is needed.
+Requires **Node.js 22 or later**. Install the pinned rendering dependency before running the development or build scripts.
 
 ```sh
 git clone https://github.com/philipreese/WorldWeaver.git
 cd WorldWeaver
+npm ci --ignore-scripts
 npm run dev
 ```
 
-Open `http://localhost:4173`. `PORT=8080 npm run dev` selects another port on Unix; on PowerShell use `$env:PORT=8080; npm run dev`.
+Open `http://localhost:4173`, or `http://localhost:4173/lab/` for the optional 3D comparison. `PORT=8080 npm run dev` selects another port on Unix; on PowerShell use `$env:PORT=8080; npm run dev`.
 
 ```sh
 npm test          # simulation, history, director and recovery invariants
@@ -29,7 +30,7 @@ npm run audit:world -- --engine-version 2.0.0 --label local-v2
 
 Do not run dev and preview on the same port simultaneously. Preview also supports `http://localhost:4173/WorldWeaver/` for subpath checks. Serve the contents of `dist/` using any static web server. Opening `index.html` directly as a file is unsupported because the app uses JavaScript modules.
 
-Production builds generate a content-versioned service worker and relative asset paths. Installation and offline use require HTTPS or localhost, and a successfully completed first cache. Cloud sync is out of scope; export saves to transfer devices.
+Production builds generate an offline worker and an immutable, content-versioned module graph with relative asset paths. Installation and offline use require HTTPS or localhost, and a successfully completed first cache. Cloud sync is out of scope; export saves to transfer devices.
 
 ## Start playing
 

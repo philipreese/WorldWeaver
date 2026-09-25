@@ -1,7 +1,7 @@
 {
   "kind": "Node DOM + Canvas integration; not browser execution, layout, performance, touch or human playtesting.",
   "simulationVersion": "2.0.0",
-  "passed": 23,
+  "passed": 25,
   "cases": [
     "Tier 2 opening initializes paused on day 2 with saved development",
     "Courtyard furniture can be placed, turned, moved and put away using semantic controls",
@@ -25,6 +25,8 @@
     "Failed courtyard saving preserves the prior archive; recovery and successful import clear stale warnings without losing valid choices",
     "Problem report downloads a reproducible saved world and the player's note",
     "Background handler pauses and preserves exact world state",
-    "Observation grows a selectable settlement and buildings; its real decision is inspectable and rewinding hides the future place"
+    "Observation grows a selectable settlement and buildings; its real decision is inspectable and rewinding hides the future place",
+    "Renderer comparison injects scene assets, resets the camera, and blocks navigation while changes are unsaved",
+    "Unavailable 3D rendering creates a fresh Canvas2D element and explains the playable fallback"
   ]
 }

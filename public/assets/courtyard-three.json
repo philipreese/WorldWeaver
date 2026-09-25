@@ -1,0 +1,10331 @@
+{
+  "schemaVersion": 1,
+  "name": "Hearth courtyard — dusk diorama",
+  "materials": {
+    "earth": {
+      "color": "#4a554c",
+      "roughness": 1
+    },
+    "earthEdge": {
+      "color": "#69705a",
+      "roughness": 1
+    },
+    "grass": {
+      "color": "#839667",
+      "roughness": 1
+    },
+    "moss": {
+      "color": "#8e9a67",
+      "roughness": 1
+    },
+    "paver": {
+      "color": "#b4af90",
+      "roughness": 0.96
+    },
+    "paverLight": {
+      "color": "#c6bea0",
+      "roughness": 0.92
+    },
+    "paverShade": {
+      "color": "#a6a38c",
+      "roughness": 1
+    },
+    "stone": {
+      "color": "#a4aa91",
+      "roughness": 1
+    },
+    "stoneDark": {
+      "color": "#6a806e",
+      "roughness": 1
+    },
+    "stonePale": {
+      "color": "#b6bda2",
+      "roughness": 1
+    },
+    "plaster": {
+      "color": "#d7a574",
+      "roughness": 0.9
+    },
+    "plasterShade": {
+      "color": "#c3976e",
+      "roughness": 1
+    },
+    "wood": {
+      "color": "#76624c",
+      "roughness": 0.86
+    },
+    "woodLight": {
+      "color": "#b89c72",
+      "roughness": 0.87
+    },
+    "timber": {
+      "color": "#654f3e",
+      "roughness": 0.92
+    },
+    "trim": {
+      "color": "#679789",
+      "roughness": 0.75
+    },
+    "roof": {
+      "color": "#426e71",
+      "roughness": 0.88
+    },
+    "roofA": {
+      "color": "#64888a",
+      "roughness": 0.82
+    },
+    "roofB": {
+      "color": "#51777a",
+      "roughness": 0.89
+    },
+    "roofC": {
+      "color": "#7c9790",
+      "roughness": 0.87
+    },
+    "roofEdge": {
+      "color": "#dfbc88",
+      "roughness": 0.8
+    },
+    "glass": {
+      "color": "#f6cc83",
+      "emissive": "#ffc270",
+      "emissiveIntensity": 1.15,
+      "roughness": 0.43
+    },
+    "lamp": {
+      "color": "#ffe3a1",
+      "emissive": "#ffd18a",
+      "emissiveIntensity": 1.65,
+      "roughness": 0.4
+    },
+    "brass": {
+      "color": "#d0ae73",
+      "roughness": 0.43,
+      "metalness": 0.35
+    },
+    "leaf": {
+      "color": "#739b76",
+      "roughness": 1,
+      "flatShading": true
+    },
+    "leafLight": {
+      "color": "#9bb77e",
+      "roughness": 1,
+      "flatShading": true
+    },
+    "leafDark": {
+      "color": "#4b785f",
+      "roughness": 1,
+      "flatShading": true
+    },
+    "leafGold": {
+      "color": "#c1ba79",
+      "roughness": 1,
+      "flatShading": true
+    },
+    "bark": {
+      "color": "#696953",
+      "roughness": 1
+    },
+    "petalPink": {
+      "color": "#e8b6b4",
+      "roughness": 0.78
+    },
+    "petalCream": {
+      "color": "#f4dbaa",
+      "roughness": 0.8
+    },
+    "petalLilac": {
+      "color": "#b7aed3",
+      "roughness": 0.83
+    },
+    "pollen": {
+      "color": "#e5bd6c",
+      "roughness": 0.85
+    },
+    "terra": {
+      "color": "#bd8d72",
+      "roughness": 0.92
+    },
+    "fabricTeal": {
+      "color": "#82b3a4",
+      "roughness": 1
+    },
+    "fabricRose": {
+      "color": "#bf908e",
+      "roughness": 1
+    },
+    "fabricGold": {
+      "color": "#d2b27c",
+      "roughness": 1
+    },
+    "fabricCream": {
+      "color": "#e8d8ad",
+      "roughness": 1
+    },
+    "rug": {
+      "color": "#9f767e",
+      "roughness": 1
+    },
+    "petCoat": {
+      "color": "#dfa25c",
+      "roughness": 0.9
+    },
+    "petShade": {
+      "color": "#945339",
+      "roughness": 0.96
+    },
+    "petAccent": {
+      "color": "#ffe7ac",
+      "roughness": 0.87
+    },
+    "petInnerEar": {
+      "color": "#cc9193",
+      "roughness": 0.95
+    },
+    "petEye": {
+      "color": "#183b40",
+      "roughness": 0.2
+    },
+    "eyeShine": {
+      "color": "#fff9e1",
+      "emissive": "#cce7cb",
+      "emissiveIntensity": 0.18,
+      "roughness": 0.4
+    },
+    "glimmer": {
+      "color": "#e1efd0",
+      "emissive": "#d2efbb",
+      "emissiveIntensity": 1,
+      "roughness": 0.3
+    },
+    "water": {
+      "color": "#76b8b6",
+      "roughness": 0.28,
+      "metalness": 0.18,
+      "transparent": true,
+      "opacity": 0.9
+    },
+    "waterLight": {
+      "color": "#b5e2d0",
+      "emissive": "#94d8c7",
+      "emissiveIntensity": 0.15,
+      "roughness": 0.4
+    },
+    "channel": {
+      "color": "#526f67",
+      "roughness": 0.9
+    },
+    "river": {
+      "color": "#416875",
+      "roughness": 0.39,
+      "metalness": 0.18
+    },
+    "backdrop": {
+      "color": "#4c706b",
+      "roughness": 1
+    },
+    "moon": {
+      "color": "#dfdac0",
+      "emissive": "#d7d4b8",
+      "emissiveIntensity": 0.65,
+      "roughness": 1
+    },
+    "marker": {
+      "color": "#e4d3a0",
+      "emissive": "#e4c387",
+      "emissiveIntensity": 0.35,
+      "transparent": true,
+      "opacity": 0.75,
+      "roughness": 0.8
+    }
+  },
+  "models": {
+    "paver": {
+      "primitive": "box",
+      "material": "paver",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.59,
+        0.1,
+        0.58
+      ]
+    },
+    "paverLight": {
+      "primitive": "box",
+      "material": "paverLight",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.59,
+        0.1,
+        0.58
+      ]
+    },
+    "paverShade": {
+      "primitive": "box",
+      "material": "paverShade",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.59,
+        0.1,
+        0.58
+      ]
+    },
+    "rock": {
+      "primitive": "ico",
+      "material": "stone",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.55,
+        0.33,
+        0.42
+      ]
+    },
+    "mossrock": {
+      "children": [
+        {
+          "primitive": "ico",
+          "material": "stoneDark",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            0.5,
+            0.3,
+            0.39
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "moss",
+          "position": [
+            -0.07,
+            0.2,
+            0.0
+          ],
+          "scale": [
+            0.4,
+            0.13,
+            0.29
+          ]
+        }
+      ]
+    },
+    "flowerPink": {
+      "children": [
+        {
+          "primitive": "cylinder",
+          "material": "leafDark",
+          "position": [
+            0,
+            0.22,
+            0
+          ],
+          "scale": [
+            0.018,
+            0.44,
+            0.018
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "leaf",
+          "position": [
+            0.09,
+            0.2,
+            0
+          ],
+          "scale": [
+            0.13,
+            0.04,
+            0.055
+          ],
+          "rotation": [
+            0,
+            0,
+            30
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "leafLight",
+          "position": [
+            -0.08,
+            0.12,
+            0.03
+          ],
+          "scale": [
+            0.11,
+            0.03,
+            0.05
+          ],
+          "rotation": [
+            0,
+            0,
+            -30
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petalPink",
+          "position": [
+            0.09,
+            0.44,
+            0.0
+          ],
+          "scale": [
+            0.1,
+            0.045,
+            0.065
+          ],
+          "rotation": [
+            0,
+            0.0,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petalPink",
+          "position": [
+            0.0278,
+            0.44,
+            0.0856
+          ],
+          "scale": [
+            0.1,
+            0.045,
+            0.065
+          ],
+          "rotation": [
+            0,
+            -72.0,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petalPink",
+          "position": [
+            -0.0728,
+            0.44,
+            0.0529
+          ],
+          "scale": [
+            0.1,
+            0.045,
+            0.065
+          ],
+          "rotation": [
+            0,
+            -144.0,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petalPink",
+          "position": [
+            -0.0728,
+            0.44,
+            -0.0529
+          ],
+          "scale": [
+            0.1,
+            0.045,
+            0.065
+          ],
+          "rotation": [
+            0,
+            144.0,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petalPink",
+          "position": [
+            0.0278,
+            0.44,
+            -0.0856
+          ],
+          "scale": [
+            0.1,
+            0.045,
+            0.065
+          ],
+          "rotation": [
+            0,
+            72.0,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "pollen",
+          "position": [
+            0,
+            0.465,
+            0
+          ],
+          "scale": [
+            0.065,
+            0.035,
+            0.065
+          ]
+        }
+      ]
+    },
+    "flowerCream": {
+      "children": [
+        {
+          "primitive": "cylinder",
+          "material": "leafDark",
+          "position": [
+            0,
+            0.22,
+            0
+          ],
+          "scale": [
+            0.018,
+            0.44,
+            0.018
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "leaf",
+          "position": [
+            0.09,
+            0.2,
+            0
+          ],
+          "scale": [
+            0.13,
+            0.04,
+            0.055
+          ],
+          "rotation": [
+            0,
+            0,
+            30
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "leafLight",
+          "position": [
+            -0.08,
+            0.12,
+            0.03
+          ],
+          "scale": [
+            0.11,
+            0.03,
+            0.05
+          ],
+          "rotation": [
+            0,
+            0,
+            -30
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petalCream",
+          "position": [
+            0.09,
+            0.44,
+            0.0
+          ],
+          "scale": [
+            0.1,
+            0.045,
+            0.065
+          ],
+          "rotation": [
+            0,
+            0.0,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petalCream",
+          "position": [
+            0.0278,
+            0.44,
+            0.0856
+          ],
+          "scale": [
+            0.1,
+            0.045,
+            0.065
+          ],
+          "rotation": [
+            0,
+            -72.0,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petalCream",
+          "position": [
+            -0.0728,
+            0.44,
+            0.0529
+          ],
+          "scale": [
+            0.1,
+            0.045,
+            0.065
+          ],
+          "rotation": [
+            0,
+            -144.0,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petalCream",
+          "position": [
+            -0.0728,
+            0.44,
+            -0.0529
+          ],
+          "scale": [
+            0.1,
+            0.045,
+            0.065
+          ],
+          "rotation": [
+            0,
+            144.0,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petalCream",
+          "position": [
+            0.0278,
+            0.44,
+            -0.0856
+          ],
+          "scale": [
+            0.1,
+            0.045,
+            0.065
+          ],
+          "rotation": [
+            0,
+            72.0,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "pollen",
+          "position": [
+            0,
+            0.465,
+            0
+          ],
+          "scale": [
+            0.065,
+            0.035,
+            0.065
+          ]
+        }
+      ]
+    },
+    "flowerLilac": {
+      "children": [
+        {
+          "primitive": "cylinder",
+          "material": "leafDark",
+          "position": [
+            0,
+            0.22,
+            0
+          ],
+          "scale": [
+            0.018,
+            0.44,
+            0.018
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "leaf",
+          "position": [
+            0.09,
+            0.2,
+            0
+          ],
+          "scale": [
+            0.13,
+            0.04,
+            0.055
+          ],
+          "rotation": [
+            0,
+            0,
+            30
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "leafLight",
+          "position": [
+            -0.08,
+            0.12,
+            0.03
+          ],
+          "scale": [
+            0.11,
+            0.03,
+            0.05
+          ],
+          "rotation": [
+            0,
+            0,
+            -30
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petalLilac",
+          "position": [
+            0.09,
+            0.44,
+            0.0
+          ],
+          "scale": [
+            0.1,
+            0.045,
+            0.065
+          ],
+          "rotation": [
+            0,
+            0.0,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petalLilac",
+          "position": [
+            0.0278,
+            0.44,
+            0.0856
+          ],
+          "scale": [
+            0.1,
+            0.045,
+            0.065
+          ],
+          "rotation": [
+            0,
+            -72.0,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petalLilac",
+          "position": [
+            -0.0728,
+            0.44,
+            0.0529
+          ],
+          "scale": [
+            0.1,
+            0.045,
+            0.065
+          ],
+          "rotation": [
+            0,
+            -144.0,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petalLilac",
+          "position": [
+            -0.0728,
+            0.44,
+            -0.0529
+          ],
+          "scale": [
+            0.1,
+            0.045,
+            0.065
+          ],
+          "rotation": [
+            0,
+            144.0,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petalLilac",
+          "position": [
+            0.0278,
+            0.44,
+            -0.0856
+          ],
+          "scale": [
+            0.1,
+            0.045,
+            0.065
+          ],
+          "rotation": [
+            0,
+            72.0,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "pollen",
+          "position": [
+            0,
+            0.465,
+            0
+          ],
+          "scale": [
+            0.065,
+            0.035,
+            0.065
+          ]
+        }
+      ]
+    },
+    "grassTuft": {
+      "children": [
+        {
+          "primitive": "cone",
+          "material": "leaf",
+          "position": [
+            0.08,
+            0.18,
+            0.0
+          ],
+          "scale": [
+            0.065,
+            0.36,
+            0.045
+          ],
+          "rotation": [
+            0.0,
+            0,
+            23.0
+          ]
+        },
+        {
+          "primitive": "cone",
+          "material": "leaf",
+          "position": [
+            -0.059,
+            0.18,
+            0.054
+          ],
+          "scale": [
+            0.065,
+            0.36,
+            0.045
+          ],
+          "rotation": [
+            15.9879,
+            0,
+            12.427
+          ]
+        },
+        {
+          "primitive": "cone",
+          "material": "leaf",
+          "position": [
+            0.007,
+            0.18,
+            -0.0797
+          ],
+          "scale": [
+            0.065,
+            0.36,
+            0.045
+          ],
+          "rotation": [
+            17.2767,
+            0,
+            -9.5714
+          ]
+        },
+        {
+          "primitive": "cone",
+          "material": "leaf",
+          "position": [
+            0.0487,
+            0.18,
+            0.0635
+          ],
+          "scale": [
+            0.065,
+            0.36,
+            0.045
+          ],
+          "rotation": [
+            2.6813,
+            0,
+            -22.7698
+          ]
+        },
+        {
+          "primitive": "cone",
+          "material": "leaf",
+          "position": [
+            -0.0788,
+            0.18,
+            -0.0139
+          ],
+          "scale": [
+            0.065,
+            0.36,
+            0.045
+          ],
+          "rotation": [
+            -14.3792,
+            0,
+            -15.0338
+          ]
+        }
+      ]
+    },
+    "fern": {
+      "children": [
+        {
+          "primitive": "sphere",
+          "material": "leaf",
+          "position": [
+            0.24,
+            0.14,
+            0.0
+          ],
+          "scale": [
+            0.105,
+            0.035,
+            0.36
+          ],
+          "rotation": [
+            -22,
+            0.0,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "leafDark",
+          "position": [
+            0.1492,
+            0.14,
+            0.188
+          ],
+          "scale": [
+            0.105,
+            0.035,
+            0.36
+          ],
+          "rotation": [
+            -22,
+            51.5662,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "leaf",
+          "position": [
+            -0.0545,
+            0.14,
+            0.2337
+          ],
+          "scale": [
+            0.105,
+            0.035,
+            0.36
+          ],
+          "rotation": [
+            -22,
+            103.1324,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "leafDark",
+          "position": [
+            -0.217,
+            0.14,
+            0.1026
+          ],
+          "scale": [
+            0.105,
+            0.035,
+            0.36
+          ],
+          "rotation": [
+            -22,
+            154.6986,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "leaf",
+          "position": [
+            -0.2152,
+            0.14,
+            -0.1062
+          ],
+          "scale": [
+            0.105,
+            0.035,
+            0.36
+          ],
+          "rotation": [
+            -22,
+            -153.7352,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "leafDark",
+          "position": [
+            -0.0506,
+            0.14,
+            -0.2346
+          ],
+          "scale": [
+            0.105,
+            0.035,
+            0.36
+          ],
+          "rotation": [
+            -22,
+            -102.169,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "leaf",
+          "position": [
+            0.1523,
+            0.14,
+            -0.1855
+          ],
+          "scale": [
+            0.105,
+            0.035,
+            0.36
+          ],
+          "rotation": [
+            -22,
+            -50.6028,
+            0
+          ]
+        }
+      ]
+    },
+    "bush": {
+      "children": [
+        {
+          "primitive": "ico",
+          "material": "leafDark",
+          "position": [
+            0,
+            0.38,
+            0
+          ],
+          "scale": [
+            0.61,
+            0.47,
+            0.55
+          ]
+        },
+        {
+          "primitive": "ico",
+          "material": "leaf",
+          "position": [
+            -0.35,
+            0.25,
+            0.13
+          ],
+          "scale": [
+            0.39,
+            0.32,
+            0.37
+          ]
+        },
+        {
+          "primitive": "ico",
+          "material": "leafLight",
+          "position": [
+            0.38,
+            0.32,
+            0.1
+          ],
+          "scale": [
+            0.44,
+            0.37,
+            0.41
+          ]
+        },
+        {
+          "primitive": "ico",
+          "material": "leafDark",
+          "position": [
+            0.12,
+            0.65,
+            -0.07
+          ],
+          "scale": [
+            0.43,
+            0.34,
+            0.42
+          ]
+        }
+      ]
+    },
+    "tree": {
+      "children": [
+        {
+          "primitive": "cylinder",
+          "material": "bark",
+          "position": [
+            0,
+            1.45,
+            0
+          ],
+          "scale": [
+            0.16,
+            2.9,
+            0.17
+          ]
+        },
+        {
+          "primitive": "cylinder",
+          "material": "bark",
+          "position": [
+            -0.31,
+            2.23,
+            0
+          ],
+          "scale": [
+            0.09,
+            1.5,
+            0.09
+          ],
+          "rotation": [
+            0,
+            0,
+            32
+          ]
+        },
+        {
+          "primitive": "cylinder",
+          "material": "bark",
+          "position": [
+            0.4,
+            2.5,
+            0
+          ],
+          "scale": [
+            0.1,
+            1.3,
+            0.09
+          ],
+          "rotation": [
+            0,
+            0,
+            -42
+          ]
+        },
+        {
+          "primitive": "ico",
+          "material": "leaf",
+          "position": [
+            0,
+            3.1,
+            0
+          ],
+          "scale": [
+            1.16,
+            0.84,
+            1.0
+          ]
+        },
+        {
+          "primitive": "ico",
+          "material": "leafLight",
+          "position": [
+            -0.76,
+            2.8,
+            0.1
+          ],
+          "scale": [
+            0.8,
+            0.62,
+            0.78
+          ]
+        },
+        {
+          "primitive": "ico",
+          "material": "leafDark",
+          "position": [
+            0.83,
+            2.85,
+            0.1
+          ],
+          "scale": [
+            0.76,
+            0.74,
+            0.78
+          ]
+        },
+        {
+          "primitive": "ico",
+          "material": "leafGold",
+          "position": [
+            0.22,
+            3.67,
+            -0.15
+          ],
+          "scale": [
+            0.89,
+            0.6,
+            0.87
+          ]
+        },
+        {
+          "primitive": "ico",
+          "material": "leaf",
+          "position": [
+            -0.23,
+            3.4,
+            0.72
+          ],
+          "scale": [
+            0.78,
+            0.66,
+            0.61
+          ]
+        },
+        {
+          "primitive": "ico",
+          "material": "leafLight",
+          "position": [
+            0.57,
+            3.32,
+            -0.61
+          ],
+          "scale": [
+            0.68,
+            0.56,
+            0.65
+          ]
+        }
+      ]
+    },
+    "goldTree": {
+      "children": [
+        {
+          "model": "tree",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        }
+      ]
+    },
+    "lantern-head": {
+      "children": [
+        {
+          "primitive": "cylinder",
+          "material": "brass",
+          "position": [
+            0,
+            0.015,
+            0
+          ],
+          "scale": [
+            0.23,
+            0.1,
+            0.23
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "lamp",
+          "position": [
+            0,
+            0.29,
+            0
+          ],
+          "scale": [
+            0.3,
+            0.44,
+            0.3
+          ]
+        },
+        {
+          "primitive": "cone",
+          "material": "wood",
+          "position": [
+            0,
+            0.6,
+            0
+          ],
+          "scale": [
+            0.3,
+            0.22,
+            0.3
+          ]
+        },
+        {
+          "primitive": "cylinder",
+          "material": "brass",
+          "position": [
+            -0.18,
+            0.3,
+            -0.18
+          ],
+          "scale": [
+            0.02,
+            0.54,
+            0.02
+          ]
+        },
+        {
+          "primitive": "cylinder",
+          "material": "brass",
+          "position": [
+            -0.18,
+            0.3,
+            0.18
+          ],
+          "scale": [
+            0.02,
+            0.54,
+            0.02
+          ]
+        },
+        {
+          "primitive": "cylinder",
+          "material": "brass",
+          "position": [
+            0.18,
+            0.3,
+            -0.18
+          ],
+          "scale": [
+            0.02,
+            0.54,
+            0.02
+          ]
+        },
+        {
+          "primitive": "cylinder",
+          "material": "brass",
+          "position": [
+            0.18,
+            0.3,
+            0.18
+          ],
+          "scale": [
+            0.02,
+            0.54,
+            0.02
+          ]
+        }
+      ]
+    },
+    "lantern": {
+      "children": [
+        {
+          "primitive": "cylinder",
+          "material": "stone",
+          "position": [
+            0,
+            0.08,
+            0
+          ],
+          "scale": [
+            0.32,
+            0.16,
+            0.32
+          ]
+        },
+        {
+          "primitive": "cylinder",
+          "material": "wood",
+          "position": [
+            0,
+            0.92,
+            0
+          ],
+          "scale": [
+            0.065,
+            1.8,
+            0.065
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "wood",
+          "position": [
+            0.22,
+            1.78,
+            0
+          ],
+          "scale": [
+            0.5,
+            0.09,
+            0.09
+          ]
+        },
+        {
+          "model": "lantern-head",
+          "position": [
+            0.38,
+            1.0,
+            0
+          ],
+          "scale": [
+            0.78,
+            0.78,
+            0.78
+          ]
+        }
+      ]
+    },
+    "bench": {
+      "children": [
+        {
+          "primitive": "box",
+          "material": "wood",
+          "position": [
+            -0.6,
+            0.3,
+            -0.2
+          ],
+          "scale": [
+            0.11,
+            0.6,
+            0.11
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "wood",
+          "position": [
+            -0.6,
+            0.3,
+            0.2
+          ],
+          "scale": [
+            0.11,
+            0.6,
+            0.11
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "wood",
+          "position": [
+            0.6,
+            0.3,
+            -0.2
+          ],
+          "scale": [
+            0.11,
+            0.6,
+            0.11
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "wood",
+          "position": [
+            0.6,
+            0.3,
+            0.2
+          ],
+          "scale": [
+            0.11,
+            0.6,
+            0.11
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "woodLight",
+          "position": [
+            0,
+            0.64,
+            -0.24
+          ],
+          "scale": [
+            1.5,
+            0.1,
+            0.13
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "woodLight",
+          "position": [
+            0,
+            0.64,
+            -0.08
+          ],
+          "scale": [
+            1.5,
+            0.1,
+            0.13
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "woodLight",
+          "position": [
+            0,
+            0.64,
+            0.08
+          ],
+          "scale": [
+            1.5,
+            0.1,
+            0.13
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "woodLight",
+          "position": [
+            0,
+            0.64,
+            0.24
+          ],
+          "scale": [
+            1.5,
+            0.1,
+            0.13
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "trim",
+          "position": [
+            -0.63,
+            0.91,
+            -0.26
+          ],
+          "scale": [
+            0.08,
+            0.66,
+            0.08
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "trim",
+          "position": [
+            0.63,
+            0.91,
+            -0.26
+          ],
+          "scale": [
+            0.08,
+            0.66,
+            0.08
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "woodLight",
+          "position": [
+            0,
+            0.92,
+            -0.26
+          ],
+          "scale": [
+            1.43,
+            0.18,
+            0.08
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "woodLight",
+          "position": [
+            0,
+            1.16,
+            -0.26
+          ],
+          "scale": [
+            1.43,
+            0.18,
+            0.08
+          ]
+        }
+      ]
+    },
+    "planter": {
+      "children": [
+        {
+          "primitive": "box",
+          "material": "terra",
+          "position": [
+            0,
+            0.23,
+            0
+          ],
+          "scale": [
+            1.2,
+            0.45,
+            0.56
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "earth",
+          "position": [
+            0,
+            0.47,
+            0
+          ],
+          "scale": [
+            1.1,
+            0.05,
+            0.46
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "woodLight",
+          "position": [
+            0,
+            0.49,
+            0.285
+          ],
+          "scale": [
+            1.28,
+            0.1,
+            0.08
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "woodLight",
+          "position": [
+            0,
+            0.49,
+            -0.285
+          ],
+          "scale": [
+            1.28,
+            0.1,
+            0.08
+          ]
+        },
+        {
+          "model": "flowerPink",
+          "position": [
+            -0.45,
+            0.48,
+            -0.08
+          ],
+          "scale": [
+            0.75,
+            0.75,
+            0.75
+          ]
+        },
+        {
+          "model": "flowerCream",
+          "position": [
+            -0.3,
+            0.48,
+            0.04
+          ],
+          "scale": [
+            0.93,
+            0.93,
+            0.93
+          ]
+        },
+        {
+          "model": "flowerLilac",
+          "position": [
+            -0.15,
+            0.48,
+            -0.08
+          ],
+          "scale": [
+            0.75,
+            0.75,
+            0.75
+          ]
+        },
+        {
+          "model": "flowerPink",
+          "position": [
+            -0.0,
+            0.48,
+            0.04
+          ],
+          "scale": [
+            0.93,
+            0.93,
+            0.93
+          ]
+        },
+        {
+          "model": "flowerCream",
+          "position": [
+            0.15,
+            0.48,
+            -0.08
+          ],
+          "scale": [
+            0.75,
+            0.75,
+            0.75
+          ]
+        },
+        {
+          "model": "flowerLilac",
+          "position": [
+            0.3,
+            0.48,
+            0.04
+          ],
+          "scale": [
+            0.93,
+            0.93,
+            0.93
+          ]
+        },
+        {
+          "model": "flowerPink",
+          "position": [
+            0.45,
+            0.48,
+            -0.08
+          ],
+          "scale": [
+            0.75,
+            0.75,
+            0.75
+          ]
+        },
+        {
+          "model": "fern",
+          "position": [
+            -0.25,
+            0.48,
+            0
+          ],
+          "scale": [
+            0.66,
+            0.66,
+            0.66
+          ]
+        }
+      ]
+    },
+    "rug": {
+      "children": [
+        {
+          "primitive": "box",
+          "material": "rug",
+          "position": [
+            0,
+            0.035,
+            0
+          ],
+          "scale": [
+            1.72,
+            0.035,
+            1.02
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "fabricGold",
+          "position": [
+            0,
+            0.057,
+            0
+          ],
+          "scale": [
+            1.54,
+            0.012,
+            0.84
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "rug",
+          "position": [
+            0,
+            0.067,
+            0
+          ],
+          "scale": [
+            1.42,
+            0.012,
+            0.72
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "fabricCream",
+          "position": [
+            0,
+            0.079,
+            0
+          ],
+          "scale": [
+            0.62,
+            0.012,
+            0.49
+          ],
+          "rotation": [
+            0,
+            45,
+            0
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "fabricTeal",
+          "position": [
+            0,
+            0.09,
+            0
+          ],
+          "scale": [
+            0.33,
+            0.012,
+            0.26
+          ],
+          "rotation": [
+            0,
+            45,
+            0
+          ]
+        }
+      ]
+    },
+    "cushions": {
+      "children": [
+        {
+          "primitive": "sphere",
+          "material": "fabricTeal",
+          "position": [
+            -0.32,
+            0.15,
+            0.08
+          ],
+          "scale": [
+            0.42,
+            0.15,
+            0.37
+          ],
+          "rotation": [
+            0,
+            15,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "fabricGold",
+          "position": [
+            0.22,
+            0.17,
+            -0.14
+          ],
+          "scale": [
+            0.42,
+            0.15,
+            0.37
+          ],
+          "rotation": [
+            0,
+            -12,
+            0
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "fabricRose",
+          "position": [
+            0.2,
+            0.14,
+            0.33
+          ],
+          "scale": [
+            0.42,
+            0.15,
+            0.37
+          ],
+          "rotation": [
+            0,
+            18,
+            0
+          ]
+        }
+      ]
+    },
+    "birdbath": {
+      "children": [
+        {
+          "primitive": "cylinder",
+          "material": "stone",
+          "position": [
+            0,
+            0.08,
+            0
+          ],
+          "scale": [
+            0.43,
+            0.16,
+            0.43
+          ]
+        },
+        {
+          "primitive": "cylinder",
+          "material": "stonePale",
+          "position": [
+            0,
+            0.5,
+            0
+          ],
+          "scale": [
+            0.13,
+            0.88,
+            0.13
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "stone",
+          "position": [
+            0,
+            0.9,
+            0
+          ],
+          "scale": [
+            0.62,
+            0.17,
+            0.62
+          ]
+        },
+        {
+          "primitive": "cylinder",
+          "material": "water",
+          "position": [
+            0,
+            1.03,
+            0
+          ],
+          "scale": [
+            0.5,
+            0.022,
+            0.5
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "fabricCream",
+          "position": [
+            0.47,
+            1.14,
+            0.02
+          ],
+          "scale": [
+            0.15,
+            0.13,
+            0.23
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "stoneDark",
+          "position": [
+            0.47,
+            1.26,
+            0.17
+          ],
+          "scale": [
+            0.105,
+            0.105,
+            0.105
+          ]
+        },
+        {
+          "primitive": "cone",
+          "material": "brass",
+          "position": [
+            0.47,
+            1.25,
+            0.3
+          ],
+          "scale": [
+            0.05,
+            0.14,
+            0.05
+          ],
+          "rotation": [
+            90,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    "pet-bed": {
+      "children": [
+        {
+          "primitive": "sphere",
+          "material": "woodLight",
+          "position": [
+            0,
+            0.1,
+            0
+          ],
+          "scale": [
+            0.77,
+            0.19,
+            0.58
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "fabricTeal",
+          "position": [
+            0,
+            0.235,
+            0
+          ],
+          "scale": [
+            0.61,
+            0.075,
+            0.44
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "fabricCream",
+          "position": [
+            0,
+            0.301,
+            0
+          ],
+          "scale": [
+            0.11,
+            0.015,
+            0.1
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "fabricCream",
+          "position": [
+            -0.1,
+            0.308,
+            -0.15
+          ],
+          "scale": [
+            0.044,
+            0.012,
+            0.045
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "fabricCream",
+          "position": [
+            0,
+            0.308,
+            -0.15
+          ],
+          "scale": [
+            0.044,
+            0.012,
+            0.045
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "fabricCream",
+          "position": [
+            0.1,
+            0.308,
+            -0.15
+          ],
+          "scale": [
+            0.044,
+            0.012,
+            0.045
+          ]
+        }
+      ]
+    },
+    "wind-chime": {
+      "children": [
+        {
+          "primitive": "cylinder",
+          "material": "stone",
+          "position": [
+            0,
+            0.06,
+            0
+          ],
+          "scale": [
+            0.31,
+            0.12,
+            0.31
+          ]
+        },
+        {
+          "primitive": "cylinder",
+          "material": "wood",
+          "position": [
+            0,
+            1.05,
+            0
+          ],
+          "scale": [
+            0.047,
+            2.05,
+            0.047
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "wood",
+          "position": [
+            0.27,
+            2.04,
+            0
+          ],
+          "scale": [
+            0.6,
+            0.055,
+            0.055
+          ]
+        },
+        {
+          "primitive": "cylinder",
+          "material": "brass",
+          "position": [
+            0.48,
+            1.85,
+            0
+          ],
+          "scale": [
+            0.31,
+            0.07,
+            0.31
+          ]
+        },
+        {
+          "primitive": "cylinder",
+          "material": "brass",
+          "position": [
+            0.25,
+            1.56,
+            0
+          ],
+          "scale": [
+            0.023,
+            0.37,
+            0.023
+          ]
+        },
+        {
+          "primitive": "cylinder",
+          "material": "fabricTeal",
+          "position": [
+            0.37,
+            1.5,
+            0
+          ],
+          "scale": [
+            0.023,
+            0.5,
+            0.023
+          ]
+        },
+        {
+          "primitive": "cylinder",
+          "material": "brass",
+          "position": [
+            0.49,
+            1.44,
+            0
+          ],
+          "scale": [
+            0.023,
+            0.63,
+            0.023
+          ]
+        },
+        {
+          "primitive": "cylinder",
+          "material": "fabricTeal",
+          "position": [
+            0.61,
+            1.56,
+            0
+          ],
+          "scale": [
+            0.023,
+            0.37,
+            0.023
+          ]
+        },
+        {
+          "primitive": "cylinder",
+          "material": "brass",
+          "position": [
+            0.73,
+            1.5,
+            0
+          ],
+          "scale": [
+            0.023,
+            0.5,
+            0.023
+          ]
+        }
+      ]
+    },
+    "house": {
+      "children": [
+        {
+          "primitive": "box",
+          "material": "stoneDark",
+          "position": [
+            0,
+            0.2,
+            0
+          ],
+          "scale": [
+            4.6,
+            0.4,
+            3.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "plaster",
+          "position": [
+            0,
+            1.91,
+            0
+          ],
+          "scale": [
+            4.28,
+            3.36,
+            3.5
+          ]
+        },
+        {
+          "primitive": "gable",
+          "material": "roofEdge",
+          "position": [
+            0,
+            3.59,
+            0
+          ],
+          "scale": [
+            5.34,
+            1.91,
+            4.36
+          ]
+        },
+        {
+          "primitive": "gable",
+          "material": "roof",
+          "position": [
+            0,
+            3.64,
+            0
+          ],
+          "scale": [
+            5.24,
+            1.89,
+            4.3
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "timber",
+          "position": [
+            -2.15,
+            1.96,
+            0
+          ],
+          "scale": [
+            0.14,
+            3.5,
+            3.64
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "timber",
+          "position": [
+            2.15,
+            1.96,
+            0
+          ],
+          "scale": [
+            0.14,
+            3.5,
+            3.64
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "woodLight",
+          "position": [
+            0,
+            0.51,
+            -1.78
+          ],
+          "scale": [
+            4.4,
+            0.15,
+            0.12
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "woodLight",
+          "position": [
+            0,
+            3.45,
+            -1.78
+          ],
+          "scale": [
+            4.4,
+            0.15,
+            0.12
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "timber",
+          "position": [
+            -2.08,
+            1.93,
+            -1.78
+          ],
+          "scale": [
+            0.13,
+            3.18,
+            0.12
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "timber",
+          "position": [
+            -0.65,
+            1.93,
+            -1.78
+          ],
+          "scale": [
+            0.13,
+            3.18,
+            0.12
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "timber",
+          "position": [
+            2.08,
+            1.93,
+            -1.78
+          ],
+          "scale": [
+            0.13,
+            3.18,
+            0.12
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "woodLight",
+          "position": [
+            0,
+            0.51,
+            1.78
+          ],
+          "scale": [
+            4.4,
+            0.15,
+            0.12
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "woodLight",
+          "position": [
+            0,
+            3.45,
+            1.78
+          ],
+          "scale": [
+            4.4,
+            0.15,
+            0.12
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "timber",
+          "position": [
+            -2.08,
+            1.93,
+            1.78
+          ],
+          "scale": [
+            0.13,
+            3.18,
+            0.12
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "timber",
+          "position": [
+            -0.65,
+            1.93,
+            1.78
+          ],
+          "scale": [
+            0.13,
+            3.18,
+            0.12
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "timber",
+          "position": [
+            2.08,
+            1.93,
+            1.78
+          ],
+          "scale": [
+            0.13,
+            3.18,
+            0.12
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "stonePale",
+          "position": [
+            -0.77,
+            0.31,
+            2.05
+          ],
+          "scale": [
+            1.7,
+            0.24,
+            0.73
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "stone",
+          "position": [
+            -0.77,
+            0.13,
+            2.41
+          ],
+          "scale": [
+            1.92,
+            0.15,
+            0.65
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "wood",
+          "position": [
+            -0.78,
+            1.36,
+            1.81
+          ],
+          "scale": [
+            1.24,
+            2.09,
+            0.1
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "trim",
+          "position": [
+            -0.78,
+            1.26,
+            1.89
+          ],
+          "scale": [
+            1.05,
+            1.76,
+            0.1
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "trim",
+          "position": [
+            -0.78,
+            2.08,
+            1.89
+          ],
+          "scale": [
+            0.525,
+            0.47,
+            0.052
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "glass",
+          "position": [
+            -0.78,
+            2.05,
+            1.953
+          ],
+          "scale": [
+            0.35,
+            0.31,
+            0.025
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "woodLight",
+          "position": [
+            -0.78,
+            2.05,
+            1.989
+          ],
+          "scale": [
+            0.035,
+            0.59,
+            0.03
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "brass",
+          "position": [
+            -0.39,
+            1.14,
+            1.98
+          ],
+          "scale": [
+            0.065,
+            0.065,
+            0.065
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "wood",
+          "position": [
+            2.18,
+            2.12,
+            -0.55
+          ],
+          "scale": [
+            0.12,
+            1.48,
+            1.13
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "glass",
+          "position": [
+            2.25,
+            2.12,
+            -0.55
+          ],
+          "scale": [
+            0.04,
+            1.22,
+            0.91
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "woodLight",
+          "position": [
+            2.28,
+            2.12,
+            -0.55
+          ],
+          "scale": [
+            0.05,
+            1.26,
+            0.055
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "woodLight",
+          "position": [
+            2.28,
+            2.1,
+            -0.55
+          ],
+          "scale": [
+            0.05,
+            0.06,
+            0.98
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "wood",
+          "position": [
+            2.18,
+            2.12,
+            0.7
+          ],
+          "scale": [
+            0.12,
+            1.48,
+            1.13
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "glass",
+          "position": [
+            2.25,
+            2.12,
+            0.7
+          ],
+          "scale": [
+            0.04,
+            1.22,
+            0.91
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "woodLight",
+          "position": [
+            2.28,
+            2.12,
+            0.7
+          ],
+          "scale": [
+            0.05,
+            1.26,
+            0.055
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "woodLight",
+          "position": [
+            2.28,
+            2.1,
+            0.7
+          ],
+          "scale": [
+            0.05,
+            0.06,
+            0.98
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "wood",
+          "position": [
+            0.9,
+            2.08,
+            1.84
+          ],
+          "scale": [
+            1.17,
+            1.38,
+            0.12
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "glass",
+          "position": [
+            0.9,
+            2.08,
+            1.92
+          ],
+          "scale": [
+            0.97,
+            1.18,
+            0.04
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "woodLight",
+          "position": [
+            0.9,
+            2.08,
+            1.955
+          ],
+          "scale": [
+            0.055,
+            1.18,
+            0.04
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "woodLight",
+          "position": [
+            0.9,
+            2.08,
+            1.955
+          ],
+          "scale": [
+            1,
+            0.065,
+            0.05
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "trim",
+          "position": [
+            0.9,
+            1.32,
+            2
+          ],
+          "scale": [
+            1.32,
+            0.24,
+            0.38
+          ]
+        },
+        {
+          "model": "flowerCream",
+          "position": [
+            0.39,
+            1.44,
+            2.04
+          ],
+          "scale": [
+            0.62,
+            0.62,
+            0.62
+          ]
+        },
+        {
+          "model": "flowerPink",
+          "position": [
+            0.58,
+            1.44,
+            2.04
+          ],
+          "scale": [
+            0.62,
+            0.62,
+            0.62
+          ]
+        },
+        {
+          "model": "flowerCream",
+          "position": [
+            0.77,
+            1.44,
+            2.04
+          ],
+          "scale": [
+            0.62,
+            0.62,
+            0.62
+          ]
+        },
+        {
+          "model": "flowerPink",
+          "position": [
+            0.96,
+            1.44,
+            2.04
+          ],
+          "scale": [
+            0.62,
+            0.62,
+            0.62
+          ]
+        },
+        {
+          "model": "flowerCream",
+          "position": [
+            1.15,
+            1.44,
+            2.04
+          ],
+          "scale": [
+            0.62,
+            0.62,
+            0.62
+          ]
+        },
+        {
+          "model": "flowerPink",
+          "position": [
+            1.34,
+            1.44,
+            2.04
+          ],
+          "scale": [
+            0.62,
+            0.62,
+            0.62
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            -0.27,
+            5.3553,
+            -1.86
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            -0.27,
+            5.3553,
+            -1.33
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            -0.27,
+            5.3553,
+            -0.8
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            -0.27,
+            5.3553,
+            -0.27
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            -0.27,
+            5.3553,
+            0.26
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            -0.27,
+            5.3553,
+            0.79
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            -0.27,
+            5.3553,
+            1.32
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            -0.27,
+            5.3553,
+            1.85
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            -0.78,
+            4.9876,
+            -1.86
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            -0.78,
+            4.9876,
+            -1.33
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            -0.78,
+            4.9876,
+            -0.8
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            -0.78,
+            4.9876,
+            -0.27
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            -0.78,
+            4.9876,
+            0.26
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            -0.78,
+            4.9876,
+            0.79
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            -0.78,
+            4.9876,
+            1.32
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            -0.78,
+            4.9876,
+            1.85
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            -1.29,
+            4.6199,
+            -1.86
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            -1.29,
+            4.6199,
+            -1.33
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            -1.29,
+            4.6199,
+            -0.8
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            -1.29,
+            4.6199,
+            -0.27
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            -1.29,
+            4.6199,
+            0.26
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            -1.29,
+            4.6199,
+            0.79
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            -1.29,
+            4.6199,
+            1.32
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            -1.29,
+            4.6199,
+            1.85
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            -1.8,
+            4.2522,
+            -1.86
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            -1.8,
+            4.2522,
+            -1.33
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            -1.8,
+            4.2522,
+            -0.8
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            -1.8,
+            4.2522,
+            -0.27
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            -1.8,
+            4.2522,
+            0.26
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            -1.8,
+            4.2522,
+            0.79
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            -1.8,
+            4.2522,
+            1.32
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            -1.8,
+            4.2522,
+            1.85
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            -2.31,
+            3.8845,
+            -1.86
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            -2.31,
+            3.8845,
+            -1.33
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            -2.31,
+            3.8845,
+            -0.8
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            -2.31,
+            3.8845,
+            -0.27
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            -2.31,
+            3.8845,
+            0.26
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            -2.31,
+            3.8845,
+            0.79
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            -2.31,
+            3.8845,
+            1.32
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            -2.31,
+            3.8845,
+            1.85
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            0.27,
+            5.3553,
+            -1.86
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            0.27,
+            5.3553,
+            -1.33
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            0.27,
+            5.3553,
+            -0.8
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            0.27,
+            5.3553,
+            -0.27
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            0.27,
+            5.3553,
+            0.26
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            0.27,
+            5.3553,
+            0.79
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            0.27,
+            5.3553,
+            1.32
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            0.27,
+            5.3553,
+            1.85
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            0.78,
+            4.9876,
+            -1.86
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            0.78,
+            4.9876,
+            -1.33
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            0.78,
+            4.9876,
+            -0.8
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            0.78,
+            4.9876,
+            -0.27
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            0.78,
+            4.9876,
+            0.26
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            0.78,
+            4.9876,
+            0.79
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            0.78,
+            4.9876,
+            1.32
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            0.78,
+            4.9876,
+            1.85
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            1.29,
+            4.6199,
+            -1.86
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            1.29,
+            4.6199,
+            -1.33
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            1.29,
+            4.6199,
+            -0.8
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            1.29,
+            4.6199,
+            -0.27
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            1.29,
+            4.6199,
+            0.26
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            1.29,
+            4.6199,
+            0.79
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            1.29,
+            4.6199,
+            1.32
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            1.29,
+            4.6199,
+            1.85
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            1.8,
+            4.2522,
+            -1.86
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            1.8,
+            4.2522,
+            -1.33
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            1.8,
+            4.2522,
+            -0.8
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            1.8,
+            4.2522,
+            -0.27
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            1.8,
+            4.2522,
+            0.26
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            1.8,
+            4.2522,
+            0.79
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            1.8,
+            4.2522,
+            1.32
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            1.8,
+            4.2522,
+            1.85
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            2.31,
+            3.8845,
+            -1.86
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            2.31,
+            3.8845,
+            -1.33
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            2.31,
+            3.8845,
+            -0.8
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            2.31,
+            3.8845,
+            -0.27
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            2.31,
+            3.8845,
+            0.26
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofC",
+          "position": [
+            2.31,
+            3.8845,
+            0.79
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofB",
+          "position": [
+            2.31,
+            3.8845,
+            1.32
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "roofA",
+          "position": [
+            2.31,
+            3.8845,
+            1.85
+          ],
+          "scale": [
+            0.62,
+            0.067,
+            0.51
+          ],
+          "rotation": [
+            0,
+            0,
+            -35.9
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "stone",
+          "position": [
+            0.9,
+            5.0,
+            -0.95
+          ],
+          "scale": [
+            0.59,
+            1.7,
+            0.59
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "stonePale",
+          "position": [
+            0.9,
+            5.86,
+            -0.95
+          ],
+          "scale": [
+            0.73,
+            0.18,
+            0.73
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "earth",
+          "position": [
+            0.9,
+            5.96,
+            -0.95
+          ],
+          "scale": [
+            0.43,
+            0.025,
+            0.43
+          ]
+        },
+        {
+          "model": "lantern-head",
+          "position": [
+            -1.79,
+            1.55,
+            2.04
+          ],
+          "scale": [
+            0.62,
+            0.62,
+            0.62
+          ]
+        },
+        {
+          "model": "fern",
+          "position": [
+            -2.3,
+            0.35,
+            1.57
+          ],
+          "scale": [
+            0.39,
+            0.39,
+            0.39
+          ],
+          "rotation": [
+            0,
+            0,
+            70
+          ]
+        },
+        {
+          "model": "fern",
+          "position": [
+            -2.2579,
+            0.67,
+            1.57
+          ],
+          "scale": [
+            0.39,
+            0.39,
+            0.39
+          ],
+          "rotation": [
+            0,
+            42,
+            70
+          ]
+        },
+        {
+          "model": "fern",
+          "position": [
+            -2.2545,
+            0.99,
+            1.57
+          ],
+          "scale": [
+            0.39,
+            0.39,
+            0.39
+          ],
+          "rotation": [
+            0,
+            84,
+            70
+          ]
+        },
+        {
+          "model": "fern",
+          "position": [
+            -2.2929,
+            1.31,
+            1.57
+          ],
+          "scale": [
+            0.39,
+            0.39,
+            0.39
+          ],
+          "rotation": [
+            0,
+            126,
+            70
+          ]
+        },
+        {
+          "model": "fern",
+          "position": [
+            -2.3378,
+            1.63,
+            1.57
+          ],
+          "scale": [
+            0.39,
+            0.39,
+            0.39
+          ],
+          "rotation": [
+            0,
+            168,
+            70
+          ]
+        },
+        {
+          "model": "fern",
+          "position": [
+            -2.3479,
+            1.95,
+            1.57
+          ],
+          "scale": [
+            0.39,
+            0.39,
+            0.39
+          ],
+          "rotation": [
+            0,
+            -150,
+            70
+          ]
+        },
+        {
+          "model": "fern",
+          "position": [
+            -2.314,
+            2.27,
+            1.57
+          ],
+          "scale": [
+            0.39,
+            0.39,
+            0.39
+          ],
+          "rotation": [
+            0,
+            -108,
+            70
+          ]
+        },
+        {
+          "model": "fern",
+          "position": [
+            -2.2672,
+            2.59,
+            1.57
+          ],
+          "scale": [
+            0.39,
+            0.39,
+            0.39
+          ],
+          "rotation": [
+            0,
+            -66,
+            70
+          ]
+        }
+      ]
+    },
+    "ruined-arch": {
+      "children": [
+        {
+          "primitive": "box",
+          "material": "stoneDark",
+          "position": [
+            -1.6,
+            1.8,
+            0
+          ],
+          "scale": [
+            0.62,
+            3.6,
+            0.75
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "stone",
+          "position": [
+            1.6,
+            1.45,
+            0
+          ],
+          "scale": [
+            0.62,
+            2.9,
+            0.75
+          ]
+        },
+        {
+          "primitive": "arch",
+          "material": "stoneDark",
+          "position": [
+            0,
+            3.56,
+            0
+          ],
+          "scale": [
+            1.6,
+            1.6,
+            1.8
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "moss",
+          "position": [
+            -1.6,
+            3.66,
+            0
+          ],
+          "scale": [
+            0.7,
+            0.16,
+            0.84
+          ]
+        },
+        {
+          "primitive": "box",
+          "material": "stonePale",
+          "position": [
+            1.65,
+            2.96,
+            0
+          ],
+          "scale": [
+            0.7,
+            0.15,
+            0.84
+          ]
+        }
+      ]
+    },
+    "spring-rocks": {
+      "children": [
+        {
+          "primitive": "ico",
+          "material": "stoneDark",
+          "position": [
+            -0.7,
+            0.8,
+            0
+          ],
+          "scale": [
+            0.65,
+            1.1,
+            0.55
+          ]
+        },
+        {
+          "primitive": "ico",
+          "material": "stone",
+          "position": [
+            0,
+            1.05,
+            -0.1
+          ],
+          "scale": [
+            0.65,
+            1.45,
+            0.6
+          ]
+        },
+        {
+          "primitive": "ico",
+          "material": "stonePale",
+          "position": [
+            0.62,
+            0.59,
+            0.02
+          ],
+          "scale": [
+            0.58,
+            0.81,
+            0.47
+          ]
+        },
+        {
+          "model": "fern",
+          "position": [
+            -0.68,
+            0,
+            0.71
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "model": "flowerLilac",
+          "position": [
+            0.59,
+            0.29,
+            0.52
+          ],
+          "scale": [
+            0.9,
+            0.9,
+            0.9
+          ]
+        }
+      ]
+    },
+    "glimmerfox": {
+      "children": [
+        {
+          "primitive": "sphere",
+          "material": "petCoat",
+          "position": [
+            0,
+            0.6,
+            0
+          ],
+          "scale": [
+            0.51,
+            0.38,
+            0.66
+          ],
+          "name": "pet-body"
+        },
+        {
+          "primitive": "sphere",
+          "material": "petCoat",
+          "position": [
+            0,
+            1.08,
+            0.57
+          ],
+          "scale": [
+            0.49,
+            0.45,
+            0.41
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petAccent",
+          "position": [
+            0,
+            0.91,
+            0.83
+          ],
+          "scale": [
+            0.32,
+            0.22,
+            0.16
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petAccent",
+          "position": [
+            -0.23,
+            1.05,
+            0.8
+          ],
+          "scale": [
+            0.2,
+            0.19,
+            0.13
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petAccent",
+          "position": [
+            0.23,
+            1.05,
+            0.8
+          ],
+          "scale": [
+            0.2,
+            0.19,
+            0.13
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petEye",
+          "position": [
+            0,
+            1.0,
+            0.987
+          ],
+          "scale": [
+            0.069,
+            0.054,
+            0.049
+          ]
+        },
+        {
+          "primitive": "cone",
+          "material": "petCoat",
+          "position": [
+            -0.32,
+            1.61,
+            0.51
+          ],
+          "scale": [
+            0.25,
+            0.59,
+            0.19
+          ],
+          "rotation": [
+            0,
+            0,
+            13
+          ],
+          "args": [
+            1,
+            1,
+            3
+          ]
+        },
+        {
+          "primitive": "cone",
+          "material": "petInnerEar",
+          "position": [
+            -0.32,
+            1.62,
+            0.61
+          ],
+          "scale": [
+            0.14,
+            0.38,
+            0.036
+          ],
+          "rotation": [
+            0,
+            0,
+            13
+          ],
+          "args": [
+            1,
+            1,
+            3
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petEye",
+          "position": [
+            -0.19,
+            1.2,
+            0.909
+          ],
+          "scale": [
+            0.071,
+            0.095,
+            0.045
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "eyeShine",
+          "position": [
+            -0.205,
+            1.231,
+            0.948
+          ],
+          "scale": [
+            0.025,
+            0.03,
+            0.012
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petShade",
+          "position": [
+            -0.2,
+            1.35,
+            0.866
+          ],
+          "scale": [
+            0.1,
+            0.023,
+            0.035
+          ],
+          "rotation": [
+            0,
+            0,
+            -10
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petShade",
+          "position": [
+            -0.28,
+            0.27,
+            -0.38
+          ],
+          "scale": [
+            0.13,
+            0.3,
+            0.15
+          ],
+          "name": "pet-leg--1--0.38"
+        },
+        {
+          "primitive": "sphere",
+          "material": "petAccent",
+          "position": [
+            -0.28,
+            0.075,
+            -0.36
+          ],
+          "scale": [
+            0.17,
+            0.075,
+            0.21
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petShade",
+          "position": [
+            -0.28,
+            0.27,
+            0.37
+          ],
+          "scale": [
+            0.13,
+            0.3,
+            0.15
+          ],
+          "name": "pet-leg--1-0.37"
+        },
+        {
+          "primitive": "sphere",
+          "material": "petAccent",
+          "position": [
+            -0.28,
+            0.075,
+            0.39
+          ],
+          "scale": [
+            0.17,
+            0.075,
+            0.21
+          ]
+        },
+        {
+          "primitive": "cone",
+          "material": "petCoat",
+          "position": [
+            0.32,
+            1.61,
+            0.51
+          ],
+          "scale": [
+            0.25,
+            0.59,
+            0.19
+          ],
+          "rotation": [
+            0,
+            0,
+            -13
+          ],
+          "args": [
+            1,
+            1,
+            3
+          ]
+        },
+        {
+          "primitive": "cone",
+          "material": "petInnerEar",
+          "position": [
+            0.32,
+            1.62,
+            0.61
+          ],
+          "scale": [
+            0.14,
+            0.38,
+            0.036
+          ],
+          "rotation": [
+            0,
+            0,
+            -13
+          ],
+          "args": [
+            1,
+            1,
+            3
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petEye",
+          "position": [
+            0.19,
+            1.2,
+            0.909
+          ],
+          "scale": [
+            0.071,
+            0.095,
+            0.045
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "eyeShine",
+          "position": [
+            0.175,
+            1.231,
+            0.948
+          ],
+          "scale": [
+            0.025,
+            0.03,
+            0.012
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petShade",
+          "position": [
+            0.2,
+            1.35,
+            0.866
+          ],
+          "scale": [
+            0.1,
+            0.023,
+            0.035
+          ],
+          "rotation": [
+            0,
+            0,
+            10
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petShade",
+          "position": [
+            0.28,
+            0.27,
+            -0.38
+          ],
+          "scale": [
+            0.13,
+            0.3,
+            0.15
+          ],
+          "name": "pet-leg-1--0.38"
+        },
+        {
+          "primitive": "sphere",
+          "material": "petAccent",
+          "position": [
+            0.28,
+            0.075,
+            -0.36
+          ],
+          "scale": [
+            0.17,
+            0.075,
+            0.21
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "petShade",
+          "position": [
+            0.28,
+            0.27,
+            0.37
+          ],
+          "scale": [
+            0.13,
+            0.3,
+            0.15
+          ],
+          "name": "pet-leg-1-0.37"
+        },
+        {
+          "primitive": "sphere",
+          "material": "petAccent",
+          "position": [
+            0.28,
+            0.075,
+            0.39
+          ],
+          "scale": [
+            0.17,
+            0.075,
+            0.21
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "glimmer",
+          "position": [
+            -0.1,
+            1.44,
+            0.784
+          ],
+          "scale": [
+            0.032,
+            0.044,
+            0.021
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "glimmer",
+          "position": [
+            0,
+            1.47,
+            0.784
+          ],
+          "scale": [
+            0.032,
+            0.044,
+            0.021
+          ]
+        },
+        {
+          "primitive": "sphere",
+          "material": "glimmer",
+          "position": [
+            0.1,
+            1.44,
+            0.784
+          ],
+          "scale": [
+            0.032,
+            0.044,
+            0.021
+          ]
+        },
+        {
+          "children": [
+            {
+              "primitive": "sphere",
+              "material": "petShade",
+              "position": [
+                -0.08,
+                0.23,
+                -0.15
+              ],
+              "scale": [
+                0.28,
+                0.48,
+                0.3
+              ],
+              "rotation": [
+                -35,
+                0,
+                10
+              ]
+            },
+            {
+              "primitive": "sphere",
+              "material": "petAccent",
+              "position": [
+                -0.12,
+                0.58,
+                -0.38
+              ],
+              "scale": [
+                0.245,
+                0.25,
+                0.25
+              ]
+            }
+          ],
+          "name": "pet-tail",
+          "position": [
+            -0.17,
+            0.5,
+            -0.55
+          ]
+        },
+        {
+          "children": [
+            {
+              "primitive": "torus",
+              "material": "fabricTeal",
+              "position": [
+                0,
+                0.78,
+                0.5
+              ],
+              "scale": [
+                0.4,
+                0.4,
+                0.4
+              ],
+              "rotation": [
+                90,
+                0,
+                0
+              ],
+              "args": [
+                1,
+                0.2,
+                5,
+                12
+              ]
+            },
+            {
+              "primitive": "box",
+              "material": "fabricTeal",
+              "position": [
+                -0.24,
+                0.59,
+                0.66
+              ],
+              "scale": [
+                0.2,
+                0.53,
+                0.1
+              ],
+              "rotation": [
+                0,
+                0,
+                -12
+              ]
+            }
+          ],
+          "name": "pet-scarf"
+        },
+        {
+          "children": [
+            {
+              "primitive": "cone",
+              "material": "fabricRose",
+              "position": [
+                -0.25,
+                0.87,
+                0.68
+              ],
+              "scale": [
+                0.14,
+                0.28,
+                0.11
+              ],
+              "rotation": [
+                0,
+                0,
+                -90
+              ]
+            },
+            {
+              "primitive": "cone",
+              "material": "fabricRose",
+              "position": [
+                0.01,
+                0.87,
+                0.68
+              ],
+              "scale": [
+                0.14,
+                0.28,
+                0.11
+              ],
+              "rotation": [
+                0,
+                0,
+                90
+              ]
+            },
+            {
+              "primitive": "sphere",
+              "material": "fabricGold",
+              "position": [
+                -0.12,
+                0.87,
+                0.7
+              ],
+              "scale": [
+                0.08,
+                0.075,
+                0.045
+              ]
+            }
+          ],
+          "name": "pet-bow"
+        },
+        {
+          "children": [
+            {
+              "model": "flowerCream",
+              "position": [
+                0.39,
+                1.14,
+                0.71
+              ],
+              "scale": [
+                0.78,
+                0.78,
+                0.78
+              ],
+              "rotation": [
+                90,
+                0,
+                0
+              ]
+            }
+          ],
+          "name": "pet-flower"
+        },
+        {
+          "primitive": "sphere",
+          "material": "fabricRose",
+          "position": [
+            0,
+            0.89,
+            1.04
+          ],
+          "scale": [
+            0.13,
+            0.13,
+            0.13
+          ],
+          "name": "pet-toy"
+        }
+      ]
+    }
+  },
+  "placements": [
+    {
+      "model": "house",
+      "position": [
+        -3.4,
+        0.0,
+        -3.55
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -6.9,
+        0.0295,
+        -0.58
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        1.3637,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -6.275,
+        0.035,
+        -0.58
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.2542,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -5.65,
+        0.0309,
+        -0.58
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.2441,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -5.025,
+        0.0355,
+        -0.58
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.7607,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -4.4,
+        0.0322,
+        -0.58
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -1.3865,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -3.775,
+        0.0331,
+        -0.58
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        1.2898,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -3.15,
+        0.0367,
+        -0.58
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.9878,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -2.525,
+        0.0288,
+        -0.58
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -1.2604,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -1.9,
+        0.0357,
+        -0.58
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        1.2041,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -1.275,
+        0.0299,
+        -0.58
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.2453,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -0.65,
+        0.0322,
+        -0.58
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.4239,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -0.025,
+        0.0372,
+        -0.58
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.301,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        0.6,
+        0.0344,
+        -0.58
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.708,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -6.74,
+        0.0316,
+        0.045
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.926,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -6.115,
+        0.0299,
+        0.045
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.1806,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -5.49,
+        0.0387,
+        0.045
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.023,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -4.865,
+        0.0319,
+        0.045
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.5683,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -4.24,
+        0.0369,
+        0.045
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.1121,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -3.615,
+        0.0326,
+        0.045
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -1.244,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -2.99,
+        0.0369,
+        0.045
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.8858,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -2.365,
+        0.0323,
+        0.045
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.5657,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -1.74,
+        0.0371,
+        0.045
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.7491,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -1.115,
+        0.0333,
+        0.045
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.9735,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -0.49,
+        0.029,
+        0.045
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -1.0624,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        0.135,
+        0.0336,
+        0.045
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.4289,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        0.76,
+        0.0388,
+        0.045
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.8069,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -6.9,
+        0.0384,
+        0.67
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.4558,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -6.275,
+        0.0348,
+        0.67
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.6002,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -5.65,
+        0.0383,
+        0.67
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.3706,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -5.025,
+        0.0275,
+        0.67
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.4501,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -4.4,
+        0.0287,
+        0.67
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -1.2078,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -3.775,
+        0.036,
+        0.67
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.4589,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -3.15,
+        0.0371,
+        0.67
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.3324,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -2.525,
+        0.0351,
+        0.67
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.8892,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -1.9,
+        0.0327,
+        0.67
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.7694,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -1.275,
+        0.0374,
+        0.67
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.1832,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -0.65,
+        0.0286,
+        0.67
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.1496,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -0.025,
+        0.0353,
+        0.67
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.8333,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        0.6,
+        0.0346,
+        0.67
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.0813,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -6.74,
+        0.0377,
+        1.295
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.091,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -6.115,
+        0.0291,
+        1.295
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.5132,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -5.49,
+        0.0307,
+        1.295
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.0258,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -4.865,
+        0.0346,
+        1.295
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.1704,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -4.24,
+        0.0358,
+        1.295
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.1577,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -3.615,
+        0.0353,
+        1.295
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -1.07,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -2.99,
+        0.0389,
+        1.295
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.8554,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -2.365,
+        0.0363,
+        1.295
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.0947,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -1.74,
+        0.033,
+        1.295
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.3989,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -1.115,
+        0.0273,
+        1.295
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        1.354,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -0.49,
+        0.0385,
+        1.295
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.0669,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        0.135,
+        0.0313,
+        1.295
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.8454,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        0.76,
+        0.0337,
+        1.295
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.8965,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -6.9,
+        0.0333,
+        1.92
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.521,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -6.275,
+        0.028,
+        1.92
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.7525,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -5.65,
+        0.0295,
+        1.92
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -1.1447,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -5.025,
+        0.0339,
+        1.92
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.5398,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -4.4,
+        0.0326,
+        1.92
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.4395,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -3.775,
+        0.0351,
+        1.92
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.1087,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -3.15,
+        0.028,
+        1.92
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.9161,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -2.525,
+        0.0273,
+        1.92
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -1.2594,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -1.9,
+        0.0293,
+        1.92
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.2903,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -1.275,
+        0.0274,
+        1.92
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.4563,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -0.65,
+        0.0375,
+        1.92
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.0595,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -0.025,
+        0.0328,
+        1.92
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.1944,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        0.6,
+        0.0375,
+        1.92
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.5289,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -6.74,
+        0.0294,
+        2.545
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.2055,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -6.115,
+        0.0387,
+        2.545
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -1.1161,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -5.49,
+        0.0359,
+        2.545
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.4725,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -4.865,
+        0.0287,
+        2.545
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.6587,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -4.24,
+        0.0288,
+        2.545
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -1.1961,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -3.615,
+        0.0382,
+        2.545
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -1.1771,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -2.99,
+        0.0341,
+        2.545
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.3196,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -2.365,
+        0.0302,
+        2.545
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.1908,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -1.74,
+        0.0293,
+        2.545
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.1981,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -1.115,
+        0.034,
+        2.545
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.8569,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -0.49,
+        0.0283,
+        2.545
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -1.3932,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        0.135,
+        0.0273,
+        2.545
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.7962,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        0.76,
+        0.0271,
+        2.545
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        1.153,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -6.9,
+        0.0317,
+        3.17
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.2032,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -6.275,
+        0.0339,
+        3.17
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.225,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -5.65,
+        0.031,
+        3.17
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.371,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -5.025,
+        0.0297,
+        3.17
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -1.26,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -4.4,
+        0.0285,
+        3.17
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        1.2591,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -3.775,
+        0.0351,
+        3.17
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.7124,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -3.15,
+        0.0304,
+        3.17
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        1.3422,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -2.525,
+        0.0334,
+        3.17
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        1.2177,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -1.9,
+        0.0351,
+        3.17
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.7266,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -1.275,
+        0.0329,
+        3.17
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.476,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -0.65,
+        0.036,
+        3.17
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.1328,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -0.025,
+        0.0335,
+        3.17
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        1.3079,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        0.6,
+        0.0308,
+        3.17
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -0.4422,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -6.74,
+        0.0388,
+        3.795
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.3671,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -6.115,
+        0.0378,
+        3.795
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -1.0565,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -5.49,
+        0.0352,
+        3.795
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.8995,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -4.865,
+        0.0368,
+        3.795
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        1.3611,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -4.24,
+        0.0364,
+        3.795
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        1.0548,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -3.615,
+        0.032,
+        3.795
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        1.077,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -2.99,
+        0.0287,
+        3.795
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        -1.209,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -2.365,
+        0.0381,
+        3.795
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.7629,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        -1.74,
+        0.0272,
+        3.795
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.4465,
+        0
+      ]
+    },
+    {
+      "model": "paverShade",
+      "position": [
+        -1.115,
+        0.037,
+        3.795
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.4813,
+        0
+      ]
+    },
+    {
+      "model": "paverLight",
+      "position": [
+        -0.49,
+        0.0289,
+        3.795
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.778,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        0.135,
+        0.0339,
+        3.795
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        0.8741,
+        0
+      ]
+    },
+    {
+      "model": "paver",
+      "position": [
+        0.76,
+        0.0274,
+        3.795
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "rotation": [
+        0,
+        1.1817,
+        0
+      ]
+    },
+    {
+      "model": "tree",
+      "position": [
+        -7.5,
+        0.03,
+        -2.4
+      ],
+      "scale": [
+        1.13,
+        1.13,
+        1.13
+      ],
+      "rotation": [
+        0,
+        -124,
+        0
+      ]
+    },
+    {
+      "model": "tree",
+      "position": [
+        -7.6,
+        0.03,
+        1.4
+      ],
+      "scale": [
+        0.85,
+        0.85,
+        0.85
+      ],
+      "rotation": [
+        0,
+        116,
+        0
+      ]
+    },
+    {
+      "model": "tree",
+      "position": [
+        -6.9,
+        0.03,
+        -6.0
+      ],
+      "scale": [
+        1.28,
+        1.28,
+        1.28
+      ],
+      "rotation": [
+        0,
+        -5,
+        0
+      ]
+    },
+    {
+      "model": "tree",
+      "position": [
+        -0.5,
+        0.03,
+        -6.2
+      ],
+      "scale": [
+        1.17,
+        1.17,
+        1.17
+      ],
+      "rotation": [
+        0,
+        21,
+        0
+      ]
+    },
+    {
+      "model": "tree",
+      "position": [
+        3.4,
+        0.03,
+        -5.7
+      ],
+      "scale": [
+        1.06,
+        1.06,
+        1.06
+      ],
+      "rotation": [
+        0,
+        14,
+        0
+      ]
+    },
+    {
+      "model": "tree",
+      "position": [
+        7.4,
+        0.03,
+        -3.2
+      ],
+      "scale": [
+        0.85,
+        0.85,
+        0.85
+      ],
+      "rotation": [
+        0,
+        -166,
+        0
+      ]
+    },
+    {
+      "model": "tree",
+      "position": [
+        8.4,
+        0.03,
+        1.1
+      ],
+      "scale": [
+        0.74,
+        0.74,
+        0.74
+      ],
+      "rotation": [
+        0,
+        -170,
+        0
+      ]
+    },
+    {
+      "model": "tree",
+      "position": [
+        -5.3,
+        0.03,
+        5.3
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "rotation": [
+        0,
+        -95,
+        0
+      ]
+    },
+    {
+      "model": "mossrock",
+      "position": [
+        8.5,
+        -0.05,
+        0.0
+      ],
+      "scale": [
+        1.0004,
+        1.0004,
+        1.0004
+      ],
+      "rotation": [
+        0,
+        56,
+        0
+      ]
+    },
+    {
+      "model": "mossrock",
+      "position": [
+        7.7651,
+        -0.05,
+        2.6031
+      ],
+      "scale": [
+        1.1126,
+        1.1126,
+        1.1126
+      ],
+      "rotation": [
+        0,
+        127,
+        0
+      ]
+    },
+    {
+      "model": "mossrock",
+      "position": [
+        5.6876,
+        -0.05,
+        4.7561
+      ],
+      "scale": [
+        1.0505,
+        1.0505,
+        1.0505
+      ],
+      "rotation": [
+        0,
+        70,
+        0
+      ]
+    },
+    {
+      "model": "mossrock",
+      "position": [
+        2.6266,
+        -0.05,
+        6.0868
+      ],
+      "scale": [
+        1.3255,
+        1.3255,
+        1.3255
+      ],
+      "rotation": [
+        0,
+        50,
+        0
+      ]
+    },
+    {
+      "model": "mossrock",
+      "position": [
+        -0.8885,
+        -0.05,
+        6.3649
+      ],
+      "scale": [
+        0.8865,
+        0.8865,
+        0.8865
+      ],
+      "rotation": [
+        0,
+        -68,
+        0
+      ]
+    },
+    {
+      "model": "mossrock",
+      "position": [
+        -4.25,
+        -0.05,
+        5.5426
+      ],
+      "scale": [
+        1.0742,
+        1.0742,
+        1.0742
+      ],
+      "rotation": [
+        0,
+        -45,
+        0
+      ]
+    },
+    {
+      "model": "mossrock",
+      "position": [
+        -6.8766,
+        -0.05,
+        3.7618
+      ],
+      "scale": [
+        0.9563,
+        0.9563,
+        0.9563
+      ],
+      "rotation": [
+        0,
+        162,
+        0
+      ]
+    },
+    {
+      "model": "mossrock",
+      "position": [
+        -8.3143,
+        -0.05,
+        1.3306
+      ],
+      "scale": [
+        1.1971,
+        1.1971,
+        1.1971
+      ],
+      "rotation": [
+        0,
+        -135,
+        0
+      ]
+    },
+    {
+      "model": "mossrock",
+      "position": [
+        -8.3143,
+        -0.05,
+        -1.3306
+      ],
+      "scale": [
+        1.2805,
+        1.2805,
+        1.2805
+      ],
+      "rotation": [
+        0,
+        42,
+        0
+      ]
+    },
+    {
+      "model": "mossrock",
+      "position": [
+        -6.8766,
+        -0.05,
+        -3.7618
+      ],
+      "scale": [
+        1.2434,
+        1.2434,
+        1.2434
+      ],
+      "rotation": [
+        0,
+        -19,
+        0
+      ]
+    },
+    {
+      "model": "mossrock",
+      "position": [
+        -4.25,
+        -0.05,
+        -5.5426
+      ],
+      "scale": [
+        1.3347,
+        1.3347,
+        1.3347
+      ],
+      "rotation": [
+        0,
+        37,
+        0
+      ]
+    },
+    {
+      "model": "mossrock",
+      "position": [
+        -0.8885,
+        -0.05,
+        -6.3649
+      ],
+      "scale": [
+        1.1666,
+        1.1666,
+        1.1666
+      ],
+      "rotation": [
+        0,
+        -104,
+        0
+      ]
+    },
+    {
+      "model": "mossrock",
+      "position": [
+        2.6266,
+        -0.05,
+        -6.0868
+      ],
+      "scale": [
+        1.014,
+        1.014,
+        1.014
+      ],
+      "rotation": [
+        0,
+        56,
+        0
+      ]
+    },
+    {
+      "model": "mossrock",
+      "position": [
+        5.6876,
+        -0.05,
+        -4.7561
+      ],
+      "scale": [
+        1.0134,
+        1.0134,
+        1.0134
+      ],
+      "rotation": [
+        0,
+        -116,
+        0
+      ]
+    },
+    {
+      "model": "mossrock",
+      "position": [
+        7.7651,
+        -0.05,
+        -2.6031
+      ],
+      "scale": [
+        1.2468,
+        1.2468,
+        1.2468
+      ],
+      "rotation": [
+        0,
+        -47,
+        0
+      ]
+    },
+    {
+      "model": "bush",
+      "position": [
+        -7,
+        0.06,
+        3.6
+      ],
+      "scale": [
+        0.7481,
+        0.7481,
+        0.7481
+      ],
+      "rotation": [
+        0,
+        -177,
+        0
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -6.9792,
+        0.07,
+        4.0786
+      ],
+      "scale": [
+        0.7928,
+        0.7928,
+        0.7928
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        -7.4486,
+        0.07,
+        4.0712
+      ],
+      "scale": [
+        0.7009,
+        0.7009,
+        0.7009
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        -6.2457,
+        0.07,
+        4.0362
+      ],
+      "scale": [
+        0.9224,
+        0.9224,
+        0.9224
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -6.7171,
+        0.07,
+        3.4192
+      ],
+      "scale": [
+        0.9617,
+        0.9617,
+        0.9617
+      ]
+    },
+    {
+      "model": "flowerCream",
+      "position": [
+        -6.8735,
+        0.07,
+        3.5507
+      ],
+      "scale": [
+        0.7834,
+        0.7834,
+        0.7834
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -7.2287,
+        0.07,
+        3.9908
+      ],
+      "scale": [
+        1.0279,
+        1.0279,
+        1.0279
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -6.8796,
+        0.07,
+        3.8142
+      ],
+      "scale": [
+        0.8339,
+        0.8339,
+        0.8339
+      ]
+    },
+    {
+      "model": "flowerCream",
+      "position": [
+        -7.3319,
+        0.07,
+        3.8991
+      ],
+      "scale": [
+        0.645,
+        0.645,
+        0.645
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -6.4954,
+        0.07,
+        3.3798
+      ],
+      "scale": [
+        0.8151,
+        0.8151,
+        0.8151
+      ]
+    },
+    {
+      "model": "bush",
+      "position": [
+        -5.8,
+        0.06,
+        4.7
+      ],
+      "scale": [
+        0.8945,
+        0.8945,
+        0.8945
+      ],
+      "rotation": [
+        0,
+        -92,
+        0
+      ]
+    },
+    {
+      "model": "flowerCream",
+      "position": [
+        -6.3049,
+        0.07,
+        4.7901
+      ],
+      "scale": [
+        0.8704,
+        0.8704,
+        0.8704
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        -5.1003,
+        0.07,
+        4.5754
+      ],
+      "scale": [
+        0.751,
+        0.751,
+        0.751
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -5.4592,
+        0.07,
+        4.6071
+      ],
+      "scale": [
+        0.8166,
+        0.8166,
+        0.8166
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -5.4952,
+        0.07,
+        5.2144
+      ],
+      "scale": [
+        0.9192,
+        0.9192,
+        0.9192
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -6.2383,
+        0.07,
+        5.1952
+      ],
+      "scale": [
+        0.7386,
+        0.7386,
+        0.7386
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -6.4645,
+        0.07,
+        4.7568
+      ],
+      "scale": [
+        0.8215,
+        0.8215,
+        0.8215
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -5.2185,
+        0.07,
+        4.8904
+      ],
+      "scale": [
+        0.9574,
+        0.9574,
+        0.9574
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -6.4969,
+        0.07,
+        4.33
+      ],
+      "scale": [
+        0.7269,
+        0.7269,
+        0.7269
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -5.5575,
+        0.07,
+        4.3781
+      ],
+      "scale": [
+        0.9489,
+        0.9489,
+        0.9489
+      ]
+    },
+    {
+      "model": "bush",
+      "position": [
+        -0.6,
+        0.06,
+        5.2
+      ],
+      "scale": [
+        0.6281,
+        0.6281,
+        0.6281
+      ],
+      "rotation": [
+        0,
+        100,
+        0
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -0.0117,
+        0.07,
+        5.501
+      ],
+      "scale": [
+        1.0492,
+        1.0492,
+        1.0492
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        0.0167,
+        0.07,
+        4.7497
+      ],
+      "scale": [
+        1.0136,
+        1.0136,
+        1.0136
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        -0.0231,
+        0.07,
+        4.7969
+      ],
+      "scale": [
+        0.5982,
+        0.5982,
+        0.5982
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        -0.3735,
+        0.07,
+        5.3211
+      ],
+      "scale": [
+        0.8149,
+        0.8149,
+        0.8149
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -1.2197,
+        0.07,
+        5.3977
+      ],
+      "scale": [
+        0.7312,
+        0.7312,
+        0.7312
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -0.5164,
+        0.07,
+        5.2898
+      ],
+      "scale": [
+        0.7082,
+        0.7082,
+        0.7082
+      ]
+    },
+    {
+      "model": "flowerCream",
+      "position": [
+        -0.5603,
+        0.07,
+        5.0045
+      ],
+      "scale": [
+        0.9463,
+        0.9463,
+        0.9463
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -0.5062,
+        0.07,
+        5.6531
+      ],
+      "scale": [
+        0.6802,
+        0.6802,
+        0.6802
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -1.0972,
+        0.07,
+        5.4163
+      ],
+      "scale": [
+        0.5538,
+        0.5538,
+        0.5538
+      ]
+    },
+    {
+      "model": "bush",
+      "position": [
+        3.7,
+        0.06,
+        4.7
+      ],
+      "scale": [
+        0.6508,
+        0.6508,
+        0.6508
+      ],
+      "rotation": [
+        0,
+        67,
+        0
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        4.2407,
+        0.07,
+        4.9156
+      ],
+      "scale": [
+        0.6968,
+        0.6968,
+        0.6968
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        3.5552,
+        0.07,
+        4.7079
+      ],
+      "scale": [
+        0.8621,
+        0.8621,
+        0.8621
+      ]
+    },
+    {
+      "model": "flowerCream",
+      "position": [
+        3.4577,
+        0.07,
+        4.4352
+      ],
+      "scale": [
+        0.8427,
+        0.8427,
+        0.8427
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        4.4805,
+        0.07,
+        4.8928
+      ],
+      "scale": [
+        0.8725,
+        0.8725,
+        0.8725
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        3.3733,
+        0.07,
+        4.6845
+      ],
+      "scale": [
+        0.6754,
+        0.6754,
+        0.6754
+      ]
+    },
+    {
+      "model": "flowerCream",
+      "position": [
+        3.8798,
+        0.07,
+        4.478
+      ],
+      "scale": [
+        1.02,
+        1.02,
+        1.02
+      ]
+    },
+    {
+      "model": "flowerCream",
+      "position": [
+        4.4379,
+        0.07,
+        4.2047
+      ],
+      "scale": [
+        0.6861,
+        0.6861,
+        0.6861
+      ]
+    },
+    {
+      "model": "flowerCream",
+      "position": [
+        3.3787,
+        0.07,
+        4.9934
+      ],
+      "scale": [
+        0.6607,
+        0.6607,
+        0.6607
+      ]
+    },
+    {
+      "model": "flowerCream",
+      "position": [
+        3.3708,
+        0.07,
+        4.3145
+      ],
+      "scale": [
+        0.8005,
+        0.8005,
+        0.8005
+      ]
+    },
+    {
+      "model": "bush",
+      "position": [
+        7.2,
+        0.06,
+        3.6
+      ],
+      "scale": [
+        0.7106,
+        0.7106,
+        0.7106
+      ],
+      "rotation": [
+        0,
+        117,
+        0
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        7.8652,
+        0.07,
+        4.0276
+      ],
+      "scale": [
+        0.9048,
+        0.9048,
+        0.9048
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        7.5537,
+        0.07,
+        3.49
+      ],
+      "scale": [
+        0.8994,
+        0.8994,
+        0.8994
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        7.3493,
+        0.07,
+        3.3237
+      ],
+      "scale": [
+        0.9738,
+        0.9738,
+        0.9738
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        6.7943,
+        0.07,
+        3.3597
+      ],
+      "scale": [
+        1.0322,
+        1.0322,
+        1.0322
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        6.6119,
+        0.07,
+        3.3609
+      ],
+      "scale": [
+        0.7581,
+        0.7581,
+        0.7581
+      ]
+    },
+    {
+      "model": "flowerCream",
+      "position": [
+        7.1776,
+        0.07,
+        3.1765
+      ],
+      "scale": [
+        0.8228,
+        0.8228,
+        0.8228
+      ]
+    },
+    {
+      "model": "flowerCream",
+      "position": [
+        7.2616,
+        0.07,
+        3.4336
+      ],
+      "scale": [
+        0.5808,
+        0.5808,
+        0.5808
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        7.4576,
+        0.07,
+        3.6012
+      ],
+      "scale": [
+        0.7075,
+        0.7075,
+        0.7075
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        6.9967,
+        0.07,
+        3.5882
+      ],
+      "scale": [
+        0.555,
+        0.555,
+        0.555
+      ]
+    },
+    {
+      "model": "bush",
+      "position": [
+        7.6,
+        0.06,
+        -1.8
+      ],
+      "scale": [
+        0.6587,
+        0.6587,
+        0.6587
+      ],
+      "rotation": [
+        0,
+        129,
+        0
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        8.2305,
+        0.07,
+        -2.0128
+      ],
+      "scale": [
+        0.7065,
+        0.7065,
+        0.7065
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        8.2479,
+        0.07,
+        -1.536
+      ],
+      "scale": [
+        0.6971,
+        0.6971,
+        0.6971
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        7.9887,
+        0.07,
+        -1.6523
+      ],
+      "scale": [
+        0.9439,
+        0.9439,
+        0.9439
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        7.4557,
+        0.07,
+        -1.4423
+      ],
+      "scale": [
+        0.5717,
+        0.5717,
+        0.5717
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        8.2268,
+        0.07,
+        -1.3044
+      ],
+      "scale": [
+        0.5833,
+        0.5833,
+        0.5833
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        7.1287,
+        0.07,
+        -1.5361
+      ],
+      "scale": [
+        0.68,
+        0.68,
+        0.68
+      ]
+    },
+    {
+      "model": "flowerCream",
+      "position": [
+        8.0414,
+        0.07,
+        -1.4357
+      ],
+      "scale": [
+        0.8854,
+        0.8854,
+        0.8854
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        7.3421,
+        0.07,
+        -1.4354
+      ],
+      "scale": [
+        0.6222,
+        0.6222,
+        0.6222
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        7.6825,
+        0.07,
+        -1.5162
+      ],
+      "scale": [
+        0.8416,
+        0.8416,
+        0.8416
+      ]
+    },
+    {
+      "model": "bush",
+      "position": [
+        0.4,
+        0.06,
+        -3.4
+      ],
+      "scale": [
+        0.7471,
+        0.7471,
+        0.7471
+      ],
+      "rotation": [
+        0,
+        60,
+        0
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        0.1066,
+        0.07,
+        -2.9119
+      ],
+      "scale": [
+        0.8773,
+        0.8773,
+        0.8773
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        0.6229,
+        0.07,
+        -3.0532
+      ],
+      "scale": [
+        0.966,
+        0.966,
+        0.966
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        0.0956,
+        0.07,
+        -3.3244
+      ],
+      "scale": [
+        0.6696,
+        0.6696,
+        0.6696
+      ]
+    },
+    {
+      "model": "flowerCream",
+      "position": [
+        0.3911,
+        0.07,
+        -2.9109
+      ],
+      "scale": [
+        0.6898,
+        0.6898,
+        0.6898
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        1.0101,
+        0.07,
+        -3.4982
+      ],
+      "scale": [
+        0.6853,
+        0.6853,
+        0.6853
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        1.0487,
+        0.07,
+        -3.695
+      ],
+      "scale": [
+        0.9479,
+        0.9479,
+        0.9479
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        -0.2996,
+        0.07,
+        -3.2556
+      ],
+      "scale": [
+        0.6015,
+        0.6015,
+        0.6015
+      ]
+    },
+    {
+      "model": "flowerCream",
+      "position": [
+        1.0249,
+        0.07,
+        -3.539
+      ],
+      "scale": [
+        0.6605,
+        0.6605,
+        0.6605
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        0.3938,
+        0.07,
+        -3.711
+      ],
+      "scale": [
+        0.9673,
+        0.9673,
+        0.9673
+      ]
+    },
+    {
+      "model": "bush",
+      "position": [
+        -6.4,
+        0.06,
+        -3.5
+      ],
+      "scale": [
+        0.7482,
+        0.7482,
+        0.7482
+      ],
+      "rotation": [
+        0,
+        148,
+        0
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -5.8804,
+        0.07,
+        -3.95
+      ],
+      "scale": [
+        0.5773,
+        0.5773,
+        0.5773
+      ]
+    },
+    {
+      "model": "flowerCream",
+      "position": [
+        -6.0415,
+        0.07,
+        -3.7407
+      ],
+      "scale": [
+        0.9093,
+        0.9093,
+        0.9093
+      ]
+    },
+    {
+      "model": "flowerCream",
+      "position": [
+        -6.1936,
+        0.07,
+        -3.0251
+      ],
+      "scale": [
+        0.7618,
+        0.7618,
+        0.7618
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        -6.021,
+        0.07,
+        -3.8493
+      ],
+      "scale": [
+        1.0334,
+        1.0334,
+        1.0334
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        -5.9732,
+        0.07,
+        -3.2149
+      ],
+      "scale": [
+        0.6123,
+        0.6123,
+        0.6123
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -6.1761,
+        0.07,
+        -3.5542
+      ],
+      "scale": [
+        0.7904,
+        0.7904,
+        0.7904
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        -5.7439,
+        0.07,
+        -3.6093
+      ],
+      "scale": [
+        0.6512,
+        0.6512,
+        0.6512
+      ]
+    },
+    {
+      "model": "flowerLilac",
+      "position": [
+        -6.8302,
+        0.07,
+        -3.9485
+      ],
+      "scale": [
+        0.9075,
+        0.9075,
+        0.9075
+      ]
+    },
+    {
+      "model": "flowerPink",
+      "position": [
+        -6.408,
+        0.07,
+        -3.1821
+      ],
+      "scale": [
+        1.048,
+        1.048,
+        1.048
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -3.2124,
+        0.05,
+        -5.117
+      ],
+      "scale": [
+        0.9684,
+        0.9684,
+        0.9684
+      ],
+      "rotation": [
+        0,
+        -78,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        7.7262,
+        0.05,
+        -1.1626
+      ],
+      "scale": [
+        1.0209,
+        1.0209,
+        1.0209
+      ],
+      "rotation": [
+        0,
+        156,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        2.0376,
+        0.05,
+        5.4847
+      ],
+      "scale": [
+        0.8145,
+        0.8145,
+        0.8145
+      ],
+      "rotation": [
+        0,
+        32,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -6.8758,
+        0.05,
+        -2.9558
+      ],
+      "scale": [
+        0.6553,
+        0.6553,
+        0.6553
+      ],
+      "rotation": [
+        0,
+        -9,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -6.3376,
+        0.05,
+        -3.2508
+      ],
+      "scale": [
+        0.7852,
+        0.7852,
+        0.7852
+      ],
+      "rotation": [
+        0,
+        78,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -7.567,
+        0.05,
+        -2.6771
+      ],
+      "scale": [
+        0.8131,
+        0.8131,
+        0.8131
+      ],
+      "rotation": [
+        0,
+        -151,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -4.141,
+        0.05,
+        5.1132
+      ],
+      "scale": [
+        0.6595,
+        0.6595,
+        0.6595
+      ],
+      "rotation": [
+        0,
+        -92,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        5.6741,
+        0.05,
+        -4.5586
+      ],
+      "scale": [
+        0.8874,
+        0.8874,
+        0.8874
+      ],
+      "rotation": [
+        0,
+        65,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        0.7995,
+        0.05,
+        5.8148
+      ],
+      "scale": [
+        0.7306,
+        0.7306,
+        0.7306
+      ],
+      "rotation": [
+        0,
+        127,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        4.1553,
+        0.05,
+        5.0931
+      ],
+      "scale": [
+        0.7698,
+        0.7698,
+        0.7698
+      ],
+      "rotation": [
+        0,
+        122,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        6.3118,
+        0.05,
+        4.1095
+      ],
+      "scale": [
+        1.0399,
+        1.0399,
+        1.0399
+      ],
+      "rotation": [
+        0,
+        -135,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        2.0666,
+        0.05,
+        -5.7088
+      ],
+      "scale": [
+        0.6728,
+        0.6728,
+        0.6728
+      ],
+      "rotation": [
+        0,
+        -179,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -4.2575,
+        0.05,
+        5.1216
+      ],
+      "scale": [
+        0.8624,
+        0.8624,
+        0.8624
+      ],
+      "rotation": [
+        0,
+        -178,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -5.3551,
+        0.05,
+        4.6466
+      ],
+      "scale": [
+        1.2183,
+        1.2183,
+        1.2183
+      ],
+      "rotation": [
+        0,
+        -162,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        1.3391,
+        0.05,
+        -5.5561
+      ],
+      "scale": [
+        1.1903,
+        1.1903,
+        1.1903
+      ],
+      "rotation": [
+        0,
+        -16,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        0.9588,
+        0.05,
+        5.8697
+      ],
+      "scale": [
+        1.0838,
+        1.0838,
+        1.0838
+      ],
+      "rotation": [
+        0,
+        101,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        6.2049,
+        0.05,
+        3.4813
+      ],
+      "scale": [
+        0.7146,
+        0.7146,
+        0.7146
+      ],
+      "rotation": [
+        0,
+        -16,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        4.8549,
+        0.05,
+        -4.3639
+      ],
+      "scale": [
+        1.0429,
+        1.0429,
+        1.0429
+      ],
+      "rotation": [
+        0,
+        8,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -8.0786,
+        0.05,
+        1.0506
+      ],
+      "scale": [
+        1.0065,
+        1.0065,
+        1.0065
+      ],
+      "rotation": [
+        0,
+        24,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        6.242,
+        0.05,
+        3.5361
+      ],
+      "scale": [
+        0.9371,
+        0.9371,
+        0.9371
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        6.3213,
+        0.05,
+        3.3134
+      ],
+      "scale": [
+        0.7362,
+        0.7362,
+        0.7362
+      ],
+      "rotation": [
+        0,
+        -79,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -7.2122,
+        0.05,
+        2.0892
+      ],
+      "scale": [
+        0.7287,
+        0.7287,
+        0.7287
+      ],
+      "rotation": [
+        0,
+        95,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -0.5066,
+        0.05,
+        5.6772
+      ],
+      "scale": [
+        0.9084,
+        0.9084,
+        0.9084
+      ],
+      "rotation": [
+        0,
+        119,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        8.3459,
+        0.05,
+        -0.2241
+      ],
+      "scale": [
+        0.7887,
+        0.7887,
+        0.7887
+      ],
+      "rotation": [
+        0,
+        -113,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -8.1687,
+        0.05,
+        1.0125
+      ],
+      "scale": [
+        1.009,
+        1.009,
+        1.009
+      ],
+      "rotation": [
+        0,
+        -12,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -1.2208,
+        0.05,
+        6.0743
+      ],
+      "scale": [
+        1.2142,
+        1.2142,
+        1.2142
+      ],
+      "rotation": [
+        0,
+        -45,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -2.8474,
+        0.05,
+        -5.3992
+      ],
+      "scale": [
+        0.9831,
+        0.9831,
+        0.9831
+      ],
+      "rotation": [
+        0,
+        -37,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        8.2135,
+        0.05,
+        -0.5462
+      ],
+      "scale": [
+        0.7853,
+        0.7853,
+        0.7853
+      ],
+      "rotation": [
+        0,
+        -31,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -0.6178,
+        0.05,
+        -6.1007
+      ],
+      "scale": [
+        1.053,
+        1.053,
+        1.053
+      ],
+      "rotation": [
+        0,
+        -61,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        5.6253,
+        0.05,
+        -4.4158
+      ],
+      "scale": [
+        0.8752,
+        0.8752,
+        0.8752
+      ],
+      "rotation": [
+        0,
+        -111,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -2.9649,
+        0.05,
+        -5.6412
+      ],
+      "scale": [
+        0.9329,
+        0.9329,
+        0.9329
+      ],
+      "rotation": [
+        0,
+        104,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -6.2053,
+        0.05,
+        3.8019
+      ],
+      "scale": [
+        0.908,
+        0.908,
+        0.908
+      ],
+      "rotation": [
+        0,
+        -58,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        3.0675,
+        0.05,
+        5.1987
+      ],
+      "scale": [
+        1.0699,
+        1.0699,
+        1.0699
+      ],
+      "rotation": [
+        0,
+        -92,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -7.528,
+        0.05,
+        -1.3477
+      ],
+      "scale": [
+        1.2415,
+        1.2415,
+        1.2415
+      ],
+      "rotation": [
+        0,
+        60,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        7.7148,
+        0.05,
+        2.2707
+      ],
+      "scale": [
+        0.9547,
+        0.9547,
+        0.9547
+      ],
+      "rotation": [
+        0,
+        -62,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -8.1191,
+        0.05,
+        0.3493
+      ],
+      "scale": [
+        0.7755,
+        0.7755,
+        0.7755
+      ],
+      "rotation": [
+        0,
+        -12,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        7.8525,
+        0.05,
+        -2.1704
+      ],
+      "scale": [
+        0.8081,
+        0.8081,
+        0.8081
+      ],
+      "rotation": [
+        0,
+        103,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -1.5124,
+        0.05,
+        -5.8184
+      ],
+      "scale": [
+        1.2805,
+        1.2805,
+        1.2805
+      ],
+      "rotation": [
+        0,
+        45,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -3.1136,
+        0.05,
+        -5.578
+      ],
+      "scale": [
+        1.0675,
+        1.0675,
+        1.0675
+      ],
+      "rotation": [
+        0,
+        -164,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -7.7199,
+        0.05,
+        -1.9065
+      ],
+      "scale": [
+        0.8546,
+        0.8546,
+        0.8546
+      ],
+      "rotation": [
+        0,
+        -17,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -1.593,
+        0.05,
+        5.8704
+      ],
+      "scale": [
+        0.9598,
+        0.9598,
+        0.9598
+      ],
+      "rotation": [
+        0,
+        -107,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        7.795,
+        0.05,
+        1.6369
+      ],
+      "scale": [
+        0.8509,
+        0.8509,
+        0.8509
+      ],
+      "rotation": [
+        0,
+        -107,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        7.0487,
+        0.05,
+        -2.3266
+      ],
+      "scale": [
+        1.0685,
+        1.0685,
+        1.0685
+      ],
+      "rotation": [
+        0,
+        -9,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -4.3163,
+        0.05,
+        -5.3072
+      ],
+      "scale": [
+        1.1032,
+        1.1032,
+        1.1032
+      ],
+      "rotation": [
+        0,
+        82,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        5.8496,
+        0.05,
+        4.0409
+      ],
+      "scale": [
+        0.9542,
+        0.9542,
+        0.9542
+      ],
+      "rotation": [
+        0,
+        -37,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -6.0248,
+        0.05,
+        4.3004
+      ],
+      "scale": [
+        1.1925,
+        1.1925,
+        1.1925
+      ],
+      "rotation": [
+        0,
+        -142,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        5.5923,
+        0.05,
+        4.3483
+      ],
+      "scale": [
+        0.8124,
+        0.8124,
+        0.8124
+      ],
+      "rotation": [
+        0,
+        118,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -7.382,
+        0.05,
+        2.721
+      ],
+      "scale": [
+        0.8911,
+        0.8911,
+        0.8911
+      ],
+      "rotation": [
+        0,
+        -125,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        7.8597,
+        0.05,
+        -2.1847
+      ],
+      "scale": [
+        0.823,
+        0.823,
+        0.823
+      ],
+      "rotation": [
+        0,
+        -97,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -6.1099,
+        0.05,
+        -3.7316
+      ],
+      "scale": [
+        0.9648,
+        0.9648,
+        0.9648
+      ],
+      "rotation": [
+        0,
+        -85,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        1.389,
+        0.05,
+        -5.9388
+      ],
+      "scale": [
+        0.6799,
+        0.6799,
+        0.6799
+      ],
+      "rotation": [
+        0,
+        45,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        4.8077,
+        0.05,
+        -4.8798
+      ],
+      "scale": [
+        0.6975,
+        0.6975,
+        0.6975
+      ],
+      "rotation": [
+        0,
+        74,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        -7.9585,
+        0.05,
+        0.7555
+      ],
+      "scale": [
+        0.7945,
+        0.7945,
+        0.7945
+      ],
+      "rotation": [
+        0,
+        179,
+        0
+      ]
+    },
+    {
+      "model": "grassTuft",
+      "position": [
+        7.2114,
+        0.05,
+        -3.0334
+      ],
+      "scale": [
+        1.264,
+        1.264,
+        1.264
+      ],
+      "rotation": [
+        0,
+        -164,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        2.7,
+        0.09,
+        -0.6
+      ],
+      "scale": [
+        0.57,
+        0.57,
+        0.57
+      ],
+      "rotation": [
+        0,
+        -173,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        3.2,
+        0.09,
+        -0.87
+      ],
+      "scale": [
+        0.57,
+        0.57,
+        0.57
+      ],
+      "rotation": [
+        0,
+        -172,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        3.7,
+        0.09,
+        -0.6
+      ],
+      "scale": [
+        0.57,
+        0.57,
+        0.57
+      ],
+      "rotation": [
+        0,
+        111,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        7.0,
+        0.09,
+        1.3
+      ],
+      "scale": [
+        0.57,
+        0.57,
+        0.57
+      ],
+      "rotation": [
+        0,
+        -5,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        6.6,
+        0.09,
+        1.8
+      ],
+      "scale": [
+        0.57,
+        0.57,
+        0.57
+      ],
+      "rotation": [
+        0,
+        -148,
+        0
+      ]
+    },
+    {
+      "model": "spring-rocks",
+      "position": [
+        3.82,
+        0,
+        -1.57
+      ],
+      "scale": [
+        0.8,
+        0.8,
+        0.8
+      ]
+    },
+    {
+      "model": "ruined-arch",
+      "position": [
+        7,
+        0.3,
+        -17
+      ],
+      "scale": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "rotation": [
+        0,
+        -21,
+        0
+      ]
+    },
+    {
+      "model": "ruined-arch",
+      "position": [
+        -9,
+        0.2,
+        -20
+      ],
+      "scale": [
+        1.4,
+        1.4,
+        1.4
+      ],
+      "rotation": [
+        0,
+        24,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        7.77,
+        0.09,
+        2.5
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        7.6886,
+        0.09,
+        2.8318
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "rotation": [
+        0,
+        37,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        7.4542,
+        0.09,
+        3.1235
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "rotation": [
+        0,
+        74,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        7.095,
+        0.09,
+        3.34
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "rotation": [
+        0,
+        111,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        6.6544,
+        0.09,
+        3.4553
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "rotation": [
+        0,
+        148,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        6.1856,
+        0.09,
+        3.4553
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "rotation": [
+        0,
+        -175,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        5.745,
+        0.09,
+        3.34
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "rotation": [
+        0,
+        -138,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        5.3858,
+        0.09,
+        3.1235
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "rotation": [
+        0,
+        -101,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        5.1514,
+        0.09,
+        2.8318
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "rotation": [
+        0,
+        -64,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        5.07,
+        0.09,
+        2.5
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "rotation": [
+        0,
+        -27,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        5.1514,
+        0.09,
+        2.1682
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "rotation": [
+        0,
+        10,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        5.3858,
+        0.09,
+        1.8765
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "rotation": [
+        0,
+        47,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        5.745,
+        0.09,
+        1.66
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "rotation": [
+        0,
+        84,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        6.1856,
+        0.09,
+        1.5447
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "rotation": [
+        0,
+        121,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        6.6544,
+        0.09,
+        1.5447
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "rotation": [
+        0,
+        158,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        7.095,
+        0.09,
+        1.66
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "rotation": [
+        0,
+        -165,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        7.4542,
+        0.09,
+        1.8765
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "rotation": [
+        0,
+        -128,
+        0
+      ]
+    },
+    {
+      "model": "rock",
+      "position": [
+        7.6886,
+        0.09,
+        2.1682
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "rotation": [
+        0,
+        -91,
+        0
+      ]
+    },
+    {
+      "model": "lantern",
+      "position": [
+        -5.6,
+        0.07,
+        -0.6
+      ],
+      "scale": [
+        0.9,
+        0.9,
+        0.9
+      ]
+    },
+    {
+      "model": "lantern",
+      "position": [
+        6.95,
+        0.02,
+        0.57
+      ],
+      "scale": [
+        0.7,
+        0.7,
+        0.7
+      ]
+    }
+  ],
+  "terrain": {
+    "center": [
+      0,
+      -0.28,
+      0
+    ],
+    "radius": 9.35,
+    "depth": 0.62,
+    "flattenZ": 0.79,
+    "surface": "grass",
+    "edge": "earth",
+    "waterLevel": -1.2
+  },
+  "lighting": {
+    "background": "#334e5d",
+    "fog": "#55747c",
+    "fogNear": 27,
+    "fogFar": 67,
+    "sunColor": "#ffdcad",
+    "sunIntensity": 3.4,
+    "sunPosition": [
+      -9,
+      14,
+      9
+    ],
+    "skyColor": "#b9d7e2",
+    "groundColor": "#53644c",
+    "hemisphereIntensity": 1.65,
+    "exposure": 1.08
+  },
+  "cameras": {
+    "welcome": {
+      "position": [
+        14,
+        16,
+        22
+      ],
+      "target": [
+        0,
+        1.1,
+        0
+      ]
+    },
+    "decorate": {
+      "position": [
+        7,
+        12,
+        15
+      ],
+      "target": [
+        -1.7,
+        0.55,
+        1.3
+      ]
+    },
+    "companion": {
+      "position": [
+        6.3,
+        5.6,
+        10.0
+      ],
+      "target": [
+        2.65,
+        0.72,
+        2.4
+      ]
+    },
+    "water": {
+      "position": [
+        5.1,
+        7.4405,
+        3.7396
+      ],
+      "target": [
+        5.1,
+        0.35,
+        -0.68
+      ]
+    }
+  },
+  "spring": {
+    "boardOrigin": [
+      3.96,
+      0.23,
+      -2.16
+    ],
+    "tileSize": 0.84,
+    "tileGap": 0.075,
+    "sourcePath": [
+      [
+        3.8,
+        0.39,
+        -1.35
+      ],
+      [
+        3.46,
+        0.39,
+        -0.87
+      ],
+      [
+        3.66,
+        0.39,
+        -0.825
+      ],
+      [
+        3.96,
+        0.39,
+        -0.825
+      ]
+    ],
+    "outletPath": [
+      [
+        6.63,
+        0.39,
+        -0.825
+      ],
+      [
+        7.32,
+        0.28,
+        -0.68
+      ],
+      [
+        6.7,
+        0.16,
+        0.99
+      ],
+      [
+        6.42,
+        0.06,
+        1.68
+      ]
+    ],
+    "pondCenter": [
+      6.42,
+      0.06,
+      2.5
+    ],
+    "pondScale": [
+      1.22,
+      0.045,
+      0.83
+    ]
+  },
+  "companion": {
+    "model": "glimmerfox",
+    "home": [
+      2.7,
+      0.08,
+      2.4
+    ],
+    "scale": 0.92
+  }
+}

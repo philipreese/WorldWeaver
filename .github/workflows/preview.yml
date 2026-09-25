@@ -29,6 +29,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - run: npm ci --ignore-scripts
       # Read the existing Pages configuration. Do not enable Pages or alter
       # repository settings from the workflow.
       - uses: actions/configure-pages@v5

@@ -1,12 +1,20 @@
 {
   "kind": "Node HTTP and service-worker contract checks; not a browser offline/install test.",
   "subpath": "/WorldWeaver/",
-  "assets": 33,
-  "cache": "worldweaver-151c6c1eb21a",
+  "assets": 36,
+  "optionalAssetsCachedDuringTest": 1,
+  "cache": "worldweaver-d214a5aee972",
   "checks": [
     "Subpath serves HTML and all precached relative assets",
     "Generated worker installs complete asset set",
-    "Activation deletes only old Worldweaver caches",
-    "Every precached response works with network made unavailable"
+    "Main and comparison entry select the same immutable graph under the repository subpath",
+    "Online navigation replaces legacy HTML without mixing old modules",
+    "Entry documents revalidate HTTP caches and runtime cache-write failures preserve network responses",
+    "Activation waits for complete core download and preserves unrelated cache plus one prior graph",
+    "Main installation avoids Three.js; opting in caches its exact version for offline reuse",
+    "Missing releases never substitute another version's scripts",
+    "Every precached response works with network made unavailable",
+    "Offline query URLs fall back to their own main or comparison entry",
+    "Failed core installation leaves prior cache and worker intact"
   ]
 }

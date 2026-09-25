@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createWorld, advance, intervene, getInterventions, getEntity, entityLabel } from '../src/sim/world.js';
-import { createHistory, currentWorld, applyCommand, worldAt, forkHistory, selectBranch, serializeHistory, parseHistory, saveHistory, loadHistory, setPersonStyle, setHomeStyle, setGuideProgress, HISTORY_LIMITS, SAVE_KEYS } from '../src/persistence/history.js';
+import { createHistory, currentWorld, applyCommand, worldAt, forkHistory, selectBranch, serializeHistory, parseHistory, saveHistory, loadHistory, setPersonStyle, setPersonAccessory, setHomeStyle, setGuideProgress, getNeighborhood, setNeighborhood, HISTORY_LIMITS, SAVE_KEYS } from '../src/persistence/history.js';
 import { STYLE_COLORS, resolveStyleColor, PERSONALIZATION_LIMITS } from '../src/customization.js';
 
 class MemoryStorage {
@@ -54,6 +54,89 @@ test('the committed Tier 1 milestone save remains exactly replayable after Tier 
   assert.equal(restored.branches[0].head.flags.archiveResolved, 'exchange');
   assert.equal(restored.branches[1].head.flags.archiveResolved, 'raise');
   assert.equal(serializeHistory(restored), text);
+  assert.equal(getNeighborhood(restored).companion.name, 'Pip');
+  assert.equal(Object.hasOwn(restored, 'neighborhood'), false);
+  assert.equal(serializeHistory(restored), text, 'Reading the new courtyard leaves older exports byte-identical.');
+});
+
+test('courtyard choices travel with the player across branches without altering any recorded world', () => {
+  const original = step(createHistory({ tier: 2 }), 12);
+  const originalBytes = serializeHistory(original);
+  let personalized = setNeighborhood(original, { type: 'visit' });
+  personalized = setNeighborhood(personalized, { type: 'place', slotId: 'porch-left', itemId: 'bench' });
+  personalized = setNeighborhood(personalized, { type: 'toss', x: 0.45, y: 0.3 });
+  personalized = setNeighborhood(personalized, { type: 'channel-turn', index: 3 });
+  personalized = setNeighborhood(personalized, { type: 'channel-turn', index: 1 });
+  assert.equal(personalized.branches, original.branches);
+  assert.equal(currentWorld(personalized), currentWorld(original));
+  assert.deepEqual(worldAt(personalized, 1), worldAt(original, 1));
+  assert.deepEqual(JSON.parse(serializeHistory(personalized)).branches, JSON.parse(originalBytes).branches);
+  assert.deepEqual(currentWorld(step(personalized, 20)), currentWorld(step(original, 20)), 'Player activities do not feed simulation decisions.');
+  let branch = forkHistory(personalized, 2, 'A courtyard visit');
+  branch = setNeighborhood(branch, { type: 'name', name: 'Juniper' });
+  const returned = selectBranch(branch, 'b1');
+  assert.equal(getNeighborhood(returned).companion.name, 'Juniper');
+  assert.equal(getNeighborhood(returned).companion.tosses, 1);
+  assert.deepEqual(currentWorld(returned), currentWorld(original));
+  assert.equal(serializeHistory(original), originalBytes);
+  assert.deepEqual(parseHistory(serializeHistory(branch)), branch);
+  const storage = new MemoryStorage();
+  assert.equal(saveHistory(storage, branch).ok, true);
+  const cold = new MemoryStorage();
+  cold.data = new Map(storage.data);
+  assert.deepEqual(loadHistory(cold).history, branch);
+});
+
+test('malformed courtyard imports and rejected writes preserve the previous playable archive', () => {
+  const original = setNeighborhood(createHistory(), { type: 'toss', x: 0.2, y: 0.8 });
+  const originalBytes = serializeHistory(original);
+  const invalid = [
+    save => { save.neighborhood.companion.lastPlay.id = 2; },
+    save => { save.neighborhood.companion.lastPlay.x = 2; },
+    save => { save.neighborhood.channelTurns[4] = 100; },
+    save => { save.neighborhood.items['unknown-home'] = { itemId: 'bench', rotation: 0 }; },
+    save => { save.neighborhood.population = 10; },
+  ];
+  for (const edit of invalid) {
+    assert.throws(() => parseHistory(altered(original, edit)));
+    assert.equal(serializeHistory(original), originalBytes);
+  }
+  const storage = new MemoryStorage();
+  assert.equal(saveHistory(storage, original).ok, true);
+  const attempted = setNeighborhood(original, { type: 'name', name: 'Comet' });
+  storage.failAt = SAVE_KEYS.staging;
+  const failed = saveHistory(storage, attempted);
+  assert.equal(failed.ok, false);
+  assert.match(failed.error, /Autosave failed/);
+  const cold = new MemoryStorage();
+  cold.data = new Map(storage.data);
+  assert.equal(getNeighborhood(loadHistory(cold).history).companion.name, 'Pip');
+  assert.equal(storage.getItem(SAVE_KEYS.current), originalBytes);
+  assert.equal(saveHistory(storage, { ...original, neighborhood: { ...getNeighborhood(original), visited: 'yes' } }).ok, false);
+  assert.equal(storage.getItem(SAVE_KEYS.current), originalBytes);
+});
+
+test('character accessories and color overrides reset independently and round-trip without changing history', () => {
+  const original = createHistory();
+  const originalBytes = serializeHistory(original);
+  let styled = setPersonAccessory(original, 'c-nera', 'flower');
+  assert.deepEqual(styled.personalization.people['c-nera'], { accessory: 'flower' });
+  styled = setPersonStyle(styled, 'c-nera', 'jade');
+  styled = setPersonAccessory(styled, 'c-nera', 'cap');
+  assert.deepEqual(styled.personalization.people['c-nera'], { color: 'jade', accessory: 'cap' });
+  assert.deepEqual(parseHistory(serializeHistory(styled)), styled);
+  styled = setPersonStyle(styled, 'c-nera', 'original');
+  assert.deepEqual(styled.personalization.people['c-nera'], { accessory: 'cap' });
+  assert.deepEqual(parseHistory(serializeHistory(styled)), styled);
+  styled = setPersonAccessory(styled, 'c-nera', 'none');
+  assert.equal(serializeHistory(styled), originalBytes);
+  styled = setPersonAccessory(setPersonStyle(original, 'c-nera', 'rose'), 'c-nera', 'scarf');
+  styled = setPersonAccessory(styled, 'c-nera', 'none');
+  assert.deepEqual(styled.personalization.people['c-nera'], { color: 'rose' });
+  assert.equal(currentWorld(styled), currentWorld(original));
+  assert.throws(() => setPersonAccessory(styled, 'unknown-person', 'cap'), /existing character/);
+  assert.throws(() => setPersonAccessory(styled, 'c-nera', 'dragon'), /Person accessory/);
+  assert.throws(() => parseHistory(altered(styled, save => { save.personalization.people['c-nera'].accessory = 'dragon'; })), /Person accessory/);
 });
 
 test('commands and snapshots are immutable; unchanged input replays exactly', () => {

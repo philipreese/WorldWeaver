@@ -1,0 +1,685 @@
+{
+  "kind": "Deterministic engine evidence; no human or browser playtesting.",
+  "simulationVersion": "2.0.0",
+  "histories": [
+    {
+      "branch": "First history",
+      "day": 52,
+      "decision": "raise",
+      "title": "The vessels above the water",
+      "known": [
+        "Seed integrity is 37/100 and still falling.",
+        "Hearth has 43.536 materials and 35.532 food.",
+        "The garden habitat is 57.972/100.",
+        "Oren’s old letter names a method, but the closed saddle prevents exchange."
+      ],
+      "alternatives": [
+        {
+          "id": "exchange",
+          "label": "Ask Oren to rebuild the cooling seam",
+          "available": false,
+          "reason": "The Silt Saddle is closed; Nera cannot bring Oren or his materials here."
+        },
+        {
+          "id": "raise",
+          "label": "Raise the seed vessels into a dry loft",
+          "available": true,
+          "reason": "Hearth can spend 18 materials on supports."
+        },
+        {
+          "id": "plant",
+          "label": "Give the threatened seeds a living nursery",
+          "available": true,
+          "reason": "The garden can support planting; food can be reserved for the work."
+        }
+      ],
+      "observed": [
+        "Hearth spent 18 materials on a dry archive loft.",
+        "The endangered vessels are above the damaged seam; the archive is usable again.",
+        "Seed integrity: 37 → 77."
+      ],
+      "causes": [
+        "e-00003"
+      ],
+      "orenAt": "s-lattice",
+      "structures": [
+        {
+          "id": "k-hearth-door",
+          "name": "The Unfinished Door",
+          "eventId": "e-00001"
+        },
+        {
+          "id": "k-hearth-table",
+          "name": "The Warm Table",
+          "eventId": "e-00001"
+        },
+        {
+          "id": "k-hearth-archive",
+          "name": "Seed Archive",
+          "eventId": "e-00001"
+        },
+        {
+          "id": "k-hearth-garden",
+          "name": "Senn’s Rain Garden",
+          "eventId": "e-00001"
+        },
+        {
+          "id": "k-hearth-yard",
+          "name": "Ivo’s Mending Yard",
+          "eventId": "e-00001"
+        },
+        {
+          "id": "k-hearth-loft",
+          "name": "The Dry Loft",
+          "eventId": "e-00009"
+        },
+        {
+          "id": "k-hearth-recovery",
+          "name": "The Second Garden",
+          "eventId": "e-00010"
+        },
+        {
+          "id": "k-hearth-conduit",
+          "name": "The Common Sluice",
+          "eventId": "e-00020"
+        }
+      ],
+      "power": "The Undersong",
+      "powerFirstRecorded": 25
+    },
+    {
+      "branch": "The open passage",
+      "day": 52,
+      "decision": "exchange",
+      "title": "Nera makes room for a stranger",
+      "known": [
+        "Seed integrity is 37/100 and still falling.",
+        "Hearth has 43.546 materials and 42.53 food.",
+        "The garden habitat is 57.972/100.",
+        "Oren’s repair leaf has arrived across the usable saddle."
+      ],
+      "alternatives": [
+        {
+          "id": "exchange",
+          "label": "Ask Oren to rebuild the cooling seam",
+          "available": true,
+          "reason": "The passage carries Oren’s method and Lattice has repair materials."
+        },
+        {
+          "id": "raise",
+          "label": "Raise the seed vessels into a dry loft",
+          "available": true,
+          "reason": "Hearth can spend 18 materials on supports."
+        },
+        {
+          "id": "plant",
+          "label": "Give the threatened seeds a living nursery",
+          "available": true,
+          "reason": "The garden can support planting; food can be reserved for the work."
+        }
+      ],
+      "observed": [
+        "Oren moved from Lattice to Hearth; their organic populations changed by −1 and +1.",
+        "Lattice supplied 12 materials; Hearth spent 10.",
+        "The cooling seam is repaired.",
+        "Hearth knowledge: 17 → 30.",
+        "Seed integrity: 37 → 94."
+      ],
+      "causes": [
+        "e-00003",
+        "e-00009"
+      ],
+      "orenAt": "s-hearth",
+      "structures": [
+        {
+          "id": "k-hearth-door",
+          "name": "The Unfinished Door",
+          "eventId": "e-00001"
+        },
+        {
+          "id": "k-hearth-table",
+          "name": "The Warm Table",
+          "eventId": "e-00001"
+        },
+        {
+          "id": "k-hearth-archive",
+          "name": "Seed Archive",
+          "eventId": "e-00001"
+        },
+        {
+          "id": "k-hearth-garden",
+          "name": "Senn’s Rain Garden",
+          "eventId": "e-00001"
+        },
+        {
+          "id": "k-hearth-yard",
+          "name": "Ivo’s Mending Yard",
+          "eventId": "e-00001"
+        },
+        {
+          "id": "k-hearth-pattern",
+          "name": "Oren’s Open Workshop",
+          "eventId": "e-00011"
+        },
+        {
+          "id": "k-hearth-bridge",
+          "name": "The Welcome Landing",
+          "eventId": "e-00011"
+        },
+        {
+          "id": "k-hearth-recovery",
+          "name": "The Borrowed Channels",
+          "eventId": "e-00012"
+        },
+        {
+          "id": "k-hearth-conduit",
+          "name": "The Common Sluice",
+          "eventId": "e-00015"
+        },
+        {
+          "id": "k-ecology-site-1-1",
+          "name": "Rain Catchment",
+          "eventId": "e-00021"
+        }
+      ],
+      "power": "The Undersong",
+      "powerFirstRecorded": 13
+    }
+  ],
+  "secondLook": {
+    "changedCondition": "Nera’s inherited disposition: careful → curious; route remains closed",
+    "resolution": "plant",
+    "decision": {
+      "actorId": "c-nera",
+      "known": [
+        "Seed integrity is 37/100 and still falling.",
+        "Hearth has 43.536 materials and 35.532 food.",
+        "The garden habitat is 57.972/100.",
+        "Oren’s old letter names a method, but the closed saddle prevents exchange."
+      ],
+      "motives": [
+        "Care 82: keep the seeds useful to living people.",
+        "Duty 59: preserve the store entrusted to her.",
+        "Curiosity 94: consider an unfamiliar way to save it.",
+        "Commitment: I will not make a stranger pay for a promise I made."
+      ],
+      "alternatives": [
+        {
+          "id": "exchange",
+          "label": "Ask Oren to rebuild the cooling seam",
+          "available": false,
+          "reason": "The Silt Saddle is closed; Nera cannot bring Oren or his materials here."
+        },
+        {
+          "id": "raise",
+          "label": "Raise the seed vessels into a dry loft",
+          "available": true,
+          "reason": "Hearth can spend 18 materials on supports."
+        },
+        {
+          "id": "plant",
+          "label": "Give the threatened seeds a living nursery",
+          "available": true,
+          "reason": "The garden can support planting; food can be reserved for the work."
+        }
+      ],
+      "chosen": "plant"
+    },
+    "claim": "Relevant motive change produces a distinct material answer; not a statistical quality score."
+  },
+  "pacing": [
+    {
+      "route": "observe",
+      "attention": "quiet",
+      "followed": [
+        "s-hearth",
+        "c-nera"
+      ],
+      "simulatedDays": 60,
+      "simulatedHours": 1440,
+      "stops": 4,
+      "stopsPerSimulatedHour": 0.002777777777777778,
+      "stopRecords": [
+        {
+          "day": 4,
+          "kind": "seed-decision",
+          "severity": 3
+        },
+        {
+          "day": 16,
+          "kind": "common-channel-founded",
+          "severity": 3
+        },
+        {
+          "day": 25,
+          "kind": "power-emerged",
+          "severity": 3
+        },
+        {
+          "day": 54,
+          "kind": "channel-authority-ended",
+          "severity": 3
+        }
+      ],
+      "realPlayInterruptionsPerHour": null,
+      "speed": "Engine advanced one day per call; no real-play speed or wall-clock measurement."
+    },
+    {
+      "route": "observe",
+      "attention": "balanced",
+      "followed": [
+        "s-hearth",
+        "c-nera"
+      ],
+      "simulatedDays": 60,
+      "simulatedHours": 1440,
+      "stops": 12,
+      "stopsPerSimulatedHour": 0.008333333333333333,
+      "stopRecords": [
+        {
+          "day": 4,
+          "kind": "seed-decision",
+          "severity": 3
+        },
+        {
+          "day": 5,
+          "kind": "provisioning-pressure",
+          "severity": 2
+        },
+        {
+          "day": 7,
+          "kind": "households-migrated",
+          "severity": 2
+        },
+        {
+          "day": 15,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 16,
+          "kind": "common-channel-founded",
+          "severity": 3
+        },
+        {
+          "day": 20,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 25,
+          "kind": "power-emerged",
+          "severity": 3
+        },
+        {
+          "day": 30,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 34,
+          "kind": "power-redistribution",
+          "severity": 2
+        },
+        {
+          "day": 44,
+          "kind": "power-redistribution",
+          "severity": 2
+        },
+        {
+          "day": 54,
+          "kind": "channel-authority-ended",
+          "severity": 3
+        },
+        {
+          "day": 61,
+          "kind": "settlement-adapted",
+          "severity": 2
+        }
+      ],
+      "realPlayInterruptionsPerHour": null,
+      "speed": "Engine advanced one day per call; no real-play speed or wall-clock measurement."
+    },
+    {
+      "route": "observe",
+      "attention": "attentive",
+      "followed": [
+        "s-hearth",
+        "c-nera"
+      ],
+      "simulatedDays": 60,
+      "simulatedHours": 1440,
+      "stops": 12,
+      "stopsPerSimulatedHour": 0.008333333333333333,
+      "stopRecords": [
+        {
+          "day": 4,
+          "kind": "seed-decision",
+          "severity": 3
+        },
+        {
+          "day": 5,
+          "kind": "provisioning-pressure",
+          "severity": 2
+        },
+        {
+          "day": 7,
+          "kind": "households-migrated",
+          "severity": 2
+        },
+        {
+          "day": 15,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 16,
+          "kind": "common-channel-founded",
+          "severity": 3
+        },
+        {
+          "day": 20,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 25,
+          "kind": "power-emerged",
+          "severity": 3
+        },
+        {
+          "day": 30,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 34,
+          "kind": "power-redistribution",
+          "severity": 2
+        },
+        {
+          "day": 44,
+          "kind": "power-redistribution",
+          "severity": 2
+        },
+        {
+          "day": 54,
+          "kind": "channel-authority-ended",
+          "severity": 3
+        },
+        {
+          "day": 61,
+          "kind": "settlement-adapted",
+          "severity": 2
+        }
+      ],
+      "realPlayInterruptionsPerHour": null,
+      "speed": "Engine advanced one day per call; no real-play speed or wall-clock measurement."
+    },
+    {
+      "route": "open-east",
+      "attention": "quiet",
+      "followed": [
+        "s-hearth",
+        "c-nera"
+      ],
+      "simulatedDays": 60,
+      "simulatedHours": 1440,
+      "stops": 3,
+      "stopsPerSimulatedHour": 0.0020833333333333333,
+      "stopRecords": [
+        {
+          "day": 4,
+          "kind": "seed-decision",
+          "severity": 3
+        },
+        {
+          "day": 13,
+          "kind": "power-emerged",
+          "severity": 3
+        },
+        {
+          "day": 42,
+          "kind": "channel-authority-ended",
+          "severity": 3
+        }
+      ],
+      "realPlayInterruptionsPerHour": null,
+      "speed": "Engine advanced one day per call; no real-play speed or wall-clock measurement."
+    },
+    {
+      "route": "open-east",
+      "attention": "balanced",
+      "followed": [
+        "s-hearth",
+        "c-nera"
+      ],
+      "simulatedDays": 60,
+      "simulatedHours": 1440,
+      "stops": 13,
+      "stopsPerSimulatedHour": 0.009027777777777777,
+      "stopRecords": [
+        {
+          "day": 3,
+          "kind": "eastern-contact",
+          "severity": 2
+        },
+        {
+          "day": 4,
+          "kind": "seed-decision",
+          "severity": 3
+        },
+        {
+          "day": 8,
+          "kind": "culture-diverged",
+          "severity": 2
+        },
+        {
+          "day": 13,
+          "kind": "power-emerged",
+          "severity": 3
+        },
+        {
+          "day": 22,
+          "kind": "power-redistribution",
+          "severity": 2
+        },
+        {
+          "day": 29,
+          "kind": "provisioning-pressure",
+          "severity": 2
+        },
+        {
+          "day": 31,
+          "kind": "settlement-adapted",
+          "severity": 2
+        },
+        {
+          "day": 32,
+          "kind": "power-redistribution",
+          "severity": 2
+        },
+        {
+          "day": 39,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 42,
+          "kind": "channel-authority-ended",
+          "severity": 3
+        },
+        {
+          "day": 43,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 47,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 51,
+          "kind": "site-surveyed",
+          "severity": 2
+        }
+      ],
+      "realPlayInterruptionsPerHour": null,
+      "speed": "Engine advanced one day per call; no real-play speed or wall-clock measurement."
+    },
+    {
+      "route": "open-east",
+      "attention": "attentive",
+      "followed": [
+        "s-hearth",
+        "c-nera"
+      ],
+      "simulatedDays": 60,
+      "simulatedHours": 1440,
+      "stops": 15,
+      "stopsPerSimulatedHour": 0.010416666666666666,
+      "stopRecords": [
+        {
+          "day": 3,
+          "kind": "eastern-contact",
+          "severity": 2
+        },
+        {
+          "day": 4,
+          "kind": "seed-decision",
+          "severity": 3
+        },
+        {
+          "day": 8,
+          "kind": "culture-diverged",
+          "severity": 2
+        },
+        {
+          "day": 13,
+          "kind": "power-emerged",
+          "severity": 3
+        },
+        {
+          "day": 22,
+          "kind": "power-redistribution",
+          "severity": 2
+        },
+        {
+          "day": 29,
+          "kind": "provisioning-pressure",
+          "severity": 2
+        },
+        {
+          "day": 31,
+          "kind": "settlement-adapted",
+          "severity": 2
+        },
+        {
+          "day": 32,
+          "kind": "power-redistribution",
+          "severity": 2
+        },
+        {
+          "day": 39,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 42,
+          "kind": "channel-authority-ended",
+          "severity": 3
+        },
+        {
+          "day": 43,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 47,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 51,
+          "kind": "site-surveyed",
+          "severity": 2
+        },
+        {
+          "day": 52,
+          "kind": "power-redistribution",
+          "severity": 1
+        },
+        {
+          "day": 62,
+          "kind": "power-redistribution",
+          "severity": 1
+        }
+      ],
+      "realPlayInterruptionsPerHour": null,
+      "speed": "Engine advanced one day per call; no real-play speed or wall-clock measurement."
+    }
+  ],
+  "sessions": [
+    {
+      "name": "The seed decision",
+      "fromDay": 2,
+      "toDay": 4,
+      "recordedDiscoveries": [
+        "The vessels above the water",
+        "Mira checks the other end",
+        "Room for the saved seeds",
+        "A heading for ordinary things",
+        "Two more answers in the glass"
+      ],
+      "openThreads": [
+        "A letter beyond the silt",
+        "Who is the water for?",
+        "The hall that stayed behind"
+      ],
+      "qualitativeEnjoyment": "Not assessed. This is an automated load/advance/digest sequence."
+    },
+    {
+      "name": "A transmitted repair",
+      "fromDay": 4,
+      "toDay": 16,
+      "recordedDiscoveries": [
+        "A promise with three signatures",
+        "A pattern with a meal attached",
+        "Oren works from his end",
+        "Hearth looks beyond the roofs",
+        "Households move from Hearth to Choir",
+        "Hearth counts the stores twice"
+      ],
+      "openThreads": [
+        "Enough for Hearth?",
+        "Three readings, one answer",
+        "The hall that stayed behind"
+      ],
+      "qualitativeEnjoyment": "Not assessed. This is an automated load/advance/digest sequence."
+    },
+    {
+      "name": "The responding channel",
+      "fromDay": 16,
+      "toDay": 28,
+      "recordedDiscoveries": [
+        "The channel answers out of turn",
+        "Hearth looks beyond the roofs",
+        "A debt you can reproduce",
+        "Hearth looks beyond the roofs"
+      ],
+      "openThreads": [
+        "Enough for Hearth?",
+        "The hall that stayed behind",
+        "Who gets to answer for the channel?"
+      ],
+      "qualitativeEnjoyment": "Not assessed. This is an automated load/advance/digest sequence."
+    }
+  ],
+  "interventionPrediction": {
+    "tester": "Implementation-aware agent; not an independent blinded player",
+    "immediate": "Exposing the Silt Saddle makes its passage usable.",
+    "later": "If done before the seed decision, Oren’s known repair can change Nera’s alternative set.",
+    "status": "Both confirmed by recorded route and decision state. These expectations were derived from known rules; no prospective human prediction test is claimed."
+  }
+}

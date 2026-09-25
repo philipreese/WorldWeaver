@@ -1,0 +1,59 @@
+name: Mobile preview
+
+# Main updates the repository's one Pages site after integration.
+# A manual run can preview another explicitly authorized branch on that same site.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: worldweaver-pages-preview
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # Read the existing Pages configuration. Do not enable Pages or alter
+      # repository settings from the workflow.
+      - uses: actions/configure-pages@v5
+      - run: npm run check
+      - run: npm test
+      - run: npm run build
+      - run: npm run verify:build
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      pages: write
+      id-token: write
+    # Keep the repository's real deployment protections in force. A branch
+    # restriction must allow the actual selected branch (normally main).
+    # Do not bypass it with a different environment or pull_request_target.
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish the verified preview
+        id: deployment
+        uses: actions/deploy-pages@v4

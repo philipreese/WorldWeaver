@@ -1,0 +1,64 @@
+{
+  "kind": "Agent walkthrough in cloud Chrome on published Pages; mouse/keyboard controls. Not a human playtest, real phone, touch emulation, offline/install check, sustained FPS measurement, or continuous video.",
+  "url": "https://philipreese.github.io/WorldWeaver/",
+  "sessions": [
+    {
+      "build": "813e6fb73ec41dd32931614cb35b9523334e29fd",
+      "checks": [
+        "Fresh world opens paused on day 2 with visible scene and follow list",
+        "Meet Nera and Walk with them reach neighborhood exploration",
+        "Advance to day 4 with the passage closed: The vessels above the water; observed effects and recorded alternatives inspectable",
+        "Timeline day 2 and Branch here preserve source future",
+        "Open passage in the branch and advance to day 4: Nera makes room for a stranger; Oren migration and workshop consequences recorded",
+        "Both First history and Telling 2 remain at day 4; switching to the source preserves the dry-loft decision",
+        "Reload keeps the saved day and restores paused playback"
+      ]
+    },
+    {
+      "build": "3e018c1ac64b2d11b9cdc8de66d38fb6558ef43a",
+      "checks": [
+        "Existing day-4 archive opens with the new Guide button, preserving its two histories",
+        "Guide meets Nera, opens coat styling, and follows real progress into the next chapter",
+        "Choose Lilac for Nera; choose Sky trim and a Lantern for the shared Warm Table home",
+        "Home preview names its actual residents and clearly identifies shared decorations",
+        "Guide adapts to an already-recorded seed decision, opens its scene, then expands the factual explanation",
+        "Reload restores day 4 paused, Lilac selected for Nera, Sky and Lantern selected for the home, and guide progress at Try another possibility",
+        "Walk with them returns to the neighborhood; Nera visibly wears the chosen Lilac color"
+      ]
+    },
+    {
+      "build": "fb2d83036cfe22c78d487458e7d9fcd4c0db0d5c",
+      "simulationVersion": "2.0.0 (fresh world); existing 1.0.0 archive also opened",
+      "checks": [
+        "Published settings show build fb2d8303 and clearly identify the existing original-rules archive at day 4",
+        "Invoked export before replacing the agent test world; file delivery and cross-context import remain unverified",
+        "Shape another beginning opens the default new world; advancement records the new habitat survey and paid garden recovery",
+        "At day 7, the History panel exposes household migration from Hearth to Choir",
+        "Expanded Why did this happen: observed 52 to 46 and 16 to 22 population changes, travel cost, prior reserves and available/unavailable alternatives, with causal links to shortage and surveys",
+        "Reload retains day 7 and returns paused with All changes saved"
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "browser-branch-813e6fb.jpg",
+      "description": "Opened passage branch on day4; regional neighborhood and route record visible. Captured before the audience-presentation update."
+    },
+    {
+      "file": "browser-home-3e018c1.jpg",
+      "description": "Live Chrome home customization: Sky trim and a Lantern at The Warm Table, with its actual residents listed."
+    },
+    {
+      "file": "browser-guide-streets-3e018c1.jpg",
+      "description": "Live Chrome neighborhood after reload: Lilac Nera at the Seed Archive, guide ready for the next possibility."
+    }
+  ],
+  "remaining": [
+    "Real mobile/touch/orientation",
+    "Browser offline/install and cross-context import",
+    "Sustained phone and desktop performance",
+    "Continuous walkthrough video",
+    "Human prediction and three return sessions"
+  ],
+  "downloadLimit": "The prior browser download event was not captured. File contents and history round-trip are verified in Node; actual browser file delivery and cross-context import remain open."
+}

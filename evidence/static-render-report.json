@@ -1,0 +1,361 @@
+{
+  "kind": "Static renderer frames; not browser screenshots, app interaction, or device performance measurements.",
+  "scenario": {
+    "seed": 8417,
+    "tier": 2,
+    "commands": [
+      {
+        "atTick": 0,
+        "kind": "open-route",
+        "targetId": "r-hearth-lattice"
+      },
+      {
+        "atTick": 4,
+        "kind": "offer-refuge",
+        "targetId": "s-hearth"
+      }
+    ],
+    "checkpoints": [
+      {
+        "tick": 24,
+        "settlements": [
+          {
+            "id": "s-hearth",
+            "population": 53,
+            "synthetics": 2,
+            "collective": 3,
+            "energy": 63.01,
+            "habitat": 70.01,
+            "structures": 11
+          },
+          {
+            "id": "s-lattice",
+            "population": 13,
+            "synthetics": 12,
+            "collective": 0,
+            "energy": 73.04,
+            "habitat": 43,
+            "structures": 7
+          },
+          {
+            "id": "s-choir",
+            "population": 16,
+            "synthetics": 0,
+            "collective": 30,
+            "energy": 17.8,
+            "habitat": 77.54,
+            "structures": 11
+          },
+          {
+            "id": "s-hollow",
+            "population": 0,
+            "synthetics": 0,
+            "collective": 0,
+            "energy": 5,
+            "habitat": 24,
+            "structures": 2
+          }
+        ],
+        "power": {
+          "id": "p-undersong",
+          "emergedAt": 13,
+          "lastActAt": 22,
+          "strength": 40
+        },
+        "powerActs": 1,
+        "institution": "active"
+      },
+      {
+        "tick": 42,
+        "settlements": [
+          {
+            "id": "s-hearth",
+            "population": 56,
+            "synthetics": 2,
+            "collective": 3,
+            "energy": 75.99,
+            "habitat": 73.61,
+            "structures": 12
+          },
+          {
+            "id": "s-lattice",
+            "population": 13,
+            "synthetics": 12,
+            "collective": 0,
+            "energy": 77.36,
+            "habitat": 43,
+            "structures": 7
+          },
+          {
+            "id": "s-choir",
+            "population": 16,
+            "synthetics": 0,
+            "collective": 30,
+            "energy": 16.9,
+            "habitat": 81.22,
+            "structures": 11
+          },
+          {
+            "id": "s-hollow",
+            "population": 0,
+            "synthetics": 0,
+            "collective": 0,
+            "energy": 5,
+            "habitat": 24,
+            "structures": 2
+          }
+        ],
+        "power": {
+          "id": "p-undersong",
+          "emergedAt": 13,
+          "lastActAt": 42,
+          "strength": 48
+        },
+        "powerActs": 3,
+        "institution": "collapsed"
+      }
+    ]
+  },
+  "frames": [
+    {
+      "file": "render-region.webp",
+      "width": 1440,
+      "height": 900,
+      "tier": 2,
+      "tick": 2,
+      "scale": "region",
+      "focus": null,
+      "renderMs": 114.12,
+      "view": {
+        "scale": "region",
+        "selectedId": null,
+        "followId": null,
+        "camera": {
+          "x": 610,
+          "y": 390,
+          "zoom": 1.0227272727272727
+        },
+        "quality": "high",
+        "dpr": 1,
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "file": "render-neighborhood.webp",
+      "width": 1440,
+      "height": 900,
+      "tier": 2,
+      "tick": 2,
+      "scale": "neighborhood",
+      "focus": "s-hearth",
+      "renderMs": 22.01,
+      "view": {
+        "scale": "neighborhood",
+        "selectedId": "s-hearth",
+        "followId": null,
+        "camera": {
+          "x": 420,
+          "y": 458,
+          "zoom": 4.5
+        },
+        "quality": "high",
+        "dpr": 1,
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "file": "render-phone.webp",
+      "width": 390,
+      "height": 680,
+      "tier": 2,
+      "tick": 2,
+      "scale": "neighborhood",
+      "focus": "k-hearth-door",
+      "renderMs": 22.57,
+      "view": {
+        "scale": "neighborhood",
+        "selectedId": "k-hearth-door",
+        "followId": null,
+        "camera": {
+          "x": 420,
+          "y": 414.6,
+          "zoom": 2
+        },
+        "quality": "high",
+        "dpr": 1,
+        "width": 390,
+        "height": 680
+      }
+    },
+    {
+      "file": "render-tier1-region.webp",
+      "width": 1440,
+      "height": 900,
+      "tier": 1,
+      "tick": 0,
+      "scale": "region",
+      "focus": null,
+      "renderMs": 17.97,
+      "view": {
+        "scale": "region",
+        "selectedId": null,
+        "followId": null,
+        "camera": {
+          "x": 610,
+          "y": 390,
+          "zoom": 1.0227272727272727
+        },
+        "quality": "high",
+        "dpr": 1,
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "file": "render-tier1-neighborhood.webp",
+      "width": 1440,
+      "height": 900,
+      "tier": 1,
+      "tick": 2,
+      "scale": "neighborhood",
+      "focus": "s-hearth",
+      "renderMs": 15.52,
+      "view": {
+        "scale": "neighborhood",
+        "selectedId": "s-hearth",
+        "followId": null,
+        "camera": {
+          "x": 420,
+          "y": 458,
+          "zoom": 4.5
+        },
+        "quality": "high",
+        "dpr": 1,
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "file": "render-tier2-day24-region.webp",
+      "width": 1440,
+      "height": 900,
+      "tier": 2,
+      "tick": 24,
+      "scale": "region",
+      "focus": null,
+      "renderMs": 23.82,
+      "view": {
+        "scale": "region",
+        "selectedId": null,
+        "followId": null,
+        "camera": {
+          "x": 610,
+          "y": 390,
+          "zoom": 1.0227272727272727
+        },
+        "quality": "high",
+        "dpr": 1,
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "file": "render-tier2-day24-lattice.webp",
+      "width": 1440,
+      "height": 900,
+      "tier": 2,
+      "tick": 24,
+      "scale": "neighborhood",
+      "focus": "s-lattice",
+      "renderMs": 19.64,
+      "view": {
+        "scale": "neighborhood",
+        "selectedId": "s-lattice",
+        "followId": null,
+        "camera": {
+          "x": 840,
+          "y": 348,
+          "zoom": 4.5
+        },
+        "quality": "high",
+        "dpr": 1,
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "file": "render-tier2-day24-choir.webp",
+      "width": 1440,
+      "height": 900,
+      "tier": 2,
+      "tick": 24,
+      "scale": "neighborhood",
+      "focus": "s-choir",
+      "renderMs": 15.08,
+      "view": {
+        "scale": "neighborhood",
+        "selectedId": "s-choir",
+        "followId": null,
+        "camera": {
+          "x": 580,
+          "y": 188,
+          "zoom": 4.5
+        },
+        "quality": "high",
+        "dpr": 1,
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "file": "render-tier2-day42-hearth.webp",
+      "width": 1440,
+      "height": 900,
+      "tier": 2,
+      "tick": 42,
+      "scale": "neighborhood",
+      "focus": "s-hearth",
+      "renderMs": 16.83,
+      "view": {
+        "scale": "neighborhood",
+        "selectedId": "s-hearth",
+        "followId": null,
+        "camera": {
+          "x": 420,
+          "y": 458,
+          "zoom": 4.5
+        },
+        "quality": "high",
+        "dpr": 1,
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "file": "render-tier2-day42-power.webp",
+      "width": 1440,
+      "height": 900,
+      "tier": 2,
+      "tick": 42,
+      "scale": "neighborhood",
+      "focus": "p-undersong",
+      "renderMs": 14.35,
+      "view": {
+        "scale": "neighborhood",
+        "selectedId": "p-undersong",
+        "followId": null,
+        "camera": {
+          "x": 586.56,
+          "y": 113.6,
+          "zoom": 4.5
+        },
+        "quality": "high",
+        "dpr": 1,
+        "width": 1440,
+        "height": 900
+      }
+    }
+  ]
+}

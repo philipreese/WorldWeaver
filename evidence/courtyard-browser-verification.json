@@ -1,0 +1,31 @@
+{
+  "date": "2026-09-25",
+  "kind": "Agent mouse/keyboard walkthrough in cloud Chrome on published Pages. This browser disables WebGL; the 3D request exercised the illustrated fallback, not GPU rendering.",
+  "build": "5639c231a2b2d50599634f605acc436f0b145ef2",
+  "releaseGraph": "d842b82d4229",
+  "urls": [
+    "https://philipreese.github.io/WorldWeaver/lab/?renderer=three",
+    "https://philipreese.github.io/WorldWeaver/lab/?renderer=canvas",
+    "https://philipreese.github.io/WorldWeaver/"
+  ],
+  "viewport": {
+    "width": 1363,
+    "height": 936
+  },
+  "checks": [
+    "The lab loaded the current immutable app and Three.js modules; WebGL creation failed because GL_VENDOR and GL_RENDERER were Disabled. A fresh illustrated canvas remained playable with an explicit fallback notice.",
+    "Placed a carved bench on the left porch, turned it, moved it to the right porch, and placed a wildflower planter in the left garden.",
+    "Renamed Pip to Moss, selected the Moss coat and Little scarf, then used repeat throw controls and a lawn click. Day 2 remained paused and all changes saved.",
+    "The disconnected channel board disabled Open the spring. Turning middle-left and upper-middle stones showed a connected preview and enabled the explicit action.",
+    "Opening the spring showed flowing water and the completed activity. See what changed opened the actual day-2 Water finds the old channels history record.",
+    "Same-tab switching from the 3D fallback to Illustrated and back preserved furniture, companion name, coat, scarf and completed spring. Reload remained paused on day 2 with the same saved choices.",
+    "After visiting the lab, normal root navigation opened the current illustrated courtyard without comparison controls, resolving the earlier stale-shell observation.",
+    "A historical day-0 view disabled courtyard entry and time advancement. Return to present restored access to the completed garden."
+  ],
+  "screenshot": "browser-courtyard-three-fallback.jpg",
+  "limits": [
+    "No WebGL frame was produced. 3D appearance, shader execution, camera orbit/reset and 3D pointer behavior still require a WebGL-enabled browser.",
+    "The 137 Node tests include actual Three geometry/state/raycast checks, not browser GPU rendering. The 25 DOM/Canvas checks are separate synthetic interface evidence.",
+    "No real phone or tablet, touch emulation, sustained FPS, browser offline/install, separate-context transfer, continuous video or uncoached human playtest was performed."
+  ]
+}

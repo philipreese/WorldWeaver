@@ -39,3 +39,7 @@ npm run verify:build
 Production HTML points at one content-versioned module graph under `releases/<hash>/`. Main and lab share it. The offline worker fetches navigation pages from the network when available, then falls back to the corresponding cached entry. Three.js and the 3D scene load only when requested and are cached after use. Core installation must finish before the worker activates; no open page is forced to reload and no saved world is cleared.
 
 Retained verification distinguishes Node tests, synthetic DOM interaction, browser GPU rendering and real-device observations. Phone touch, sustained phone performance and uncoached play remain checks to perform on the actual test, not inferred properties of choosing Three.js.
+
+## Published check
+
+The live agent walkthrough of build `5639c231` verified furniture, companion choices and repeat play, spring preview/commit/history, reload and same-tab switching. Cloud Chrome has WebGL disabled and used the intended illustrated fallback. Actual 3D appearance, orbit/reset and GPU performance remain unverified in that environment. See the [browser report](../evidence/courtyard-browser-verification.json) and its explicitly labeled [fallback screenshot](../evidence/browser-courtyard-three-fallback.jpg).

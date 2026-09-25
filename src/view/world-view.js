@@ -19,7 +19,7 @@ export class WorldView {
     this.camera={x:600,y:390,zoom:1};this.target={...this.camera};
     this.index=new Map();this.people=new Map();this.hits=[];this.pointers=new Map();
     this.frameId=null;this.lastFrame=0;this.lastMeasure=0;this.frameCount=0;this.frameCosts=[];
-    this.destroyed=false;this.dirty=true;this.background=null;this.landscape=null;
+    this.destroyed=false;this.visible=true;this.dirty=true;this.background=null;this.landscape=null;
     this._listeners=[];this._lastPointer=null;this._gestureDistance=0;this._dragged=false;
     this._bind('pointerdown',event=>this._pointerDown(event));
     this._bind('pointermove',event=>this._pointerMove(event));
@@ -142,6 +142,14 @@ export class WorldView {
     this.reducedMotion=Boolean(value);if(value){this.camera={...this.target};for(const p of this.people.values()){p.x=p.tx;p.y=p.ty;}}this.invalidate();
   }
 
+  // The courtyard replaces this canvas. Hidden world views retain their camera
+  // and snapshot without spending frames or altering the simulation clock.
+  setVisible(value) {
+    this.visible=Boolean(value);
+    if(!this.visible){if(this.frameId!==null)cancelAnimationFrame(this.frameId);this.frameId=null;}
+    else{this.lastFrame=0;this.resize();this.invalidate();}
+  }
+
   _setScaleName(scale) {if(this.scale!==scale){this.scale=scale;this.onScaleChange(scale);}}
   _scaleFromZoom() {this._setScaleName(this.target.zoom<this._zoomFor('settlement')*.72?'region':this.target.zoom<this._zoomFor('neighborhood')*.78?'settlement':'neighborhood');}
   _nearestSettlement() {let best=null,d=Infinity;for(const s of this.world?.settlements||[]){const n=distance(s,this.target);if(n<d){d=n;best=this.index.get(s.id);}}return best;}
@@ -211,11 +219,11 @@ export class WorldView {
 
   invalidate() {
     this.dirty=true;
-    if(!this.destroyed&&this.frameId===null&&!document.hidden)this.frameId=requestAnimationFrame(time=>this._frame(time));
+    if(!this.destroyed&&this.visible&&this.frameId===null&&!document.hidden)this.frameId=requestAnimationFrame(time=>this._frame(time));
   }
 
   _frame(time) {
-    this.frameId=null;if(this.destroyed||document.hidden)return;
+    this.frameId=null;if(this.destroyed||!this.visible||document.hidden)return;
     const minFrame=this.effectiveQuality==='low'?32:15;
     if(time-this.lastFrame<minFrame&&!this.dirty){this.frameId=requestAnimationFrame(t=>this._frame(t));return;}
     const dt=clamp(time-(this.lastFrame||time-16),1,70);this.lastFrame=time;

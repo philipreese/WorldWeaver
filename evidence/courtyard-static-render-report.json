@@ -1,0 +1,83 @@
+{
+  "kind": "Static native Canvas frames. Not browser screenshots, app interaction, or device performance measurements.",
+  "frames": [
+    {
+      "file": "courtyard-first-visit.webp",
+      "width": 1200,
+      "height": 840,
+      "mode": "welcome",
+      "waterRunning": false,
+      "firstRenderMs": 92.15,
+      "camera": {
+        "x": 508,
+        "y": 408,
+        "zoom": 1.2972972972972974
+      }
+    },
+    {
+      "file": "courtyard-furnished.webp",
+      "width": 1200,
+      "height": 840,
+      "mode": "welcome",
+      "waterRunning": false,
+      "firstRenderMs": 86.17,
+      "camera": {
+        "x": 508,
+        "y": 408,
+        "zoom": 1.2972972972972974
+      }
+    },
+    {
+      "file": "courtyard-phone-decorate.webp",
+      "width": 390,
+      "height": 310,
+      "mode": "decorate",
+      "waterRunning": false,
+      "firstRenderMs": 76.27,
+      "camera": {
+        "x": 390,
+        "y": 474,
+        "zoom": 0.6190476190476191
+      }
+    },
+    {
+      "file": "courtyard-phone-companion.webp",
+      "width": 390,
+      "height": 310,
+      "mode": "companion",
+      "waterRunning": false,
+      "firstRenderMs": 80.1,
+      "camera": {
+        "x": 638,
+        "y": 531,
+        "zoom": 0.8478260869565217
+      }
+    },
+    {
+      "file": "courtyard-phone-spring-preview.webp",
+      "width": 390,
+      "height": 310,
+      "mode": "water",
+      "waterRunning": false,
+      "firstRenderMs": 73.47,
+      "camera": {
+        "x": 785,
+        "y": 414,
+        "zoom": 0.9800000000000001
+      }
+    },
+    {
+      "file": "courtyard-phone-spring-restored.webp",
+      "width": 390,
+      "height": 310,
+      "mode": "water",
+      "waterRunning": true,
+      "firstRenderMs": 88.37,
+      "camera": {
+        "x": 785,
+        "y": 414,
+        "zoom": 0.9800000000000001
+      }
+    }
+  ]
+}

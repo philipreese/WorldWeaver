@@ -1,15 +1,16 @@
 # Verification and remaining release work
 
-2026-09-24. The preview combines an authored opening with reusable settlement ecology. The required release is **incomplete**: general personal/institutional situations and persistent deprivation remain substantive gaps, alongside the browser, device, and experience checks below. Test counts establish specific properties, not enjoyment or visual quality.
+2026-09-25. The preview combines an authored opening with reusable settlement ecology. The required release is **incomplete**: general personal/institutional situations and persistent deprivation remain substantive gaps, alongside the browser, device, and experience checks below. Test counts establish specific properties, not enjoyment or visual quality.
 
 ## Retained evidence
 
 | Evidence | Verified scope | Limits |
 | --- | --- | --- |
-| `npm test` — 117 passing | 22 simulation, 37 history/recovery, 14 ecology, 14 director, 11 guide, 9 renderer, 10 statistics tests | Node execution; renderer input tests use synthetic events |
-| [UI report](../evidence/ui-integration.json) — 18 passing | Real app handlers: opening, saved customization, guide progression/restart, failed-save messaging, exploration panel, decision layers, history/fork, refuge, relic discovery, power, institution, background pause, generated settlement/buildings/decision and rewind | LinkeDOM and Skia Canvas; no browser engine, CSS layout, real touch, accessibility audit, or device performance |
-| [Build report](../evidence/build-verification.json) | `/WorldWeaver/` HTTP path, 29 precached responses, worker activation, simulated offline cache reads | Worker evaluated in Node with a cache mock; actual browser offline reload and installation remain unverified |
+| `npm test` — 132 passing | Existing simulation/history suites plus optional courtyard metadata, real channel connectivity, furniture editing, companion choices and seven courtyard renderer checks | Node execution; renderer input tests use synthetic events |
+| [UI report](../evidence/ui-integration.json) — 23 passing | Courtyard placement/move/rotation/removal, named companion appearance and repeated play, gated spring preview/commit, historical branch isolation and import/save recovery; existing app handlers: opening, saved customization, guide progression/restart, failed-save messaging, exploration panel, decision layers, history/fork, refuge, relic discovery, power, institution, background pause, generated settlement/buildings/decision and rewind | LinkeDOM and native Canvas; no browser engine, CSS layout, real touch, accessibility audit, or device performance |
+| [Build report](../evidence/build-verification.json) | `/WorldWeaver/` HTTP path, 33 precached responses, worker activation, simulated offline cache reads | Worker evaluated in Node with a cache mock; actual browser offline reload and installation remain unverified |
 | [Causal report](../evidence/causal-scenarios.json) | Preserved alternate futures, changed motives, exact decision context, director stops, three automated save-reload sequences | Agent-produced deterministic evidence; no human participants or qualitative session claims |
+| [Courtyard render report](../evidence/courtyard-static-render-report.json) | Six reproducible frames: first visit, furnishings, companion, preview and restored spring | Native Canvas only; phone dimensions are not a real phone test |
 | [Render report](../evidence/static-render-report.json) and `evidence/*.webp` | 10 retained engine 1.0.0 frames from the production renderer, including three life forms and surviving power/infrastructure | Static Canvas renders; `render-phone` describes dimensions only. Timings are single hosted Node renders, not sustained FPS |
 | [Browser report](../evidence/browser-verification.json) | Earlier engine 1.0.0 opening/branch/guide/styles; current build fb2d8303 old-save notice, fresh v2 survey/recovery/migration explanation and paused reload | Agent mouse/keyboard walkthrough; no real phone, touch emulation, human playtesting, sustained FPS, or continuous video |
 | [Portable examples](../public/worlds) | Four engine 2.0.0 histories exported and imported with exact state equality | Separate browser-context transfer remains unverified |
@@ -21,6 +22,12 @@ The following earlier exploratory review describes the original engine, not a su
 Review found and corrected historical digest leakage, save readback rollback, an unreachable relic intervention, invalid scene participants, information used before arrival, unaffordable refuge, and succession beyond the ordinary playable command horizon. The current independent review also corrected a history-trust loophole, full-pantries blocking migration, missing collective consumption in forecasts, invalid reoccupation capacity, and missing abandonment/causal traces. No critical defect remained from those reported findings; explicit model gaps remain.
 
 The guide/customization review corrected a branch suggestion that retained an already-opened path, a stalled guide after all interventions were used, and a style-save success notice after storage failure. Cosmetic tests verify unchanged snapshots, decisions, fingerprints and hit targets; optional guide progress records interface actions only. The design invites learning through observation and comparison, but no educational efficacy claim or completed child playtest is made.
+
+## Courtyard increment
+
+The first #8 example is verified locally with the counts above. Independent review corrected an invalid home-trim identity, a disconnected-looking restored channel on older saves, stale save warnings after successful import, and fetch animation replay during saved-state loading. Cosmetic choices remain outside simulation fingerprints; the spring changes the current world only after an explicit available intervention. Restored gardens do not create a repeat chore.
+
+Static scene renderings and synthetic phone-sized input coordinates do not establish actual phone layout, touch behavior or enjoyment. The short uncoached visit in #8 remains open, alongside the broader release work below.
 
 ## Reproduce
 
@@ -45,7 +52,7 @@ npm run verify:ui
 npm run render:evidence
 ```
 
-Skia's native binary must support the machine used to run it. These optional commands do not launch a browser. The runtime game remains dependency-free.
+`verify:ui` also accepts `CANVAS_MODULE` pointing to `@napi-rs/canvas`; that backend was used for the courtyard integration run. The native binary must support the machine used to run it. These optional commands do not launch a browser. The runtime game remains dependency-free.
 
 ## Causal and attention examples
 

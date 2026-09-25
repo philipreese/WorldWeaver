@@ -15,6 +15,7 @@
     <link rel="icon" href="./icon.svg" type="image/svg+xml" />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="stylesheet" href="./src/style.css" />
+    <link rel="stylesheet" href="./src/neighborhood.css" />
   </head>
   <body>
     <div id="app">
@@ -29,6 +30,7 @@
           ><span id="run-state">Paused</span>
         </div>
         <div class="top-actions">
+          <button id="courtyard" class="courtyard-button" aria-label="Visit the courtyard" aria-pressed="false">⌂ <span>Courtyard</span></button>
           <span id="save-state" role="status">Starting…</span
           ><button
             id="sound-toggle"
@@ -49,6 +51,7 @@
         </div>
       </header>
       <main id="world-shell">
+        <section id="neighborhood" aria-label="Hearth courtyard" hidden></section>
         <canvas
           id="world"
           tabindex="0"

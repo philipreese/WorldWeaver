@@ -1,0 +1,863 @@
+/* A single courtyard, with tools beside it. Keeping the canvas mounted while
+   controls change also keeps its coordinates and pointer handling stable. */
+body.neighborhood-open #app {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+body.neighborhood-open .topbar {
+  flex: none;
+}
+body.neighborhood-open #world-shell {
+  flex: 1;
+  height: auto;
+  min-height: 0;
+}
+.neighborhood-surface {
+  --nh-paper: #f2e8d4;
+  --nh-paper-dark: #e7dac2;
+  --nh-ink: #273c36;
+  --nh-muted: #637367;
+  --nh-border: #28473a24;
+  --nh-green: #42634e;
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #263c35;
+  outline: none !important;
+}
+.neighborhood-surface button,
+.neighborhood-surface select,
+.neighborhood-surface input,
+.neighborhood-surface summary {
+  min-height: 44px;
+  border-radius: 9px;
+  font-size: 13px;
+  touch-action: manipulation;
+}
+.neighborhood-surface button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.neighborhood-surface button:focus-visible,
+.neighborhood-surface select:focus-visible,
+.neighborhood-surface input:focus-visible,
+.neighborhood-surface summary:focus-visible {
+  outline: 3px solid #bb772c;
+  outline-offset: 2px;
+}
+.nh-icon {
+  display: inline-block;
+  width: 23px;
+  height: 23px;
+  flex: none;
+}
+.nh-header {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 78px;
+  padding: 10px 26px;
+  background: #1d302b;
+  color: #f2e3c9;
+  border-bottom: 1px solid #e7d4a41d;
+}
+.nh-home {
+  justify-content: flex-start !important;
+  border: 0;
+  padding: 3px 0;
+  color: inherit;
+  text-align: left;
+}
+.nh-home:hover {
+  background: transparent;
+  color: #fff6e4;
+}
+.nh-home .nh-icon {
+  width: 31px;
+  height: 31px;
+  margin-right: 7px;
+  color: #d8b478;
+}
+.nh-home small {
+  display: block;
+  margin-bottom: 3px;
+  color: #a7b49b;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 1.9px;
+}
+.nh-home strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 27px;
+  font-weight: normal;
+}
+.nh-header-actions {
+  display: flex;
+  gap: 12px;
+}
+.nh-help-button {
+  color: #beccba;
+  border-color: transparent;
+}
+.nh-exit {
+  color: #f0dfbf;
+  border-color: #d8c89f45;
+}
+.nh-help {
+  position: absolute;
+  top: 78px;
+  right: 22px;
+  z-index: 4;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  width: min(520px, calc(100% - 36px));
+  max-height: calc(100% - 100px);
+  overflow: auto;
+  padding: 25px;
+  color: var(--nh-ink);
+  background: var(--nh-paper);
+  border: 1px solid #dacbac;
+  border-radius: 14px;
+  box-shadow: 0 14px 60px #05181199;
+}
+.nh-help h2 {
+  font-size: 25px;
+  margin: 0 0 12px;
+}
+.nh-help p {
+  margin-top: 10px;
+  font-size: 13px;
+}
+.nh-help .nh-help-note {
+  border-top: 1px solid var(--nh-border);
+  padding-top: 12px;
+  color: var(--nh-muted);
+  font-size: 12px;
+}
+.nh-help > button {
+  min-width: 44px;
+  padding: 5px;
+  color: var(--nh-ink);
+  border-color: var(--nh-border);
+}
+.nh-activities {
+  position: relative;
+  flex: none;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 18px;
+  background: #263c34;
+  border-bottom: 1px solid #e2cb9726;
+}
+.nh-activities button {
+  min-width: 174px;
+  padding-inline: 22px;
+  color: #c7d2bc;
+  border-color: transparent;
+}
+.nh-activities button:hover {
+  background: #e1d5b011;
+}
+.nh-activities button[aria-pressed="true"] {
+  color: #fff0cb;
+  background: #cfbd8830;
+  border-color: #d6c1964a;
+}
+.nh-activities button span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nh-main {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+}
+.nh-stage {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 45% 35%, #688169, #29433b 80%);
+}
+#neighborhood-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: manipulation;
+  outline-offset: -5px;
+}
+.nh-scene-tip {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: calc(100% - 34px);
+  padding: 8px 16px;
+  border: 1px solid #e3d1a935;
+  border-radius: 30px;
+  color: #f0e7cd;
+  background: #182b25d9;
+  box-shadow: 0 3px 20px #10251c24;
+  font-size: 12px;
+  text-align: center;
+  line-height: 1.45;
+  pointer-events: none;
+}
+.nh-tools {
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: #b9b39b transparent;
+  color: var(--nh-ink);
+  background: var(--nh-paper);
+  border-left: 1px solid #d5c2a2;
+  color-scheme: light;
+}
+.nh-panel {
+  padding: 28px 25px 24px;
+}
+.nh-panel-intro {
+  margin-bottom: 19px;
+}
+.nh-eyebrow {
+  display: block;
+  color: #7e815a;
+  font-size: 9px;
+  font-weight: 650;
+  letter-spacing: 1.6px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+.nh-panel h2 {
+  font-size: 29px;
+  line-height: 1.12;
+  margin-bottom: 10px;
+  letter-spacing: -0.4px;
+}
+.nh-panel-intro p {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--nh-muted);
+}
+.nh-panel button,
+.nh-panel select,
+.nh-panel input {
+  color: var(--nh-ink);
+  border: 1px solid var(--nh-border);
+}
+.nh-panel button:hover {
+  background: #cabb9536;
+  border-color: #28473a60;
+}
+.nh-panel button[aria-pressed="true"] {
+  background: #d9dfc5;
+  border-color: #6b825c;
+  box-shadow: inset 0 0 0 1px #6b825c;
+}
+.nh-panel .nh-primary {
+  width: 100%;
+  min-height: 48px;
+  justify-content: space-between;
+  padding: 10px 16px;
+  color: #fff4dc;
+  background: var(--nh-green);
+  border-color: var(--nh-green);
+  font-weight: 600;
+}
+.nh-panel .nh-primary:hover {
+  color: #fff4dc;
+  background: #325740;
+  border-color: #325740;
+}
+.nh-panel .nh-primary:disabled {
+  opacity: 0.48;
+  background: #617567;
+  border-color: #617567;
+}
+.nh-panel .nh-secondary {
+  width: 100%;
+  margin-top: 10px;
+}
+.nh-welcome-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.nh-welcome-choices button {
+  min-height: 81px;
+  padding: 13px 12px;
+  gap: 12px;
+  text-align: left;
+  justify-content: flex-start;
+  background: #fff9e638;
+}
+.nh-welcome-choices button > .nh-icon:first-child {
+  width: 30px;
+  height: 30px;
+  color: #7e8059;
+}
+.nh-welcome-choices button > .nh-icon:last-child {
+  width: 18px;
+  height: 18px;
+  margin-left: auto;
+  color: #8e987f;
+}
+.nh-welcome-choices strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+}
+.nh-welcome-choices small {
+  display: block;
+  margin-top: 4px;
+  color: var(--nh-muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+.nh-footnote {
+  color: var(--nh-muted);
+  font-size: 11px;
+  line-height: 1.65;
+  margin-top: 20px;
+}
+.nh-inventory {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+}
+.nh-item {
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  min-height: 78px !important;
+  padding: 8px 3px;
+  gap: 5px !important;
+}
+.nh-item .nh-icon {
+  width: 29px;
+  height: 29px;
+  color: #7c8057;
+}
+.nh-item span {
+  max-width: 100%;
+  font-size: 10px;
+  line-height: 1.2;
+}
+.nh-instruction {
+  padding: 15px 0;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--nh-muted);
+}
+.nh-placement {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 13px 0;
+  padding: 8px 10px;
+  border-radius: 9px;
+  background: #d9dfc585;
+}
+.nh-placement p {
+  font-size: 12px;
+  line-height: 1.4;
+}
+.nh-placement button {
+  flex: none;
+  padding-inline: 9px;
+  font-size: 11px;
+}
+.nh-object-controls {
+  padding: 14px 0;
+}
+.nh-object-controls > div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 9px;
+  font-size: 12px;
+}
+.nh-object-controls > div > span {
+  color: var(--nh-muted);
+  font-size: 10px;
+}
+.nh-object-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.15fr;
+  gap: 5px;
+}
+.nh-object-buttons button {
+  padding-inline: 7px;
+  font-size: 11px;
+  gap: 4px;
+}
+.nh-object-buttons .nh-icon {
+  width: 17px;
+  height: 17px;
+}
+.nh-slot-label,
+.nh-name-form > label,
+.nh-panel legend {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #5d6e5e;
+}
+.nh-panel select {
+  width: 100%;
+  background: #fffbeb50;
+  padding-inline: 10px;
+  font-size: 12px;
+  text-overflow: ellipsis;
+}
+.nh-neighbor-style {
+  margin-top: 18px;
+  width: 100%;
+  text-align: left;
+  justify-content: space-between !important;
+  border-color: transparent !important;
+  border-top: 1px solid var(--nh-border) !important;
+  border-radius: 0 !important;
+  padding: 15px 0 0;
+  font-size: 12px !important;
+}
+.nh-neighbor-style .nh-icon {
+  width: 19px;
+  height: 19px;
+}
+.nh-throw {
+  margin-bottom: 19px;
+}
+.nh-name-form {
+  margin-bottom: 19px;
+}
+.nh-name-form > div {
+  display: flex;
+  gap: 7px;
+}
+.nh-name-form input {
+  width: 0;
+  flex: 1;
+  min-width: 0;
+  padding: 9px 11px;
+  background: #fff9e679;
+  font-size: 16px;
+}
+.nh-name-form button {
+  flex: none;
+}
+.nh-panel fieldset {
+  margin: 0 0 17px;
+  padding: 0;
+  border: 0;
+}
+.nh-panel legend {
+  padding: 0;
+}
+.nh-pet-colors > div {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+}
+.nh-pet-color {
+  min-width: 0;
+  flex-direction: column;
+  gap: 5px !important;
+  padding: 8px 2px;
+}
+.nh-pet-color i {
+  display: block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--pet-color);
+  border: 1px solid #5e624730;
+  box-shadow: inset -4px -4px 0 #22382018;
+}
+.nh-pet-color span {
+  font-size: 10px;
+}
+.nh-pet-accessories > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.nh-pet-accessories button {
+  flex: 1;
+  min-width: 58px;
+  padding-inline: 8px;
+  font-size: 12px;
+}
+.nh-flow-state {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 11px;
+  margin-bottom: 15px;
+  background: #dfdac6;
+  border: 1px solid #84826822;
+  border-radius: 9px;
+  font-size: 12px;
+  color: #666d59;
+  line-height: 1.5;
+}
+.nh-flow-state.is-connected {
+  color: #30594d;
+  background: #d1e1cc;
+  border-color: #57836255;
+}
+.nh-channel-controls {
+  margin-top: 19px;
+  border-top: 1px solid var(--nh-border);
+}
+.nh-channel-controls summary {
+  display: list-item;
+  cursor: pointer;
+  padding: 13px 2px;
+  font-size: 12px;
+  color: #516951;
+  line-height: 1.5;
+}
+.nh-channel-controls summary span {
+  margin-left: 5px;
+  font-size: 9px;
+  color: var(--nh-muted);
+}
+.nh-channel-controls > p {
+  margin-top: 9px;
+  font-size: 10px;
+  color: var(--nh-muted);
+}
+.nh-channel-labels {
+  display: flex;
+  justify-content: space-between;
+  margin: 2px 0 8px;
+  color: #6a8671;
+  font-size: 10px;
+}
+.nh-channel-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(44px, 1fr));
+  gap: 6px;
+  max-width: 222px;
+  margin-inline: auto;
+}
+.nh-panel .nh-channel-tile {
+  padding: 5px;
+  min-height: 58px;
+  color: #b7a17b;
+  background: #d4c6a8;
+  border: 1px solid #b4a685;
+}
+.nh-channel-tile svg {
+  width: 44px;
+  height: 44px;
+  max-width: 100%;
+}
+.nh-panel .nh-channel-tile.is-wet {
+  color: #468b95;
+  background: #d3d6bf;
+  border-color: #819e87;
+}
+.nh-water-success {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 22px;
+  padding: 20px 13px;
+  color: #396251;
+  background: #d6e0c9;
+  border: 1px solid #9fae8e73;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.nh-water-success .nh-icon {
+  width: 34px;
+  height: 34px;
+}
+.nh-water-success small {
+  font-size: 10px;
+  color: #627f62;
+}
+.nh-unavailable,
+.nh-historical {
+  font-size: 12px;
+  line-height: 1.55;
+  margin: 13px 0;
+  color: #81593d;
+}
+.nh-historical {
+  padding: 11px;
+  border: 1px solid #b1895350;
+  border-radius: 9px;
+  background: #e6d7b9;
+  margin-top: 0;
+}
+.nh-messages {
+  flex: none;
+  background: #20352d;
+  color: #ecdfbe;
+}
+.nh-status,
+.nh-save-warning {
+  padding: 10px 22px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.nh-status:empty {
+  display: none;
+}
+.nh-save-warning,
+.nh-status-error {
+  color: #f8d5b5;
+  background: #643c2c;
+}
+@media (min-width: 1450px) {
+  .nh-main {
+    grid-template-columns: minmax(0, 1fr) 380px;
+  }
+  .nh-panel {
+    padding: 35px 30px;
+  }
+  .nh-panel h2 {
+    font-size: 33px;
+  }
+}
+@media (max-width: 850px) {
+  .nh-header {
+    min-height: 63px;
+    padding: 8px 16px;
+  }
+  .nh-home strong {
+    font-size: 23px;
+  }
+  .nh-home small {
+    font-size: 7px;
+    letter-spacing: 1.2px;
+  }
+  .nh-header-actions {
+    gap: 3px;
+  }
+  .nh-header-actions button {
+    font-size: 11px;
+    padding-inline: 9px;
+  }
+  .nh-help {
+    top: 63px;
+  }
+  .nh-main {
+    grid-template-columns: minmax(0, 1fr) 305px;
+  }
+  .nh-panel {
+    padding: 23px 20px;
+  }
+  .nh-activities button {
+    min-width: 150px;
+    padding-inline: 14px;
+    font-size: 12px;
+  }
+}
+@media (max-width: 650px) {
+  .nh-header {
+    min-height: 57px;
+    padding: 5px 12px;
+    gap: 8px;
+  }
+  .nh-home .nh-icon {
+    display: none;
+  }
+  .nh-home strong {
+    font-size: 22px;
+  }
+  .nh-home small {
+    display: none;
+  }
+  .nh-header-actions .nh-help-button {
+    max-width: 55px;
+    padding-inline: 4px;
+    font-size: 10px;
+    line-height: 1.35;
+  }
+  .nh-exit {
+    gap: 5px !important;
+  }
+  .nh-exit .nh-icon {
+    width: 16px;
+    height: 16px;
+  }
+  .nh-activities {
+    gap: 4px;
+    padding: 5px 9px;
+  }
+  .nh-activities button {
+    flex: 1;
+    min-width: 0;
+    gap: 7px;
+    padding-inline: 6px;
+    font-size: 11px;
+    line-height: 1.3;
+  }
+  .nh-activities .nh-icon {
+    width: 20px;
+    height: 20px;
+  }
+  .nh-main {
+    display: flex;
+    flex-direction: column;
+  }
+  .nh-stage {
+    flex: none;
+    height: clamp(225px, 39dvh, 390px);
+  }
+  .nh-tools {
+    flex: 1;
+    border-left: 0;
+    border-top: 1px solid #b9b18d;
+  }
+  .nh-panel {
+    padding: 18px 20px 25px;
+  }
+  .nh-panel-intro {
+    margin-bottom: 15px;
+  }
+  .nh-eyebrow {
+    margin-bottom: 6px;
+    font-size: 8px;
+  }
+  .nh-panel h2 {
+    font-size: 26px;
+    margin-bottom: 7px;
+  }
+  .nh-panel-intro p {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .nh-scene-tip {
+    bottom: 10px;
+    padding: 6px 11px;
+    font-size: 10px;
+    max-width: calc(100% - 28px);
+  }
+  .nh-welcome-choices {
+    gap: 7px;
+  }
+  .nh-welcome-choices button {
+    min-height: 66px;
+    padding: 9px 13px;
+  }
+  .nh-welcome-choices strong {
+    font-size: 13px;
+  }
+  .nh-welcome-choices small {
+    margin-top: 2px;
+    font-size: 10px;
+  }
+  .nh-item {
+    min-height: 69px !important;
+  }
+  .nh-item .nh-icon {
+    width: 25px;
+    height: 25px;
+  }
+  .nh-help {
+    top: 57px;
+    right: 12px;
+    width: calc(100% - 24px);
+    padding: 20px;
+    gap: 8px;
+  }
+  .nh-status,
+  .nh-save-warning {
+    padding: 8px 14px;
+    font-size: 11px;
+  }
+}
+@media (max-width: 370px) {
+  .nh-home strong {
+    font-size: 19px;
+  }
+  .nh-header-actions {
+    gap: 0;
+  }
+  .nh-activities button {
+    font-size: 10px;
+    gap: 4px;
+    padding-inline: 3px;
+  }
+  .nh-panel {
+    padding-inline: 15px;
+  }
+}
+@media (max-height: 650px) and (orientation: portrait) {
+  .nh-stage {
+    height: 33dvh;
+    min-height: 160px;
+  }
+  .nh-panel {
+    padding-top: 14px;
+  }
+  .nh-eyebrow {
+    display: none;
+  }
+}
+@media (max-height: 550px) and (orientation: landscape) {
+  .nh-header {
+    min-height: 48px;
+    padding: 2px 15px;
+  }
+  .nh-home small {
+    display: none;
+  }
+  .nh-home strong {
+    font-size: 22px;
+  }
+  .nh-activities {
+    padding: 2px 10px;
+  }
+  .nh-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 290px;
+  }
+  .nh-stage {
+    height: auto;
+    min-height: 0;
+  }
+  .nh-panel {
+    padding: 17px;
+  }
+  .nh-help {
+    top: 48px;
+    max-height: calc(100% - 60px);
+  }
+  .nh-scene-tip {
+    bottom: 8px;
+    font-size: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .neighborhood-surface *,
+  .neighborhood-surface *::before,
+  .neighborhood-surface *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}

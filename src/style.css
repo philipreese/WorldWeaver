@@ -16,6 +16,23 @@
     sans-serif;
   font-size: 14px;
 }
+/* The courtyard is an activity view of Hearth. Keep the saved world controls
+   intact behind it, but remove them from interaction and accessibility focus. */
+body.neighborhood-open #world-shell > :not(#neighborhood):not(#toast) {
+  visibility: hidden;
+  pointer-events: none;
+}
+body.neighborhood-open .timebar {
+  display: none;
+}
+.courtyard-button {
+  white-space: nowrap;
+  color: var(--gold);
+}
+@media (max-width: 700px) {
+  .courtyard-button { min-width: 44px; padding: 8px; font-size: 21px; }
+  .courtyard-button span { display: none; }
+}
 * {
   box-sizing: border-box;
 }

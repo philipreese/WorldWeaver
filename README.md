@@ -33,7 +33,9 @@ Production builds generate a content-versioned service worker and relative asset
 
 ## Start playing
 
-Open **✦ Guide** for one small step at a time: meet a neighbor, try a look, watch a change, and discover why. The three chapters can be left, resumed, or restarted without resetting the world. Choose **Choose a look** on a character or **Make their home cozy** to pick coat colors, home trim, and doorstep decorations. Looks travel with exported saves and apply across all tellings.
+Start in **Hearth courtyard**. Arrange eight kinds of furnishings across six spots, give your glimmerfox a name and a look, and toss a sunseed for it to fetch. Turn the spring’s channel stones to connect the garden, then choose **Open the spring** to make a real change in Hearth. There are no feeding timers or daily chores.
+
+Choose **Explore basin** to visit the wider world; **Courtyard** brings you back. Open **✦ Guide** there for one small step at a time: meet a neighbor, try a look, watch a change, and discover why. The three chapters can be left, resumed, or restarted without resetting the world. Choose **Choose a look** on a character or **Make their home cozy** to pick coat colors, caps, scarves, flowers, home trim, and doorstep decorations. Looks travel with exported saves and apply across all tellings.
 
 Meet Nera in Hearth. Inspect the archive, follow a person or place, then decide whether to open the eastern passage. **Next moment** advances at most fourteen days and stops for a meaningful event affecting your follow list. Open History to ask why. Visit day 2 on the timeline and **Branch here** to explore an alternate future without deleting the original.
 
@@ -56,9 +58,9 @@ New examples use engine 2.0.0; prior engine 1.0.0 archives remain importable. [S
 
 `npm run examples` regenerates these files and the causal/pacing report. Production builds include them under `worlds/`. The [verification record](docs/VERIFICATION.md) explains optional Node UI checks and static rendering, and lists the remaining release work.
 
-![Nera in her chosen Lilac coat beside the Seed Archive, with the optional guide](evidence/browser-guide-streets-3e018c1.jpg)
+![A furnished Hearth courtyard with Pip the glimmerfox and the spring garden](evidence/courtyard-furnished.webp)
 
-Live browser screenshot from the published preview, using mouse and keyboard. The guide and cosmetic choices are saved; real phone and human playtesting remain release work.
+Static frame from the playable courtyard renderer, with saved furnishings and a styled companion. It is not a browser screenshot or phone layout test. Real phone and uncoached human playtesting remain open.
 
 ## Built alongside the game
 
@@ -71,10 +73,12 @@ A [story and art guide](docs/EXPERIENCE_GUIDE.md) keeps the cast and visual iden
 - `src/director.js`: follow-driven attention and factual digests.
 - `src/guide.js`: optional, context-aware introduction and invitations to notice.
 - `src/customization.js`: bounded appearance vocabulary shared by saved preferences and renderers.
+- `src/neighborhood.js`: validated courtyard and companion choices, and channel connectivity.
+- `src/neighborhood-ui.js`: direct activities and accessible controls.
 - `src/view/`: Canvas world; reads state but never changes history.
 - `src/app.js`: interface and bounded, interruptible advancement.
 - `tests/`: reproducible invariant and causal-path tests.
 
-[Shared contracts](docs/CONTRACTS.md) explain interfaces and protected invariants. Release gates: [Tier 1](https://github.com/philipreese/WorldWeaver/issues/1), [Tier 2](https://github.com/philipreese/WorldWeaver/issues/2), [verification](https://github.com/philipreese/WorldWeaver/issues/3). [PR #4](https://github.com/philipreese/WorldWeaver/pull/4) integrates the prototype baseline into `main`; this does not declare Tier 2 complete. Start new features from `main` and submit focused PRs. The next feature is [hands-on neighborhood play (#8)](https://github.com/philipreese/WorldWeaver/issues/8).
+[Shared contracts](docs/CONTRACTS.md) explain interfaces and protected invariants. Release gates: [Tier 1](https://github.com/philipreese/WorldWeaver/issues/1), [Tier 2](https://github.com/philipreese/WorldWeaver/issues/2), [verification](https://github.com/philipreese/WorldWeaver/issues/3). [PR #4](https://github.com/philipreese/WorldWeaver/pull/4) integrates the prototype baseline into `main`; this does not declare Tier 2 complete. Start new features from `main` and submit focused PRs. This increment implements [hands-on neighborhood play (#8)](https://github.com/philipreese/WorldWeaver/issues/8).
 
 GitHub Pages automatically publishes checked commits on `main`. A manual **Mobile preview** run can temporarily publish another branch if the existing deployment environment permits it; it uses the same site, not a separate URL per PR. See [phone testing](docs/MOBILE_TESTING.md). Keep each PR runnable and its relevant checks green; the full release checklist governs release claims rather than every merge.

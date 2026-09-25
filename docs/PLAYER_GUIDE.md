@@ -1,16 +1,22 @@
 # The Quiet Basin — player guide
 
-Start with Nera. She keeps Hearth's seeds safe, counts plates before people, and has a seed room that's getting wet. Across a blocked path, Oren may know how to help.
-
-Want a little company? Open **✦ Guide**. It offers one small action at a time in three chapters: meet the neighbors, notice what changes, and try another possibility. You can leave it, come back, or choose **Start the guide again** without losing your world. Watching is always a valid choice.
-
-Select someone and choose **Choose a look** to try a coat color. **Make their home cozy** offers trim colors and a planter, lantern, or bunting for the doorstep. Shared homes share decorations. **Original** restores their original color; **None** removes a decoration. Your choices stay with the saved world across all its tellings and earlier days. Return to the present before changing a look.
+You’re a visitor in Hearth, a village with a life of its own. Make your corner welcoming, play with your companion, and help open possibilities for the people who live here. They decide what happens next.
 
 ## Your first three minutes
 
-1. **Meet someone.** Choose **Meet Nera**, then **Walk with them**. Look around her home. Tap a building to learn its story. Time is paused, so you can take your time.
-2. **Watch—or lend a hand.** Open Nera's card, choose **Lend a hand**, and find **Open the path**. Press **Try this** to clear the Silt Saddle between Hearth and Lattice. You can also leave things alone and see what Nera does.
-3. **See what happens.** Press **Next moment**. The world pauses when something important happens to Nera or Hearth. Read the short scene, then visit the place to see what changed. Press **Next moment** again whenever you're ready.
+1. **Make it yours.** Choose a furnishing, then tap a marked courtyard spot or choose one from the list. Select a placed object to turn it, move it, or put it away. Moving onto an occupied spot swaps the objects.
+2. **Meet Pip.** Give your glimmerfox a name, a coat color, and a scarf, bow, or flower. Tap the lawn or **Throw a sunseed** to play fetch. Play again whenever you like; there are no feeding chores.
+3. **Help water flow.** Tap the channel stones to turn them, joining the spring on the left to the garden on the right. **Channel controls** offers the same puzzle with keyboard buttons. When the path connects, choose **Open the spring**. Water returns to Hearth, and **See what changed** opens its real history. **Let one day pass** is optional.
+
+Decorating and playing don’t advance the days. Your furnishings and companion stay with you across different tellings; the restored spring belongs to the current world’s history. An already-open spring needs no repeat repair. **Courtyard** always brings you back from the wider world, after you return to the present.
+
+Choose **Dress a neighbor** to change a coat color or add a cap, scarf, or flower. **Make their home cozy** offers trim and doorstep decorations; shared homes share decorations. Nera’s home trim also appears on the courtyard house. **Original** restores the original color. Appearance choices stay with your exported world across all its tellings and earlier days; return to the present before changing them.
+
+## Into the basin
+
+Choose **Explore basin**, then **✦ Guide** for one small action at a time: meet the neighbors, notice what changes, and try another possibility. Leave or restart the guide without losing your world.
+
+Meet Nera. She keeps Hearth’s seeds safe, and her seed room is getting wet. Across a blocked path, Oren may know how to help. Choose **Walk with them**, tap buildings to learn their stories, or **Lend a hand → Open the path** to clear the Silt Saddle. **Next moment** advances until an important followed event, or its selected horizon. Watching without intervening is also a way to play.
 
 Found someone you like? **Follow** keeps their big moments close. Try Ivo and Ves in the mending yard: Ivo saves bent nails, and Ves has rather a lot of questions. **Stories** offers places to start. On a phone, **Journal** opens your list of people and stories.
 

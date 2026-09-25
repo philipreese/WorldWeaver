@@ -8,7 +8,7 @@ Updated 2026-09-25. These requirements supplement [brief v0.4](worldweaver-build
 - **Learning through play:** invite players to notice needs, dependencies, competing priorities, evidence, and different outcomes. Branches make “what if?” experiments possible. Curiosity prompts refer to things actually present in the world. Avoid compulsory lessons, school-like scoring, or assertions that the game has proven educational benefits.
 - **Useful data:** retain stable entity IDs, causal events, decisions, relationships, memories, and versioned statistics views. Save cosmetics and guide progress separately from simulation history. Add new measurements deliberately when a future feature needs them; do not infer activities that were never recorded.
 - **Supporting tools:** reproducible histories, recovery tests, build IDs, local problem-report exports, a story/art guide, and release evidence. Reports stay on the player's device until shared. No external analytics service is installed.
-- **Review and phone access:** commit work to the review branch, keep issues and a draft PR current, and publish the branch through GitHub Pages so the owner can play before merge.
+- **Review and phone access:** use `main` as the integrated prototype baseline, with focused feature branches and PRs. Publish checked `main` commits through GitHub Pages. Manual previews of explicitly permitted feature branches can use the same site for phone testing before merge; keep the existing deployment protections.
 
 Original release gates still apply: history invariants, a continuous neighborhood visit, real device controls and performance, browser offline/transfer checks, and human prediction/return-session playtests. Cosmetics and tutorials do not substitute for them.
 
@@ -24,6 +24,8 @@ A future audio pass should provide music, environmental ambience, and a much wid
 ## Prototype pace and the next playable slice
 
 Owner clarification: nobody needs to play every path or exhaust the prototype before development continues. Ask for brief, focused visits to learn whether people care about the cast, understand an action and its consequence, and want to return. Automated mechanical checks belong to development. The full device/release evidence checklist is for declaring a release, not permission to build the next feature. Do not wait for an owner playthrough sign-off.
+
+Merge runnable, checked increments into `main` and branch each focused feature from that baseline. A merge records integration; Tier 2 completion remains a separate milestone tracked in the open release issues. PR #4 establishes the initial prototype baseline. Avoid holding all future work in its original long-lived feature branch or making the entire release checklist a prerequisite for each merge.
 
 Prototype saves may become incompatible as the design changes. Announce a reset requirement clearly and offer export before replacing a world; never silently reinterpret a saved past. The captured 1.0.0 engine is a temporary safeguard for the already shared preview, not a promise to retain every prototype engine or maintain a migration platform. Keep in-world rewind and alternate futures correct; avoid further compatibility expansion until the design stabilizes.
 

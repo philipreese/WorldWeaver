@@ -1,18 +1,20 @@
 # Play the review build on a phone
 
-Use the repository's GitHub Pages site for the mobile preview. You do not need to merge PR #4, install developer tools, or create another account to play it.
+Use the repository's GitHub Pages site for the mobile preview. Playing it requires no developer tools or additional account.
 
 The link becomes usable after the **Mobile preview** workflow's **deploy** job succeeds. Open the deployment link shown on that run. Without a custom domain, the expected address is [philipreese.github.io/WorldWeaver/](https://philipreese.github.io/WorldWeaver/). An enabled Pages setting alone does not establish that the game is live.
 
-The workflow publishes the built contents of `feat/tier-2-world` after its checks pass. It updates the repository's single Pages site on each push to that branch; it does not create a separate site for every pull request. The implementation PR remains open and unmerged. Publishing this preview is not a declaration that the release acceptance gates are complete.
+The workflow publishes the built contents of `main` after its checks pass. It updates the repository's single Pages site on each push to `main`; it does not create a separate site for every pull request. PR #4 integrates the prototype baseline, with subsequent features developed in focused PRs. Publishing or merging a prototype is not a declaration that the release acceptance gates are complete.
+
+For a feature preview before merge, manually run **Mobile preview** on that branch only if the `github-pages` environment explicitly permits it. This temporarily replaces the same site's contents. Run the workflow on `main` again to restore the integrated prototype. Automatic feature-branch pushes do not replace the site.
 
 ## One-time setup
 
 The owner has enabled Pages and confirmed **GitHub Actions** as its source. The repository is public. The available repository connection does not expose environment settings, so branch eligibility still needs confirmation from the deployment result.
 
 1. In [Settings → Pages](https://github.com/philipreese/WorldWeaver/settings/pages), use **Build and deployment → Source → GitHub Actions**. Skip this if it is already selected. A branch-based source does not run the production build in this workflow.
-2. If the `github-pages` environment restricts deployment branches, allow **`feat/tier-2-world`** in [Settings → Environments](https://github.com/philipreese/WorldWeaver/settings/environments). Keep existing protection rules. If the job requests an environment review, approve that deployment through GitHub.
-3. Push the preview workflow and current game changes to `feat/tier-2-world`. In [Actions](https://github.com/philipreese/WorldWeaver/actions), open **Mobile preview**. Both **build** and **deploy** must succeed before treating its URL as ready.
+2. If the `github-pages` environment restricts deployment branches, allow **`main`** in [Settings → Environments](https://github.com/philipreese/WorldWeaver/settings/environments). A manual feature preview needs its actual branch explicitly permitted too. Keep existing protection rules. If the job requests an environment review, approve that deployment through GitHub.
+3. Merge checked changes into `main`, or manually run **Mobile preview** on an explicitly permitted branch. In [Actions](https://github.com/philipreese/WorldWeaver/actions), open **Mobile preview**. Both **build** and **deploy** must succeed before treating that commit as live. A rejected new deployment leaves the last successful site available.
 
 No personal access token or hosting secret is required: the workflow uses GitHub's supplied token and the Pages deployment environment. GitHub offers Pages for public repositories on its free plan.
 
@@ -30,7 +32,7 @@ For a browser offline check, first load the game online and let its asset cache 
 
 ## Updates and problems
 
-- A new commit is only live after its deployment succeeds. Match the run's commit with the PR before reporting a problem against that build.
+- A new commit is only live after its deployment succeeds. Record the successful run's commit, including whether it was `main` or a manual feature preview, before reporting a problem against that build.
 - An already-open tab can retain the previous cached version while an update waits. Close all tabs for the game and reopen the deployment URL online. Export your history before clearing site data; clearing it also removes that browser's saved world.
 - A source/configuration failure is visible in the workflow log. A branch-protection rejection requires the explicit branch allowance above; using another environment to evade the rule is not part of this setup.
 - Saves stay in that browser until exported. Serving the game over HTTPS does not add cloud sync.

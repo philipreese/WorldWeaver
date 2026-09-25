@@ -1,12 +1,10 @@
 name: Mobile preview
 
-# This branch uses the repository's one Pages site as its review preview.
-# Publishing was authorized when the owner enabled Pages for mobile testing.
+# Main updates the repository's one Pages site after integration.
+# A manual run can preview another explicitly authorized branch on that same site.
 on:
   push:
-    branches: [feat/tier-2-world]
-  # GitHub exposes this manual trigger only after the workflow also exists on
-  # the default branch. Push is the initial trigger; no app PR merge is needed.
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -18,7 +16,7 @@ concurrency:
 
 jobs:
   build:
-    if: github.ref == 'refs/heads/feat/tier-2-world'
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -50,8 +48,8 @@ jobs:
       pages: write
       id-token: write
     # Keep the repository's real deployment protections in force. A branch
-    # restriction must explicitly allow feat/tier-2-world; do not bypass it
-    # with a different environment or pull_request_target.
+    # restriction must allow the actual selected branch (normally main).
+    # Do not bypass it with a different environment or pull_request_target.
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

@@ -1,7 +1,7 @@
 name: Verify world history
 on:
   push:
-    branches: [main, feat/tier-2-world]
+    branches: [main]
   pull_request:
   workflow_dispatch:
 permissions:

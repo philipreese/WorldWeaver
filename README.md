@@ -13,7 +13,6 @@ Requires **Node.js 22 or later**. No dependency installation is needed.
 ```sh
 git clone https://github.com/philipreese/WorldWeaver.git
 cd WorldWeaver
-git switch feat/tier-2-world
 npm run dev
 ```
 
@@ -76,4 +75,6 @@ A [story and art guide](docs/EXPERIENCE_GUIDE.md) keeps the cast and visual iden
 - `src/app.js`: interface and bounded, interruptible advancement.
 - `tests/`: reproducible invariant and causal-path tests.
 
-[Shared contracts](docs/CONTRACTS.md) explain interfaces and protected invariants. Release gates: [Tier 1](https://github.com/philipreese/WorldWeaver/issues/1), [Tier 2](https://github.com/philipreese/WorldWeaver/issues/2), [verification](https://github.com/philipreese/WorldWeaver/issues/3). Work is reviewed in [PR #4](https://github.com/philipreese/WorldWeaver/pull/4). GitHub Pages publishes the review branch for mobile testing; merging the PR is not required.
+[Shared contracts](docs/CONTRACTS.md) explain interfaces and protected invariants. Release gates: [Tier 1](https://github.com/philipreese/WorldWeaver/issues/1), [Tier 2](https://github.com/philipreese/WorldWeaver/issues/2), [verification](https://github.com/philipreese/WorldWeaver/issues/3). [PR #4](https://github.com/philipreese/WorldWeaver/pull/4) integrates the prototype baseline into `main`; this does not declare Tier 2 complete. Start new features from `main` and submit focused PRs. The next feature is [hands-on neighborhood play (#8)](https://github.com/philipreese/WorldWeaver/issues/8).
+
+GitHub Pages automatically publishes checked commits on `main`. A manual **Mobile preview** run can temporarily publish another branch if the existing deployment environment permits it; it uses the same site, not a separate URL per PR. See [phone testing](docs/MOBILE_TESTING.md). Keep each PR runnable and its relevant checks green; the full release checklist governs release claims rather than every merge.

@@ -43,3 +43,9 @@ Retained verification distinguishes Node tests, synthetic DOM interaction, brows
 ## Published check
 
 The live agent walkthrough of build `5639c231` verified furniture, companion choices and repeat play, spring preview/commit/history, reload and same-tab switching. Cloud Chrome has WebGL disabled and used the intended illustrated fallback. Actual 3D appearance, orbit/reset and GPU performance remain unverified in that environment. See the [browser report](../evidence/courtyard-browser-verification.json) and its explicitly labeled [fallback screenshot](../evidence/browser-courtyard-three-fallback.jpg).
+
+## Blank-scene recovery
+
+The 3D view now attempts its first visible frame immediately and checks for shader/context failures, absent draw calls and blank initial pixels. A failure at startup or during play replaces the canvas with the illustrated view while keeping the current activity and choices. Phone rendering avoids multisample antialiasing, caps DPR at 1.25 and uses a 512-pixel shadow map; hidden/repeated layout observations no longer allocate a desktop-size buffer.
+
+If a device still cannot show 3D, **Settings → Report a problem** includes the courtyard renderer and its last error in the locally downloaded report. No report is sent automatically. The exact cause of the reported phone failure remains unconfirmed; cloud Chrome still cannot produce WebGL frames.

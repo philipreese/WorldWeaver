@@ -233,25 +233,29 @@ export function buildCourtyardThreeScene(input) {
  * Protected invariant: camera/rendering/animation never advance world time,
  * repair habitat, increment play counts, or write any save metadata. */
 export class NeighborhoodThreeView {
-  constructor(canvas, { onSelect = () => {}, assets } = {}) {
+  constructor(canvas, { onSelect = () => {}, onError = () => {}, assets } = {}) {
     validateCourtyardThreeAssets(assets);
+    this.onError = onError; this.failed = false; this.hasRendered = false;
+    this.compact = (globalThis.innerWidth || 1024) <= 650 || Boolean(globalThis.matchMedia?.('(pointer: coarse)')?.matches);
     this.canvas = canvas; this.onSelect = onSelect; this.listeners = []; this.visible = true; this.destroyed = false; this.frameId = null; this.dirty = true; this.lastFrame = 0; this.hasState = false; this.fetchStart = null; this.fetchTarget = null; this.down = new Map(); this.dragged = false; this.textures = new Set(); this.labelMaterials = new Set(); this.frameCosts = [];
     this.state = { world: null, neighborhood: defaultNeighborhood(), mode: 'welcome', historical: false, waterRunning: false, reducedMotion: globalThis.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches || false };
     // Requesting WebGL on a canvas already bound to 2D must fail here, allowing
     // the caller to replace it with a fresh canvas before choosing a fallback.
-    try { this.renderer = new THREE.WebGLRenderer({ canvas, alpha: false, antialias: true, powerPreference: 'low-power' }); }
+    try { this.renderer = new THREE.WebGLRenderer({ canvas, alpha: false, antialias: !this.compact, powerPreference: 'default' }); }
     catch (error) { throw new Error('The 3D courtyard could not start WebGL 2. The illustrated courtyard is still available.', { cause: error }); }
     try {
       this.model = buildCourtyardThreeScene(assets); this.scene = this.model.scene; this.camera = new THREE.PerspectiveCamera(41, 1, .1, 120); this.camera.name = 'courtyard-camera';
       this.renderer.outputColorSpace = THREE.SRGBColorSpace; this.renderer.toneMapping = THREE.ACESFilmicToneMapping; this.renderer.toneMappingExposure = assets.lighting.exposure;
-      this.renderer.shadowMap.enabled = true; this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      this.renderer.shadowMap.enabled = true; this.renderer.shadowMap.type = THREE.PCFShadowMap;
+      if (this.compact) this.model.sun.shadow.mapSize.set(512, 512);
+      this.renderer.debug.onShaderError = () => { this.shaderError = new Error('The browser could not draw the courtyard materials.'); };
       this.renderer.shadowMap.autoUpdate = false; this.renderer.shadowMap.needsUpdate = true;
       this.controls = new OrbitControls(this.camera, canvas); this.controls.enableDamping = !this.state.reducedMotion; this.controls.dampingFactor = .12; this.controls.enablePan = false; this.controls.minDistance = 4; this.controls.maxDistance = 42; this.controls.minPolarAngle = .22; this.controls.maxPolarAngle = Math.PI * .44; this.controls.rotateSpeed = .68; this.controls.zoomSpeed = .85;
       this.controls.addEventListener('change', () => this.invalidate());
       this.raycaster = new THREE.Raycaster(); this.pointer = new THREE.Vector2(); this.groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -.08);
       this._bind('pointerdown', event => this._pointerDown(event)); this._bind('pointermove', event => this._pointerMove(event)); this._bind('pointerup', event => this._pointerUp(event)); this._bind('pointercancel', event => { this.down.delete(event.pointerId); this.dragged = true; });
-      this._bind('webglcontextlost', event => { event.preventDefault(); this.contextLost = true; this._stop(); canvas.dataset.renderStatus = 'context-lost'; });
-      this._bind('webglcontextrestored', () => { this.contextLost = false; canvas.dataset.renderStatus = 'ready'; this.invalidate(); });
+      this._bind('webglcontextlost', event => this._contextLost(event));
+      canvas.dataset.renderStatus = 'starting';
       canvas.setAttribute('role', 'img'); canvas.setAttribute('aria-label', 'Three-dimensional Hearth courtyard. Drag to orbit and pinch to zoom. Courtyard activities have matching buttons beside the scene.');
       this._resize = () => this.resize(); this.resizeObserver = globalThis.ResizeObserver ? new ResizeObserver(this._resize) : null; this.resizeObserver?.observe(canvas); if (!this.resizeObserver) globalThis.addEventListener?.('resize', this._resize);
       this._visibility = () => { if (globalThis.document?.hidden) this._stop(); else this.invalidate(); }; globalThis.document?.addEventListener('visibilitychange', this._visibility);
@@ -259,6 +263,24 @@ export class NeighborhoodThreeView {
     } catch (error) { this.destroy(); throw new Error('The 3D courtyard assets could not be prepared. The illustrated courtyard is still available.', { cause: error }); }
   }
   _bind(name, listener) { this.canvas.addEventListener(name, listener); this.listeners.push([name, listener]); }
+  _contextLost(event) {
+    event.preventDefault(); this.contextLost = true;
+    this._fail(new Error('The browser stopped the 3D graphics context.'));
+  }
+  _fail(error) {
+    if (this.destroyed || this.failed) return;
+    this.failed = true; this._stop(); if (this.controls) this.controls.enabled = false;
+    this.canvas.dataset.renderStatus = 'failed';
+    this.canvas.dataset.renderError = String(error?.message || error).slice(0, 300);
+    // Let constructor/show finish assigning the view before the UI disposes it
+    // and replaces the canvas whose context type is permanently WebGL.
+    queueMicrotask(() => { if (!this.destroyed) this.onError(error); });
+  }
+  _renderFrame(time) {
+    if (this.failed || this.destroyed || this.contextLost) return false;
+    try { this.drawFrame(time); return true; }
+    catch (error) { this._fail(error); return false; }
+  }
   setState(next = {}) {
     const before = this.state, incoming = next.neighborhood?.companion?.lastPlay, prior = before.neighborhood?.companion?.lastPlay;
     const mode = MODES.has(next.mode) ? next.mode : before.mode;
@@ -308,10 +330,18 @@ export class NeighborhoodThreeView {
     this.petLabel = this._label(name, Math.min(2.8, Math.max(1.02, .16 * name.length + .54))); if (this.petLabel) this.scene.add(this.petLabel);
   }
   resize() {
-    if (this.destroyed || !this.renderer) return;
-    const rect = this.canvas.getBoundingClientRect(); this.width = Math.max(1, rect.width || this.canvas.clientWidth || 900); this.height = Math.max(1, rect.height || this.canvas.clientHeight || 600);
-    this.dpr = Math.min(1.75, Math.max(1, globalThis.devicePixelRatio || 1)); this.renderer.setPixelRatio(this.dpr); this.renderer.setSize(this.width, this.height, false);
-    this.camera.aspect = this.width / this.height; this.camera.updateProjectionMatrix(); this.invalidate();
+    if (this.destroyed || this.failed || !this.renderer) return;
+    try {
+      const rect = this.canvas.getBoundingClientRect();
+      // Construction happens hidden: allocate the real buffer only when the
+      // visible CSS dimensions are known, without repeatedly clearing it.
+      const width = Math.max(1, rect.width), height = Math.max(1, rect.height);
+      const dpr = Math.min(this.compact ? 1.25 : 1.75, Math.max(1, globalThis.devicePixelRatio || 1));
+      if (width === this.width && height === this.height && dpr === this.dpr) return;
+      this.width = width; this.height = height; this.dpr = dpr;
+      this.renderer.setDrawingBufferSize(width, height, dpr);
+      this.camera.aspect = width / height; this.camera.updateProjectionMatrix(); this.invalidate();
+    } catch (error) { this._fail(error); }
   }
   resetCamera() {
     const preset = this.model.assets.cameras[this.state.mode] || this.model.assets.cameras.welcome;
@@ -321,13 +351,21 @@ export class NeighborhoodThreeView {
     if (this.width / this.height < 1.1 && ['welcome', 'decorate'].includes(this.state.mode)) this.camera.position.sub(this.controls.target).multiplyScalar(1.12).add(this.controls.target);
     this.camera.lookAt(this.controls.target); this.controls.update(); this.controls.saveState(); this.invalidate();
   }
-  setVisible(value) { this.visible = Boolean(value); if (this.controls) this.controls.enabled = this.visible; if (this.visible) { this.resize(); this.invalidate(); } else { this.fetchStart = null; this.down.clear(); this._stop(); } }
+  setVisible(value) {
+    this.visible = Boolean(value); if (this.controls) this.controls.enabled = this.visible && !this.failed;
+    if (this.visible) {
+      this.resize(); this.resetCamera();
+      // A scheduled RAF is not proof of startup in an embedded/mobile browser.
+      if (!this.hasRendered) this._renderFrame(globalThis.performance?.now?.() || 0);
+      this.invalidate();
+    } else { this.fetchStart = null; this.down.clear(); this._stop(); }
+  }
   _stop() { if (this.frameId !== null) globalThis.cancelAnimationFrame?.(this.frameId); this.frameId = null; }
   invalidate() { this.dirty = true; this._schedule(); }
-  _schedule() { if (!this.destroyed && this.visible && !this.contextLost && !globalThis.document?.hidden && this.frameId === null && globalThis.requestAnimationFrame) this.frameId = requestAnimationFrame(time => this._frame(time)); }
+  _schedule() { if (!this.destroyed && !this.failed && this.visible && !this.contextLost && !globalThis.document?.hidden && this.frameId === null && globalThis.requestAnimationFrame) this.frameId = requestAnimationFrame(time => this._frame(time)); }
   _frame(time) {
-    this.frameId = null; if (this.destroyed || !this.visible || this.contextLost || globalThis.document?.hidden) return;
-    if (this.dirty || time - this.lastFrame >= 32) { this.lastFrame = time; this.drawFrame(time); this.dirty = false; }
+    this.frameId = null; if (this.destroyed || this.failed || !this.visible || this.contextLost || globalThis.document?.hidden) return;
+    if (this.dirty || time - this.lastFrame >= 32) { this.lastFrame = time; if (!this._renderFrame(time)) return; this.dirty = false; }
     if (!this.state.reducedMotion) this._schedule();
   }
   _animate(time, syncOnly = false) {
@@ -355,9 +393,25 @@ export class NeighborhoodThreeView {
   }
   drawFrame(time = 0) {
     if (this.destroyed || this.contextLost || !this.renderer) return;
+    const gl = this.renderer.getContext();
+    if (gl.isContextLost()) throw new Error('The browser stopped the 3D graphics context.');
     const started = globalThis.performance?.now?.() || 0; this.controls.update();
     if (this.fetchStart !== null) this.renderer.shadowMap.needsUpdate = true;
     this._animate(time); this.renderer.render(this.scene, this.camera);
+    if (this.shaderError) throw this.shaderError;
+    if (gl.isContextLost()) throw new Error('The browser stopped the 3D graphics context.');
+    if (!this.renderer.info.render.calls) throw new Error('The 3D courtyard did not draw a frame.');
+    if (!this.hasRendered) {
+      // Inspect the first actual drawing buffer, once. Draw-call accounting can
+      // succeed while a failed device supplies an entirely empty/white image.
+      const pixels = new Uint8Array(16);
+      [[.25, .25], [.75, .25], [.25, .75], [.75, .75]].forEach(([x, y], index) => {
+        gl.readPixels(Math.floor(x * gl.drawingBufferWidth), Math.floor(y * gl.drawingBufferHeight), 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels.subarray(index * 4, index * 4 + 4));
+      });
+      const rgb = pixels.filter((_, index) => index % 4 !== 3);
+      if (rgb.every(value => value === 0) || rgb.every(value => value === 255)) throw new Error('The 3D courtyard returned a blank image.');
+    }
+    this.hasRendered = true;
     const elapsed = (globalThis.performance?.now?.() || started) - started; this.frameCosts.push(elapsed); if (this.frameCosts.length > 60) this.frameCosts.shift();
     const info = this.renderer.info.render;
     Object.assign(this.canvas.dataset, { renderMode: this.state.mode, renderer: 'three', renderMs: elapsed.toFixed(2), renderDrawCalls: String(info.calls), renderTriangles: String(info.triangles), renderDpr: String(this.dpr), renderStatus: 'ready' });

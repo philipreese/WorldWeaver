@@ -1,0 +1,22 @@
+{
+  "date": "2026-09-25",
+  "build": "d2c0da1eae2d0eb3e9465d3847b3e6dddbbd2138",
+  "releaseGraph": "68b731cdb132",
+  "url": "https://philipreese.github.io/WorldWeaver/lab/?renderer=three",
+  "kind": "Agent cloud-Chrome check; WebGL is disabled in this browser.",
+  "observed": [
+    "The current module graph loaded after reload.",
+    "The new recovery notice is visible with a real illustrated canvas and activity controls.",
+    "The page opens on day 2 paused and reports all changes saved."
+  ],
+  "screenshot": "browser-courtyard-recovery-20260925.jpg",
+  "localChecks": {
+    "nodeTests": 141,
+    "domCanvasCases": 26,
+    "productionCacheCheck": "passed"
+  },
+  "limits": [
+    "Asynchronous failure recovery was tested with simulated GPU failures, not a browser GPU.",
+    "The reporting phone's precise graphics failure and successful 3D rendering remain unconfirmed."
+  ]
+}

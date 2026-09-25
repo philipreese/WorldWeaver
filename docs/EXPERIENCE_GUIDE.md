@@ -1,6 +1,6 @@
 # The Quiet Basin — story, art, and playtest guide
 
-For curious middle-school players and adults: a person, a strange place, and **What happens next?** Keep the world warm, surprising, and a little funny. Let players notice something before explaining a system.
+For curious middle-school players and adults: a person, a strange place, **something enjoyable to do**, and **What happens next?** Keep the world warm, surprising, and a little funny. Let players do something and see a response before explaining a system.
 
 ## Story and art
 
@@ -28,19 +28,29 @@ Cover six families: **relationships** (Ivo and Ves's nail), **discovery** (Old H
 
 Invite observation, cause-and-effect reasoning, perspective-taking, and comparisons through play. These are design intentions, not claims of educational benefit. A path can carry more than travelers; neighbors can need different resources; the same measured change can inspire different beliefs. Offer a small question only when its subject exists in the world. Keep it optional, without quizzes, grades, rewards, or a school voice.
 
-Introduce one action at a time in three short chapters: **Meet the neighbors** (meet Nera; optionally try a color or decoration), **Notice what changes** (allow one day; ask why a real choice happened), and **Try another possibility** (consider an available intervention; visit an earlier day). Deeper evidence stays behind **Why did this happen?** The whole guide can be dismissed and reopened. Existing history offers real moments to revisit without pretending the player already watched them; historical views remain read-only, and a full branch archive still permits comparison.
+The current implemented guide introduces three short chapters: **Meet the neighbors** (meet Nera; optionally try a color or decoration), **Notice what changes** (allow one day; ask why a real choice happened), and **Try another possibility** (consider an available intervention; visit an earlier day). Deeper evidence stays behind **Why did this happen?** The whole guide can be dismissed and reopened. Existing history offers real moments to revisit without pretending the player already watched them; historical views remain read-only, and a full branch archive still permits comparison.
 
 Appearance choices change presentation. They do not choose a character's actions, build their architecture, or change resources and history. Guide progress records the player's interactions separately from the simulated world; displaying a card does not complete its step.
 
+## Next slice: direct play before explanation
+
+[Issue #8](https://github.com/philipreese/WorldWeaver/issues/8) plans one customizable living space, an interactive companion, a reusable environmental action and a focused visual pass in the existing neighborhood. These are future features. Start with one small connected activity and make its controls, response and reason to try again clear.
+
+Introduce where the player is and their practical role through the scene. Give them something they can choose to do: arrange a corner of a home, play with a companion or change a local environmental condition. Then let them see the result and choose another activity. History and branching remain available when sought and can be introduced after that first satisfying action. Activities must remain useful or enjoyable beyond the guide, without chores, daily obligations or unrelated minigames.
+
+Keep autonomous inhabitants and explain their responses only when useful. Direct actions must connect to actual world state; presentation-only furnishings need not imply building construction or resource production. Use the same neighborhood to establish a stronger visual standard through depth, lighting, plants, architecture, expressive faces and visible activity. Do not infer a need for a new renderer from this art goal.
+
 ## A five-minute first visit
 
-Use manual notes, without telemetry. Start with the default paused world. Let the player try first; record any assistance.
+Use manual notes, without telemetry. Start with the default paused world. Let the player try without coaching; record any assistance. These are observation windows, not tasks assigned to the player. They guide the next slice and do not claim its features already exist.
 
-1. **Minute 1:** Ask, “What would you like to look at?” Note their first tap and whether they find a person or place worth visiting.
-2. **Minute 2:** Let them meet and follow someone. Ask what they remember about that person and what caught their attention.
-3. **Minute 3:** Before an optional intervention, separately ask, “What do you expect right away?” and “What might happen later?” Write down both predictions before advancing. Choosing to watch is valid; offer the prediction check later.
-4. **Minute 4:** Advance to a moment. Can they see what changed and find **Why did this happen?** Record confusing words, mistaken expectations, and useful surprises. Prediction accuracy has no target score.
-5. **Minute 5:** Can they return to the place, pause, and leave comfortably? Ask what, if anything, they would return to see. Note whether another-future controls were discoverable if they sought them.
+1. **Minute 1:** Note their first tap and whether they find something they want to do. Record hesitation and help requests without supplying an objective.
+2. **Minute 2:** Can they carry out their chosen action with the available controls? Note where input or the player's practical role is unclear.
+3. **Minute 3:** Can they recognize the immediate result? Record what they say changed, including mistaken expectations. Ask only after allowing them to notice it themselves.
+4. **Minute 4:** Do they repeat, vary or choose another activity? Record whether play continues without guide prompts. Choosing to observe is valid; history and explanations need not be opened to pass this check.
+5. **Minute 5:** Can they pause and leave comfortably? Ask what, if anything, they would return to do or see. Note whether deeper tools were discoverable if they sought them.
+
+For a separate focused causal check, ask what they expect immediately and what might happen later before an intervention. Record both predictions before advancing, then compare with the observed result. Do not interrupt every first-visit action with a quiz; prediction accuracy has no target score.
 
 Across **three short return sessions on the same saved world**, record: starting day; person/place chosen; worthwhile moment or “none”; how it was found; help needed; and any reason to return. Do not assign a new objective just to fill a quiet session.
 

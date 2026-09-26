@@ -223,6 +223,17 @@ test('all failed lighting profiles stop after three attempts and retain each com
   view._renderFrame(100); assert.equal(attempts, 3); view.model.dispose();
 });
 
+test('a failed unlit program cannot appear recovered through cached shader reuse', async () => {
+  const errors = [], view = drawableView(error => errors.push(error)); let attempts = 0;
+  view.renderer.render = () => {
+    if (++attempts === 1) view._shaderFailed({ getShaderSource: () => '#define SHADER_TYPE SpriteMaterial\n', getShaderInfoLog: () => 'Label shader failed' }, {}, {}, {});
+    // A cached failed program would not fire onShaderError a second time.
+  };
+  view.setVisible(true); await Promise.resolve();
+  assert.equal(attempts, 1); assert.equal(view.hasRendered, false); assert.equal(errors.length, 1);
+  assert.equal(view.shaderFailures[0].fragment.log, 'Label shader failed'); view.model.dispose();
+});
+
 test('hidden and repeated resize notifications do not allocate desktop buffers on a phone', t => {
   const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'devicePixelRatio');
   Object.defineProperty(globalThis, 'devicePixelRatio', { value: 3, configurable: true });

@@ -303,19 +303,23 @@ export class NeighborhoodThreeView {
   }
   _bind(name, listener) { this.canvas.addEventListener(name, listener); this.listeners.push([name, listener]); }
   _shaderFailed(gl, program, vertex, fragment) {
+    const failure = courtyardShaderFailure(gl, program, vertex, fragment, this.lightingProfile);
     // Bound report size even when many materials share an invalid program.
-    if (this.shaderFailures.filter(failure => failure.profile === this.lightingProfile).length < 3) this.shaderFailures.push(courtyardShaderFailure(gl, program, vertex, fragment, this.lightingProfile));
+    if (this.shaderFailures.filter(item => item.profile === this.lightingProfile).length < 3) this.shaderFailures.push(failure);
+    // Lighting cannot repair a label/basic shader. Three may reuse that failed
+    // cached program without firing onShaderError again on a later attempt.
+    if (!['MeshStandardMaterial', 'MeshDepthMaterial', 'MeshLambertMaterial'].includes(failure.vertex.type)) this.shaderRetryable = false;
     this.shaderError = new Error('The browser could not draw the courtyard materials.');
   }
   _retryLighting() {
-    if (this.lightingProfile === 'simple') return false;
+    if (this.lightingProfile === 'simple' || this.shaderRetryable === false) return false;
     this.renderer.shadowMap.enabled = false;
     if (this.lightingProfile === 'standard') this.lightingProfile = 'unshadowed';
     else { this.model.kit.useSimpleLighting(this.scene); this.lightingProfile = 'simple'; }
     this.scene.traverse(object => {
       if (object.material) for (const material of [object.material].flat()) material.needsUpdate = true;
     });
-    this.shaderError = null;
+    this.shaderError = null; this.shaderRetryable = true;
     return true;
   }
   getDiagnostics() {

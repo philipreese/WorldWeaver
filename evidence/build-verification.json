@@ -3,7 +3,7 @@
   "subpath": "/WorldWeaver/",
   "assets": 36,
   "optionalAssetsCachedDuringTest": 1,
-  "cache": "worldweaver-b0c5a9f0a871",
+  "cache": "worldweaver-492c066a966a",
   "checks": [
     "Subpath serves HTML and all precached relative assets",
     "Generated worker installs complete asset set",

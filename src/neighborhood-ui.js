@@ -196,12 +196,14 @@ export class NeighborhoodUI {
       mode: this.mode,
       status: this.canvas.dataset.renderStatus || (this.isThree ? "starting" : "ready"),
       error: this.rendererError ? String(this.rendererError.message || this.rendererError).slice(0, 300) : null,
+      graphics: this.rendererDiagnostics || this.view?.getDiagnostics?.() || null,
     };
   }
 
   _useIllustratedFallback(error) {
     if (!this.isThree) return;
     this.isThree = false;
+    try { this.rendererDiagnostics = this.view?.getDiagnostics?.(); } catch { /* Keep recovery independent of diagnostics. */ }
     try { this.view?.destroy(); } catch { /* Recovery must survive a broken GPU. */ }
     // Context type is permanent for a canvas. Discard WebGL dimensions,
     // diagnostics and event handlers while keeping the activity and save state.

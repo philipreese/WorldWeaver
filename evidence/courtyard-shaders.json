@@ -1,0 +1,123 @@
+{
+  "kind": "Native OpenGL ES shader compile/link; not browser rendering or phone validation.",
+  "threeRevision": "186",
+  "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+  "version": "OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.2",
+  "programs": [
+    {
+      "name": "standard: MeshStandardMaterial, individual, smooth, opaque",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "standard: MeshDepthMaterial, individual, smooth, opaque",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "standard: MeshStandardMaterial, instanced, smooth, opaque",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "standard: MeshDepthMaterial, instanced, smooth, opaque",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "standard: MeshStandardMaterial, instanced, flat, opaque",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "standard: MeshStandardMaterial, individual, smooth, transparent",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "standard: MeshStandardMaterial, individual, flat, opaque",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "standard: MeshBasicMaterial, individual, smooth, opaque",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "standard: SpriteMaterial, individual, smooth, transparent",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "unshadowed: MeshStandardMaterial, individual, smooth, opaque",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "unshadowed: MeshStandardMaterial, instanced, smooth, opaque",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "unshadowed: MeshStandardMaterial, instanced, flat, opaque",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "unshadowed: MeshStandardMaterial, individual, smooth, transparent",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "unshadowed: MeshStandardMaterial, individual, flat, opaque",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "unshadowed: MeshBasicMaterial, individual, smooth, opaque",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "unshadowed: SpriteMaterial, individual, smooth, transparent",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "simple: MeshLambertMaterial, individual, smooth, opaque",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "simple: MeshLambertMaterial, instanced, smooth, opaque",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "simple: MeshLambertMaterial, instanced, flat, opaque",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "simple: MeshLambertMaterial, individual, smooth, transparent",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "simple: MeshLambertMaterial, individual, flat, opaque",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "simple: MeshBasicMaterial, individual, smooth, opaque",
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "simple: SpriteMaterial, individual, smooth, transparent",
+      "errors": [],
+      "passed": true
+    }
+  ]
+}

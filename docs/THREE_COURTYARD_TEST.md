@@ -48,4 +48,8 @@ The live agent walkthrough of build `5639c231` verified furniture, companion cho
 
 The 3D view now attempts its first visible frame immediately and checks for shader/context failures, absent draw calls and blank initial pixels. A failure at startup or during play replaces the canvas with the illustrated view while keeping the current activity and choices. Phone rendering avoids multisample antialiasing, caps DPR at 1.25 and uses a 512-pixel shadow map; hidden/repeated layout observations no longer allocate a desktop-size buffer.
 
-If a device still cannot show 3D, **Settings → Report a problem** includes the courtyard renderer and its last error in the locally downloaded report. No report is sent automatically. The exact cause of the reported phone failure remains unconfirmed; cloud Chrome still cannot produce WebGL frames.
+A subsequent device report identified a shader compile/link failure. The earlier handler had discarded the actual compiler logs, so the specific shader/driver cause is still unknown. A confirmed shader failure now retries the same 3D scene without shadows, then with simpler Lambert lighting. There are at most three attempts across the view’s lifetime. Only shader failures take this path; other failures still use illustrated recovery.
+
+**Settings → Report a problem** includes the selected lighting profile, bounded compiler/link logs, material names, nearby source lines and context limits. Diagnostics survive both successful retries and illustrated recovery. No report is sent automatically.
+
+`npm run verify:shaders` compiles and links 23 generated shader variants in native Mesa OpenGL ES, including the original materials, labels, shadow pass and both retry profiles. It requires Linux, Python 3, `libegl1` and `libgl1-mesa-dri`, and runs in CI. See [the compiler report](../evidence/courtyard-shaders.json). This does not establish successful rendering on the reporting phone; cloud Chrome still cannot produce WebGL frames.

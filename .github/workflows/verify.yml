@@ -17,6 +17,9 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run check
       - run: npm test
+      - name: Install native shader compiler runtime
+        run: sudo apt-get update && sudo apt-get install -y libegl1 libgl1-mesa-dri
+      - run: npm run verify:shaders
       - run: npm run build
       - run: npm run verify:build
       - uses: actions/upload-artifact@v4

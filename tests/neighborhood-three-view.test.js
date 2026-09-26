@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import * as THREE from 'three';
-import { buildCourtyardThreeScene, NeighborhoodThreeView, validateCourtyardThreeAssets } from '../src/view/neighborhood-three-view.js';
+import { buildCourtyardThreeScene, courtyardShaderFailure, NeighborhoodThreeView, validateCourtyardThreeAssets } from '../src/view/neighborhood-three-view.js';
 import { defaultNeighborhood, reduceNeighborhood, channelFlow } from '../src/neighborhood.js';
 import { resolveStyleColor } from '../src/customization.js';
 
@@ -94,6 +94,7 @@ function drawableView(onError) {
   const view = headlessView();
   view.canvas = { dataset: {} }; view.onError = onError;
   view.failed = false; view.hasRendered = false; view.frameCosts = []; view.dpr = 1.25;
+  view.lightingProfile = 'standard'; view.shaderFailures = [];
   view.controls = { update() {}, enabled: true }; view.resize = () => {};
   view.renderer = {
     shadowMap: {}, info: { render: { calls: 12, triangles: 240 } },
@@ -131,7 +132,7 @@ test('losing the context after a good frame triggers recovery instead of leaving
 test('silent shader and empty-frame failures cannot report a ready 3D scene', async () => {
   for (const kind of ['shader', 'empty', 'lost', 'black', 'white']) {
     const failures = [], view = drawableView(error => failures.push(error.message));
-    if (kind === 'shader') view.shaderError = new Error('Materials failed');
+    if (kind === 'shader') view.renderer.render = () => { view.shaderError = new Error('Materials failed'); };
     if (kind === 'empty') view.renderer.info.render.calls = 0;
     if (kind === 'lost') view.renderer.getContext = () => ({ isContextLost: () => true });
     if (kind === 'black' || kind === 'white') {
@@ -143,6 +144,94 @@ test('silent shader and empty-frame failures cannot report a ready 3D scene', as
     assert.equal(view.hasRendered, false, kind); assert.equal(failures.length, 1, kind);
     assert.equal(view.canvas.dataset.renderStatus, 'failed', kind); view.model.dispose();
   }
+});
+
+function rejectedShader(view) {
+  const gl = {
+    COMPILE_STATUS: 1, LINK_STATUS: 2,
+    getProgramParameter: () => false, getProgramInfoLog: () => 'Fragment shader failed to compile.',
+    getShaderParameter: shader => shader === 'vertex',
+    getShaderInfoLog: shader => shader === 'fragment' ? 'ERROR: 0:4: unsupported expression' : '',
+    getShaderSource: () => '#version 300 es\n#define SHADER_TYPE MeshStandardMaterial\n#define SHADER_NAME leaf\ninvalidExpression;\n',
+  };
+  view._shaderFailed(gl, {}, 'vertex', 'fragment');
+}
+
+test('compiler diagnostics retain failed stage, material, log and source context within bounds', () => {
+  const view = drawableView(() => {});
+  rejectedShader(view);
+  const failure = view.getDiagnostics().shaderFailures[0];
+  assert.equal(failure.profile, 'standard'); assert.equal(failure.linked, false);
+  assert.equal(failure.vertex.compiled, true); assert.equal(failure.fragment.compiled, false);
+  assert.equal(failure.fragment.name, 'leaf'); assert.equal(failure.fragment.type, 'MeshStandardMaterial');
+  assert.match(failure.fragment.log, /unsupported expression/);
+  assert.match(failure.fragment.excerpt, /4: invalidExpression/);
+  for (let i = 0; i < 20; i++) rejectedShader(view);
+  assert.equal(view.shaderFailures.length, 3);
+  const unreadable = courtyardShaderFailure({ getShaderSource() { throw new Error('Lost context'); }, getProgramInfoLog: () => 'x'.repeat(8000) }, {}, {}, {}, 'simple');
+  assert.equal(unreadable.programLog.length, 4000); assert.equal(unreadable.fragment.compiled, null);
+  view.model.dispose();
+});
+
+test('a shadow shader failure retries 3D once without changing activity, camera or saved choices', async () => {
+  const failures = [], view = drawableView(error => failures.push(error));
+  view.state.neighborhood = reduceNeighborhood(defaultNeighborhood(), { type: 'toss', x: .7, y: .4 });
+  view.state.mode = 'companion';
+  const before = JSON.stringify(view.state), camera = view.camera;
+  let attempts = 0;
+  view.renderer.render = () => { if (++attempts === 1) rejectedShader(view); };
+  view.setVisible(true); await Promise.resolve();
+  assert.equal(attempts, 2); assert.equal(view.hasRendered, true); assert.equal(view.failed, false);
+  assert.equal(view.lightingProfile, 'unshadowed'); assert.equal(view.renderer.shadowMap.enabled, false);
+  assert.equal(view.model.kit.material('petCoat').isMeshStandardMaterial, true);
+  assert.equal(view.shaderFailures.length, 1); assert.equal(view.canvas.dataset.renderStatus, 'ready');
+  assert.equal(JSON.stringify(view.state), before); assert.equal(view.camera, camera); assert.deepEqual(failures, []);
+  view.drawFrame(200); assert.equal(attempts, 3); assert.equal(view.lightingProfile, 'unshadowed');
+  view.model.dispose();
+});
+
+test('simpler lighting preserves materials, placed objects and subsequent appearance updates', async () => {
+  const view = drawableView(() => assert.fail('Successful lighting retry must stay in 3D'));
+  const n = reduceNeighborhood(defaultNeighborhood(), { type: 'pet-color', color: 'plum' });
+  view.setState({ neighborhood: n });
+  const before = JSON.stringify(n), coat = view.model.kit.material('petCoat'), water = view.model.kit.material('water');
+  const coatColor = coat.color.getHex(), waterOpacity = water.opacity; let disposed = 0, attempts = 0;
+  coat.addEventListener('dispose', () => disposed++);
+  view.renderer.render = () => { if (++attempts <= 2) rejectedShader(view); };
+  view.setVisible(true); await Promise.resolve();
+  assert.equal(attempts, 3); assert.equal(view.hasRendered, true); assert.equal(view.lightingProfile, 'simple');
+  assert.equal(view.model.kit.material('petCoat').isMeshLambertMaterial, true);
+  assert.equal(view.model.kit.material('petCoat').color.getHex(), coatColor);
+  assert.equal(view.model.kit.material('water').opacity, waterOpacity);
+  assert.equal(view.model.kit.material('water').transparent, water.transparent);
+  assert.equal(disposed, 1);
+  view.scene.traverse(object => { for (const material of [object.material].flat().filter(Boolean)) assert.notEqual(material.isMeshStandardMaterial, true); });
+  view.setState({ personalization: { homes: { 'k-hearth-table': { color: 'jade' } } } });
+  assert.equal(view.model.kit.material('trim').color.getHexString(), resolveStyleColor('jade').coat.slice(1));
+  const bench = view.model.kit.model('bench'); let parts = 0;
+  bench.traverse(object => { if (object.isMesh) { parts++; assert.equal(object.material.isMeshLambertMaterial, true); } });
+  assert.ok(parts > 0); assert.equal(JSON.stringify(n), before); view.model.dispose(); assert.equal(disposed, 1);
+});
+
+test('all failed lighting profiles stop after three attempts and retain each compiler report', async () => {
+  const errors = [], view = drawableView(error => errors.push(error)); let attempts = 0;
+  view.renderer.render = () => { attempts++; rejectedShader(view); throw new Error('Follow-on invalid program error'); };
+  view.setVisible(true); await Promise.resolve();
+  assert.equal(attempts, 3); assert.equal(view.failed, true); assert.equal(view.hasRendered, false);
+  assert.equal(errors.length, 1); assert.match(errors[0].message, /courtyard materials/);
+  assert.deepEqual(view.getDiagnostics().shaderFailures.map(failure => failure.profile), ['standard', 'unshadowed', 'simple']);
+  view._renderFrame(100); assert.equal(attempts, 3); view.model.dispose();
+});
+
+test('a failed unlit program cannot appear recovered through cached shader reuse', async () => {
+  const errors = [], view = drawableView(error => errors.push(error)); let attempts = 0;
+  view.renderer.render = () => {
+    if (++attempts === 1) view._shaderFailed({ getShaderSource: () => '#define SHADER_TYPE SpriteMaterial\n', getShaderInfoLog: () => 'Label shader failed' }, {}, {}, {});
+    // A cached failed program would not fire onShaderError a second time.
+  };
+  view.setVisible(true); await Promise.resolve();
+  assert.equal(attempts, 1); assert.equal(view.hasRendered, false); assert.equal(errors.length, 1);
+  assert.equal(view.shaderFailures[0].fragment.log, 'Label shader failed'); view.model.dispose();
 });
 
 test('hidden and repeated resize notifications do not allocate desktop buffers on a phone', t => {

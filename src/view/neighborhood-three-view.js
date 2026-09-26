@@ -17,6 +17,27 @@ function vector(value, label, low = -200, high = 200) {
   value.forEach(item => number(item, label, low, high));
 }
 
+const diagnosticRead = (read, fallback = null) => { try { return read() ?? fallback; } catch { return fallback; } };
+const diagnosticText = value => String(value || '').slice(0, 4000);
+
+// Three deletes shader handles after this callback. Retain the compiler output
+// now, before either a successful retry or illustrated recovery disposes it.
+export function courtyardShaderFailure(gl, program, vertex, fragment, profile) {
+  const stage = shader => {
+    const source = diagnosticRead(() => gl.getShaderSource(shader), '');
+    const log = diagnosticText(diagnosticRead(() => gl.getShaderInfoLog(shader), ''));
+    const line = Number(log.match(/(?:ERROR:\s*\d+:|\d+\()(\d+)/)?.[1]);
+    return {
+      compiled: diagnosticRead(() => gl.getShaderParameter(shader, gl.COMPILE_STATUS)),
+      type: source.match(/#define SHADER_TYPE (\w+)/)?.[1] || null,
+      name: source.match(/#define SHADER_NAME ([^\n]*)/)?.[1]?.trim() || null,
+      log,
+      excerpt: line > 0 ? diagnosticText(source.split('\n').slice(Math.max(0, line - 3), line + 2).map((text, i) => `${Math.max(1, line - 2) + i}: ${text}`).join('\n')) : '',
+    };
+  };
+  return { profile, linked: diagnosticRead(() => gl.getProgramParameter(program, gl.LINK_STATUS)), programLog: diagnosticText(diagnosticRead(() => gl.getProgramInfoLog(program), '')), vertex: stage(vertex), fragment: stage(fragment) };
+}
+
 /** The JSON is a bounded scene description, never executable code or a URL loader. */
 export function validateCourtyardThreeAssets(value) {
   if (!value || value.schemaVersion !== 1 || !value.materials || !value.models || !Array.isArray(value.placements)) throw new Error('Unsupported courtyard 3D asset format.');
@@ -98,7 +119,7 @@ function gableGeometry() {
 class AssetKit {
   constructor(assets) {
     this.assets = assets; this.geometries = new Map(); this.materials = new Map(); this.ownedGeometries = new Set();
-    for (const [key, definition] of Object.entries(assets.materials)) this.materials.set(key, new THREE.MeshStandardMaterial({ ...definition }));
+    for (const [key, definition] of Object.entries(assets.materials)) this.materials.set(key, new THREE.MeshStandardMaterial({ ...definition, name: key }));
   }
   material(id) { const material = this.materials.get(id); if (!material) throw new Error(`Unknown courtyard material ${id}.`); return material; }
   own(geometry) { this.ownedGeometries.add(geometry); return geometry; }
@@ -158,6 +179,21 @@ class AssetKit {
     const curve = new THREE.CatmullRomCurve3(points.map(point => new THREE.Vector3(...point)));
     const geometry = this.own(new THREE.TubeGeometry(curve, segments, radius, 6, false));
     const mesh = new THREE.Mesh(geometry, this.material(material)); mesh.receiveShadow = true; return mesh;
+  }
+  useSimpleLighting(scene) {
+    const replacements = new Map();
+    for (const [key, material] of this.materials) {
+      if (!material.isMeshStandardMaterial) continue;
+      const settings = {};
+      for (const property of ['name', 'color', 'emissive', 'emissiveIntensity', 'map', 'emissiveMap', 'alphaMap', 'opacity', 'transparent', 'depthWrite', 'depthTest', 'side', 'blending', 'alphaTest', 'fog', 'toneMapped', 'flatShading', 'vertexColors', 'visible', 'wireframe']) settings[property] = material[property];
+      const replacement = new THREE.MeshLambertMaterial(settings);
+      replacements.set(material, replacement); this.materials.set(key, replacement);
+    }
+    scene.traverse(object => {
+      if (Array.isArray(object.material)) object.material = object.material.map(material => replacements.get(material) || material);
+      else if (replacements.has(object.material)) object.material = replacements.get(object.material);
+    });
+    replacements.forEach((_replacement, original) => original.dispose());
   }
   dispose() { this.ownedGeometries.forEach(geometry => geometry.dispose()); this.materials.forEach(material => material.dispose()); this.ownedGeometries.clear(); this.materials.clear(); this.geometries.clear(); }
 }
@@ -236,6 +272,7 @@ export class NeighborhoodThreeView {
   constructor(canvas, { onSelect = () => {}, onError = () => {}, assets } = {}) {
     validateCourtyardThreeAssets(assets);
     this.onError = onError; this.failed = false; this.hasRendered = false;
+    this.lightingProfile = 'standard'; this.shaderFailures = [];
     this.compact = (globalThis.innerWidth || 1024) <= 650 || Boolean(globalThis.matchMedia?.('(pointer: coarse)')?.matches);
     this.canvas = canvas; this.onSelect = onSelect; this.listeners = []; this.visible = true; this.destroyed = false; this.frameId = null; this.dirty = true; this.lastFrame = 0; this.hasState = false; this.fetchStart = null; this.fetchTarget = null; this.down = new Map(); this.dragged = false; this.textures = new Set(); this.labelMaterials = new Set(); this.frameCosts = [];
     this.state = { world: null, neighborhood: defaultNeighborhood(), mode: 'welcome', historical: false, waterRunning: false, reducedMotion: globalThis.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches || false };
@@ -248,7 +285,9 @@ export class NeighborhoodThreeView {
       this.renderer.outputColorSpace = THREE.SRGBColorSpace; this.renderer.toneMapping = THREE.ACESFilmicToneMapping; this.renderer.toneMappingExposure = assets.lighting.exposure;
       this.renderer.shadowMap.enabled = true; this.renderer.shadowMap.type = THREE.PCFShadowMap;
       if (this.compact) this.model.sun.shadow.mapSize.set(512, 512);
-      this.renderer.debug.onShaderError = () => { this.shaderError = new Error('The browser could not draw the courtyard materials.'); };
+      this.renderer.debug.onShaderError = (...args) => this._shaderFailed(...args);
+      const gl = this.renderer.getContext();
+      this.graphicsInfo = Object.fromEntries(['VERSION', 'SHADING_LANGUAGE_VERSION', 'VENDOR', 'RENDERER', 'MAX_VARYING_VECTORS', 'MAX_VERTEX_UNIFORM_VECTORS', 'MAX_FRAGMENT_UNIFORM_VECTORS', 'MAX_TEXTURE_IMAGE_UNITS'].map(key => [key, diagnosticRead(() => gl.getParameter(gl[key]))]));
       this.renderer.shadowMap.autoUpdate = false; this.renderer.shadowMap.needsUpdate = true;
       this.controls = new OrbitControls(this.camera, canvas); this.controls.enableDamping = !this.state.reducedMotion; this.controls.dampingFactor = .12; this.controls.enablePan = false; this.controls.minDistance = 4; this.controls.maxDistance = 42; this.controls.minPolarAngle = .22; this.controls.maxPolarAngle = Math.PI * .44; this.controls.rotateSpeed = .68; this.controls.zoomSpeed = .85;
       this.controls.addEventListener('change', () => this.invalidate());
@@ -263,6 +302,29 @@ export class NeighborhoodThreeView {
     } catch (error) { this.destroy(); throw new Error('The 3D courtyard assets could not be prepared. The illustrated courtyard is still available.', { cause: error }); }
   }
   _bind(name, listener) { this.canvas.addEventListener(name, listener); this.listeners.push([name, listener]); }
+  _shaderFailed(gl, program, vertex, fragment) {
+    const failure = courtyardShaderFailure(gl, program, vertex, fragment, this.lightingProfile);
+    // Bound report size even when many materials share an invalid program.
+    if (this.shaderFailures.filter(item => item.profile === this.lightingProfile).length < 3) this.shaderFailures.push(failure);
+    // Lighting cannot repair a label/basic shader. Three may reuse that failed
+    // cached program without firing onShaderError again on a later attempt.
+    if (!['MeshStandardMaterial', 'MeshDepthMaterial', 'MeshLambertMaterial'].includes(failure.vertex.type)) this.shaderRetryable = false;
+    this.shaderError = new Error('The browser could not draw the courtyard materials.');
+  }
+  _retryLighting() {
+    if (this.lightingProfile === 'simple' || this.shaderRetryable === false) return false;
+    this.renderer.shadowMap.enabled = false;
+    if (this.lightingProfile === 'standard') this.lightingProfile = 'unshadowed';
+    else { this.model.kit.useSimpleLighting(this.scene); this.lightingProfile = 'simple'; }
+    this.scene.traverse(object => {
+      if (object.material) for (const material of [object.material].flat()) material.needsUpdate = true;
+    });
+    this.shaderError = null; this.shaderRetryable = true;
+    return true;
+  }
+  getDiagnostics() {
+    return { threeRevision: THREE.REVISION, lighting: this.lightingProfile, context: this.graphicsInfo || null, shaderFailures: this.shaderFailures || [] };
+  }
   _contextLost(event) {
     event.preventDefault(); this.contextLost = true;
     this._fail(new Error('The browser stopped the 3D graphics context.'));
@@ -397,8 +459,17 @@ export class NeighborhoodThreeView {
     if (gl.isContextLost()) throw new Error('The browser stopped the 3D graphics context.');
     const started = globalThis.performance?.now?.() || 0; this.controls.update();
     if (this.fetchStart !== null) this.renderer.shadowMap.needsUpdate = true;
-    this._animate(time); this.renderer.render(this.scene, this.camera);
-    if (this.shaderError) throw this.shaderError;
+    this._animate(time);
+    // Retry only a confirmed shader failure, at most twice over this view's
+    // lifetime. Camera, geometry, activity and saved state stay in place.
+    for (;;) {
+      let renderError;
+      try { this.renderer.render(this.scene, this.camera); } catch (error) { renderError = error; }
+      if (gl.isContextLost()) throw new Error('The browser stopped the 3D graphics context.');
+      if (this.shaderError) { if (this._retryLighting()) continue; throw this.shaderError; }
+      if (renderError) throw renderError;
+      break;
+    }
     if (gl.isContextLost()) throw new Error('The browser stopped the 3D graphics context.');
     if (!this.renderer.info.render.calls) throw new Error('The 3D courtyard did not draw a frame.');
     if (!this.hasRendered) {

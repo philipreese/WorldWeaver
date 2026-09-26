@@ -480,6 +480,7 @@ cases.push("Unavailable 3D rendering creates a fresh Canvas2D element and explai
 let lateFailure, disposed = 0;
 class LateFailureView extends ComparisonView {
   constructor(canvas, options) { super(canvas, options); lateFailure = options.onError; }
+  getDiagnostics() { return { lighting: "simple", shaderFailures: [{ fragment: { log: "Compiler rejected shader" } }] }; }
   destroy() { disposed++; throw new Error("Disposing a lost context also failed"); }
 }
 const recovering = new NeighborhoodUI(testContainer, {}, { ViewClass: LateFailureView, comparisonEnabled: true });
@@ -494,6 +495,8 @@ assert.equal(recovering.view.visible, true);
 assert.equal(JSON.stringify(recovering.view.state.neighborhood), choicesBeforeFailure);
 assert.equal(recovering.saveWarning.hidden, false);
 assert.equal(recovering.getDiagnostics().error, "The first frame could not draw");
+assert.equal(recovering.getDiagnostics().graphics.lighting, "simple");
+assert.equal(recovering.getDiagnostics().graphics.shaderFailures[0].fragment.log, "Compiler rejected shader");
 assert.equal(testContainer.querySelector('[data-nh-action="reset-view"]'), null);
 assert.match(testContainer.querySelector(".nh-test-fallback").textContent, /Your choices are kept/);
 const replacementCanvas = recovering.canvas;
